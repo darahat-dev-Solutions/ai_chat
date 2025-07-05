@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:opsmate/features/auth/presentation/pages/auth_page.dart';
 import 'package:opsmate/features/auth/presentation/pages/signup_page.dart';
-import 'package:opsmate/features/tasks/presentation/pages/task_dashboard.dart';
+import 'package:opsmate/features/home/presentation/pages/home_page.dart';
 import 'package:opsmate/splashscreen.dart';
 
 import '../../features/auth/provider/auth_providers.dart';
@@ -18,26 +18,26 @@ final router = GoRouter(
     final isAuthRoute =
         state.matchedLocation == '/login' ||
         state.matchedLocation == '/register';
-    final isTasksRoute = state.matchedLocation == '/tasks';
+    final isHomeRoute = state.matchedLocation == '/home';
 
     // 1. If user is logged in...
     if (isLoggedIn) {
-      // Allow splash screen to load (it should quickly redirect to /tasks)
+      // Allow splash screen to load (it should quickly redirect to /home)
       if (isSplashScreen) return null;
 
-      // Block access to auth routes and redirect to /tasks
-      if (isAuthRoute) return '/tasks';
+      // Block access to auth routes and redirect to /home
+      if (isAuthRoute) return '/home';
 
-      // Allow access to /tasks
-      if (isTasksRoute) return null;
+      // Allow access to /home
+      if (isHomeRoute) return null;
     }
     // 2. If user is NOT logged in...
     else {
       // Allow splash screen and auth routes
       if (isSplashScreen || isAuthRoute) return null;
 
-      // Block access to /tasks and redirect to login
-      if (isTasksRoute) return '/login';
+      // Block access to /home and redirect to login
+      if (isHomeRoute) return '/login';
     }
 
     // Default: No redirect needed
@@ -47,6 +47,6 @@ final router = GoRouter(
     GoRoute(path: '/', builder: (context, state) => const SplashScreenWidget()),
     GoRoute(path: '/login', builder: (context, state) => const AuthScreen()),
     GoRoute(path: '/register', builder: (context, state) => const SignUpPage()),
-    GoRoute(path: '/tasks', builder: (context, state) => const TaskDashboard()),
+    GoRoute(path: '/home', builder: (context, state) => const HomePage()),
   ],
 );

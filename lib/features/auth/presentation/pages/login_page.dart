@@ -103,10 +103,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         passwordController.text.trim(),
                       );
 
-                      /// If login successful, navigate to /tasks
+                      /// If login successful, navigate to /home
                       if (ref.read(authControllerProvider) != null) {
                         if (context.mounted) {
-                          context.go('/tasks');
+                          context.go('/home');
                         }
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -160,10 +160,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   try {
                     await controller.signInWithGoogle();
 
-                    /// If login successful, navigate to /tasks
+                    /// If login successful, navigate to /home
                     if (ref.read(authControllerProvider) != null) {
                       if (context.mounted) {
-                        context.go('/tasks');
+                        context.go('/home');
                       }
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
