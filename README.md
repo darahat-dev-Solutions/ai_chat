@@ -32,3 +32,5 @@ For complete details on using this starter kit, check out the full documentation
 - [Modules](docs/modules/auth_module.md)
 - [Customization](docs/customization.md)
 - [Best Practices](docs/best_practices.md)
+made with ❤️ by darahat
+
