@@ -16,7 +16,6 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -151,9 +150,9 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                   onPressed:
                       authState is AuthLoading
                           ? null
-                          : () {
+                          : () async {
                             if (_formKey.currentState!.validate()) {
-                              controller.signUp(
+                              await controller.signUp(
                                 emailController.text.trim(),
                                 passwordController.text.trim(),
                                 nameController.text.trim(),
