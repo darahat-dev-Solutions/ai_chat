@@ -50,6 +50,11 @@ class AuthRepository {
     }
   }
 
+  /// Sends a password reset email to the given email address
+  Future<void> sendPasswordResetEmail(String email) async {
+    await _auth.sendPasswordResetEmail(email: email);
+  }
+
   /// model function for logout which will call from controller
   Future<void> signOut() async {
     await _auth.signOut();

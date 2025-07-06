@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:opsmate/app/router.dart';
 import 'package:opsmate/features/auth/provider/auth_providers.dart';
 import 'package:opsmate/features/tasks/application/task_controller.dart';
 import 'package:opsmate/features/tasks/presentation/widgets/aiSummaryWidget.dart';
@@ -22,6 +23,8 @@ class _TaskDashboardState extends ConsumerState<TaskDashboard> {
 
   @override
   Widget build(BuildContext context) {
+    final router = ref.watch(routerProvider);
+
     final isLoading = ref.watch(taskLoadingProvider);
     final tasks = ref.watch(incompleteTasksProvider);
     final isRecording = ref.watch(isListeningProvider);
@@ -37,7 +40,7 @@ class _TaskDashboardState extends ConsumerState<TaskDashboard> {
               context.go('/tasks');
             } else {
               ScaffoldMessenger.of(
-                context,
+                router.routerDelegate.navigatorKey.currentContext!,
               ).showSnackBar(const SnackBar(content: Text('Logout Failed')));
             }
           },

@@ -14,9 +14,10 @@ The **Auth Module** provides functionality for:
 
 ## Directory Structure
 
-- **presentation/**: UI components for login, sign-up forms.
-- **domain/**: Auth-related business logic (e.g., validation).
-- **data/**: Data sources for authentication (API, local storage).
+- **presentation/**: UI layer – contains all visual components such as pages, widgets, forms (e.g., login, sign-up).
+- **domain/**: Core business logic – includes entities (e.g., UserModel), validation rules, and possibly interfaces (abstract classes) that define contracts.
+- **infrastructure/**: External data source layer – implements data fetching logic such as API integrations, local storage (Hive/SharedPreferences), Firebase, etc.
+- **application/**: Application logic – includes controllers (like Riverpod StateNotifiers), use cases, and acts as the glue between UI (presentation) and data sources (infrastructure).
 
 ## Usage
 

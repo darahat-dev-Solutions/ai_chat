@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:opsmate/features/auth/application/auth_state.dart';
 
 import '../../provider/auth_providers.dart';
 
+/// Its login page UI
 class LoginPage extends ConsumerStatefulWidget {
+  /// Login Page Constructor
   const LoginPage({super.key});
 
   @override
@@ -26,9 +29,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final controller = ref.read(authControllerProvider.notifier);
-    final theme = Theme.of(context);
+    // final theme = Theme.of(context);
 
+    final authState = ref.watch(authControllerProvider);
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -38,15 +43,17 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               const SizedBox(height: 40),
               Text(
                 'Welcome Back',
-                style: theme.textTheme.headlineLarge?.copyWith(
+                style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 8),
               Text(
                 'Sign in to continue',
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  color: theme.colorScheme.onSurface.withOpacity(0.7),
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withOpacity(0.7),
                 ),
               ),
               const SizedBox(height: 40),
@@ -56,7 +63,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   labelText: 'Email',
                   prefixIcon: Icon(
                     Icons.email_outlined,
-                    color: theme.colorScheme.onSurface.withOpacity(0.6),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withOpacity(0.6),
                   ),
                 ),
                 keyboardType: TextInputType.emailAddress,
@@ -69,7 +78,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   labelText: 'Password',
                   prefixIcon: Icon(
                     Icons.lock_outline,
-                    color: theme.colorScheme.onSurface.withOpacity(0.6),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withOpacity(0.6),
                   ),
                 ),
               ),
@@ -82,8 +93,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   },
                   child: Text(
                     'Forgot Password?',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.primary,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                   ),
                 ),
@@ -104,15 +115,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       );
 
                       /// If login successful, navigate to /home
-                      if (ref.read(authControllerProvider) != null) {
-                        if (context.mounted) {
-                          context.go('/home');
-                        }
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Login Failed')),
-                        );
-                      }
+                      // if (context.mounted) {
+                      //   context.go('/home');
+                      // }
                     } catch (e) {
                       print(e);
                     } finally {
@@ -123,7 +128,17 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       }
                     }
                   },
-                  child: const Text('Sign In'),
+                  child:
+                      (authState is AuthLoading)
+                          ? const SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          )
+                          : const Text('Sign In'),
                 ),
               ),
               const SizedBox(height: 24),
@@ -131,77 +146,76 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 children: [
                   Expanded(
                     child: Divider(
-                      color: theme.colorScheme.onSurface.withOpacity(0.2),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withOpacity(0.2),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
                       'OR',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurface.withOpacity(0.5),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withOpacity(0.5),
                       ),
                     ),
                   ),
                   Expanded(
                     child: Divider(
-                      color: theme.colorScheme.onSurface.withOpacity(0.2),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withOpacity(0.2),
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 24),
               OutlinedButton(
-                onPressed: () async {
-                  if (_isLoading) return;
-                  setState(() {
-                    _isLoading = true;
-                  });
-                  try {
-                    await controller.signInWithGoogle();
-
-                    /// If login successful, navigate to /home
-                    if (ref.read(authControllerProvider) != null) {
-                      if (context.mounted) {
-                        context.go('/home');
-                      }
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Google Sign in failed')),
-                      );
-                    }
-                  } catch (e) {
-                    print(e);
-                  } finally {
-                    if (mounted) {
-                      setState(() {
-                        _isLoading = false;
-                      });
-                    }
-                  }
-                },
+                onPressed:
+                    (authState is AuthLoading)
+                        ? null
+                        : () async {
+                          try {
+                            await controller.signInWithGoogle();
+                          } catch (e) {
+                            print(e);
+                          } finally {
+                            if (mounted) {
+                              setState(() {
+                                _isLoading = false;
+                              });
+                            }
+                          }
+                        },
 
                 style: OutlinedButton.styleFrom(
                   side: BorderSide(
-                    color: theme.colorScheme.onSurface.withOpacity(0.2),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withOpacity(0.2),
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 12),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/icon/google_logo.png', // Add your Google logo asset
-                      height: 24,
-                      width: 24,
-                    ),
-                    const SizedBox(width: 12),
-                    Text(
-                      'Continue with Google',
-                      style: theme.textTheme.bodyLarge,
-                    ),
-                  ],
-                ),
+                child:
+                    (authState is AuthLoading)
+                        ? const CircularProgressIndicator()
+                        : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/icon/google_logo.png', // Add your Google logo asset
+                              height: 24,
+                              width: 24,
+                            ),
+                            const SizedBox(width: 12),
+                            Text(
+                              'Continue with Google',
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          ],
+                        ),
               ),
               const SizedBox(height: 32),
               Center(
@@ -210,12 +224,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   child: RichText(
                     text: TextSpan(
                       text: "Don't have an account? ",
-                      style: theme.textTheme.bodyMedium,
+                      style: Theme.of(context).textTheme.bodyMedium,
                       children: [
                         TextSpan(
                           text: 'Sign Up',
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.primary,
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.primary,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
