@@ -14,7 +14,6 @@ class AuthRepository {
     final cred = await _auth.createUserWithEmailAndPassword(
       email: email,
       password: password,
-      name: name,
     );
     return UserModel(uid: cred.user!.uid, email: cred.user!.email!);
   }

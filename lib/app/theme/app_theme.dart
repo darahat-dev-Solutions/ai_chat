@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:opsmate/app/theme/app_colors.dart';
+import 'package:flutter_starter_kit/app/theme/app_colors.dart';
 
 /// The light theme configuration used throughout the application.
 ///

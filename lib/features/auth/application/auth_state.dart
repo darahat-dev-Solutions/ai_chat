@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:opsmate/features/auth/domain/user_model.dart';
+import 'package:flutter_starter_kit/features/auth/domain/user_model.dart';
 
 /// Base class representing the authentication state.
 ///

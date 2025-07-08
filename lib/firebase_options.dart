@@ -28,7 +28,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -47,32 +50,23 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBC19IqggNF5JeojjPMhRFs3UtoFXBzemg',
-    appId: '1:302241108574:android:8bd12b59f48dd407f25acf',
-    messagingSenderId: '302241108574',
-    projectId: 'opsmate-85c7a',
-    storageBucket: 'opsmate-85c7a.firebasestorage.app',
+    apiKey: 'AIzaSyBWPF6fjoi6ZD7wnwRIjyWLXMMZXyS7s8Q',
+    appId: '1:25940150454:android:a12183c9c0114a0e9ebe17',
+    messagingSenderId: '25940150454',
+    projectId: 'flutter-starter-kit-3bd18',
+    storageBucket: 'flutter-starter-kit-3bd18.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyC41q6FdGPm3FHAe4CP-S0x0gdjlisDVCA',
-    appId: '1:302241108574:ios:42c4aa801b21490af25acf',
-    messagingSenderId: '302241108574',
-    projectId: 'opsmate-85c7a',
-    storageBucket: 'opsmate-85c7a.firebasestorage.app',
-    androidClientId: '302241108574-44gvun50ql0r0urrlkg71p389lofe2jn.apps.googleusercontent.com',
-    iosClientId: '302241108574-fe4k882kqc9cj02afk73nfpi8qioce3f.apps.googleusercontent.com',
-    iosBundleId: 'com.example.opsmate',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyC41q6FdGPm3FHAe4CP-S0x0gdjlisDVCA',
-    appId: '1:302241108574:ios:42c4aa801b21490af25acf',
-    messagingSenderId: '302241108574',
-    projectId: 'opsmate-85c7a',
-    storageBucket: 'opsmate-85c7a.firebasestorage.app',
-    androidClientId: '302241108574-44gvun50ql0r0urrlkg71p389lofe2jn.apps.googleusercontent.com',
-    iosClientId: '302241108574-fe4k882kqc9cj02afk73nfpi8qioce3f.apps.googleusercontent.com',
-    iosBundleId: 'com.example.opsmate',
+    apiKey: 'AIzaSyBbpMRIGhOr4jVywCjd7Njba_bSg_18yhU',
+    appId: '1:25940150454:ios:424ad79feecbf6dc9ebe17',
+    messagingSenderId: '25940150454',
+    projectId: 'flutter-starter-kit-3bd18',
+    storageBucket: 'flutter-starter-kit-3bd18.firebasestorage.app',
+    androidClientId:
+        '25940150454-4qklgv283cfevtpjpk39u68dqibjl4nm.apps.googleusercontent.com',
+    iosClientId:
+        '25940150454-4tb4hqrefifuj33n916ctsbpijs421dd.apps.googleusercontent.com',
+    iosBundleId: 'com.example.flutter_starter_kit',
   );
 }

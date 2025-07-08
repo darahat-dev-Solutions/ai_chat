@@ -1,7 +1,4 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class SplashScreenWidget extends StatefulWidget {
   const SplashScreenWidget({super.key});
@@ -24,6 +21,7 @@ class _SplashScreenWidgetState extends State<SplashScreenWidget>
 
   late AnimationController _dotsController;
 
+  @override
   @override
   void initState() {
     super.initState();
@@ -53,10 +51,6 @@ class _SplashScreenWidgetState extends State<SplashScreenWidget>
       vsync: this,
       duration: const Duration(milliseconds: 900),
     )..repeat();
-
-    Timer(const Duration(seconds: 2), () {
-      context.go('/login');
-    });
   }
 
   @override

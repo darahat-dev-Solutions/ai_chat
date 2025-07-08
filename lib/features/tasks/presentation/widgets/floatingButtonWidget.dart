@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:opsmate/features/tasks/presentation/widgets/micButtonWidget.dart';
-import 'package:opsmate/features/tasks/presentation/widgets/showAddTaskDialog.dart';
+import 'package:flutter_starter_kit/features/tasks/presentation/widgets/micButtonWidget.dart';
+import 'package:flutter_starter_kit/features/tasks/presentation/widgets/showAddTaskDialog.dart';
 
 class Floatingbuttonwidget extends ConsumerStatefulWidget {
   const Floatingbuttonwidget({super.key});

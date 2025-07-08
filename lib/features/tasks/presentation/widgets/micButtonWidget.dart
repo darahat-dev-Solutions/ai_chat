@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:opsmate/app/theme/app_colors.dart';
-import 'package:opsmate/features/tasks/provider/task_providers.dart';
+import 'package:flutter_starter_kit/app/theme/app_colors.dart';
+import 'package:flutter_starter_kit/features/tasks/provider/task_providers.dart';
 
 class MicButtonWidget extends ConsumerStatefulWidget {
   const MicButtonWidget({super.key});

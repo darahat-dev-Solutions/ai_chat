@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:opsmate/core/services/mistral_service.dart';
-import 'package:opsmate/core/services/voice_to_text_service.dart';
+import 'package:flutter_starter_kit/core/services/mistral_service.dart';
+import 'package:flutter_starter_kit/core/services/voice_to_text_service.dart';
 
 import '../application/task_controller.dart';
 import '../domain/task_model.dart';

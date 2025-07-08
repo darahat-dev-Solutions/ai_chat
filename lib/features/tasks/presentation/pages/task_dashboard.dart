@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_starter_kit/app/router.dart';
+import 'package:flutter_starter_kit/features/auth/provider/auth_providers.dart';
+import 'package:flutter_starter_kit/features/tasks/application/task_controller.dart';
+import 'package:flutter_starter_kit/features/tasks/presentation/widgets/aiSummaryWidget.dart';
+import 'package:flutter_starter_kit/features/tasks/presentation/widgets/floatingbuttonwidget.dart';
+import 'package:flutter_starter_kit/features/tasks/provider/task_providers.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:opsmate/app/router.dart';
-import 'package:opsmate/features/auth/provider/auth_providers.dart';
-import 'package:opsmate/features/tasks/application/task_controller.dart';
-import 'package:opsmate/features/tasks/presentation/widgets/aiSummaryWidget.dart';
-import 'package:opsmate/features/tasks/presentation/widgets/floatingbuttonwidget.dart';
-import 'package:opsmate/features/tasks/provider/task_providers.dart';
 
 /// Main Task dashboard
 class TaskDashboard extends ConsumerStatefulWidget {
@@ -46,7 +46,7 @@ class _TaskDashboardState extends ConsumerState<TaskDashboard> {
           },
           icon: const Icon(Icons.logout),
         ),
-        title: const Text('OpsMate'),
+        title: const Text('FlutterStarterKit'),
       ),
       body: Column(
         children: [

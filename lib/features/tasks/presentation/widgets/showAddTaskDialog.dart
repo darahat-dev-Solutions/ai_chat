@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:opsmate/features/tasks/provider/task_providers.dart';
+import 'package:flutter_starter_kit/features/tasks/provider/task_providers.dart';
 
 void showAddTaskDialog(BuildContext context, WidgetRef ref) {
   final textController = TextEditingController();

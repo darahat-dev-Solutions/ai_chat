@@ -1,4 +1,5 @@
 import 'dart:developer' as developer;
+
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
@@ -40,7 +41,7 @@ class AppLogger {
     if (kDebugMode) {
       log(message, level: LogLevel.debug);
       _logger.d(message);
-      developer.log(message, name: 'OpsMate');
+      developer.log(message, name: 'FlutterStarterKit');
     }
   }
 
@@ -49,7 +50,7 @@ class AppLogger {
     if (kDebugMode) {
       log(message);
       _logger.i(message);
-      developer.log(message, name: 'OpsMate', level: 800);
+      developer.log(message, name: 'FlutterStarterKit', level: 800);
     }
   }
 
@@ -58,7 +59,7 @@ class AppLogger {
     if (kDebugMode) {
       log(message, level: LogLevel.warning);
       _logger.w(message);
-      developer.log(message, name: 'OpsMate', level: 900);
+      developer.log(message, name: 'FlutterStarterKit', level: 900);
     }
   }
 
@@ -70,7 +71,7 @@ class AppLogger {
 
       developer.log(
         message,
-        name: 'OpsMate',
+        name: 'FlutterStarterKit',
         level: 1000,
         error: error,
         stackTrace: stackTrace,

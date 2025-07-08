@@ -1,5 +1,5 @@
+import 'package:flutter_starter_kit/core/services/hive_service.dart';
 import 'package:hive/hive.dart';
-import 'package:opsmate/core/services/hive_service.dart';
 
 import '../domain/task_model.dart';
 

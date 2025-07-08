@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_starter_kit/features/auth/application/auth_state.dart';
 import 'package:go_router/go_router.dart';
-import 'package:opsmate/features/auth/application/auth_state.dart';
 
 import '../../provider/auth_providers.dart';
 

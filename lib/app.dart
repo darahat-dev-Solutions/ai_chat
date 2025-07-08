@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:opsmate/app/router.dart';
-import 'package:opsmate/app/theme/app_theme.dart';
+import 'package:flutter_starter_kit/app/router.dart';
+import 'package:flutter_starter_kit/app/theme/app_theme.dart';
 
 class App extends ConsumerWidget {
   /// Creates an instance of [App]
@@ -11,7 +11,7 @@ class App extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
     return MaterialApp.router(
-      title: 'OpsMate',
+      title: 'FlutterStarterKit',
       theme: lightTheme,
       darkTheme: darkTheme,
       routerConfig: router,

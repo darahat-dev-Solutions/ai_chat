@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_starter_kit/features/auth/provider/auth_providers.dart';
 import 'package:go_router/go_router.dart';
-import 'package:opsmate/features/auth/provider/auth_providers.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
