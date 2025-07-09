@@ -241,6 +241,42 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         ),
               ),
               const SizedBox(height: 32),
+              OutlinedButton(
+                onPressed:
+                    authState is AuthLoading
+                        ? null
+                        : () async {
+                          await controller.signInWithGithub();
+                        },
+
+                style: OutlinedButton.styleFrom(
+                  side: BorderSide(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withOpacity(0.2),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+                child:
+                    (authState is AuthLoading)
+                        ? const CircularProgressIndicator()
+                        : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/icon/github_logo.png', // Add your Google logo asset
+                              height: 24,
+                              width: 24,
+                            ),
+                            const SizedBox(width: 12),
+                            Text(
+                              'Continue with Github',
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          ],
+                        ),
+              ),
+              const SizedBox(height: 32),
               Center(
                 child: TextButton(
                   onPressed: () => context.go('/register'),

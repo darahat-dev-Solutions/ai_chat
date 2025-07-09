@@ -77,6 +77,24 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
+  /// SignInWithGithub is calling signInWithGithub auth_repository model function
+  ///
+  /// set the state and the user data to hive box
+  Future<void> signInWithGithub() async {
+    state = const AuthLoading();
+    try {
+      final user = await _authRepository.signInWithGithub();
+      if (user != null) {
+        _box.put('user', user);
+        state = Authenticated(user);
+      } else {
+        state = const AuthError('Github Sign in failed. Please try again');
+      }
+    } catch (e) {
+      state = AuthError(e.toString());
+    }
+  }
+
   /// Sends a password reset email and updates the state
   Future<void> sendPasswordResetEmail(String email) async {
     state = const AuthLoading();

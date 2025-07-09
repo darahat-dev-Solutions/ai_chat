@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart'
+    show kIsWeb; // Make sure to add this import
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../domain/user_model.dart';
@@ -45,6 +47,23 @@ class AuthRepository {
       return UserModel(uid: cred.user!.uid, email: cred.user!.email!);
     } catch (e) {
       print('Error during google sign-in: $e');
+      return null;
+    }
+  }
+
+  /// This is Signin model function for github signin which will call from controller
+  Future<UserModel?> signInWithGithub() async {
+    try {
+      final githubAuthProvider = GithubAuthProvider();
+      UserCredential cred;
+      if (kIsWeb) {
+        cred = await _auth.signInWithPopup(githubAuthProvider);
+      } else {
+        cred = await _auth.signInWithProvider(githubAuthProvider);
+      }
+      return UserModel(uid: cred.user!.uid, email: cred.user!.email!);
+    } catch (e) {
+      print('Error during github sign-in: $e');
       return null;
     }
   }
