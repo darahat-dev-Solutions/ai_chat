@@ -19,7 +19,7 @@ Future<void> main() async {
   await FirebaseAppCheck.instance
   // Your personal reCaptcha public key goes here:
   .activate(
-    androidProvider: AndroidProvider.playIntegrity,
+    androidProvider: AndroidProvider.debug,
     appleProvider: AppleProvider.appAttest, // Recommended for iOS
   );
   // Initialize Hive with error handling

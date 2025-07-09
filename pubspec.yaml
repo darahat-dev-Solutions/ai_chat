@@ -82,6 +82,7 @@ dependencies:
   google_sign_in: ^6.3.0
   firebase_app_check: ^0.3.2+9
   flutter_web_auth_2: ^4.1.0
+  recaptcha_enterprise_flutter: ^18.7.1
 
 #---------------------------
 #Development Dependencies
