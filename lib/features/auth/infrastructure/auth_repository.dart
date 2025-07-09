@@ -72,10 +72,7 @@ class AuthRepository {
   Future<void> sendPasswordResetEmail(String email) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
-      print("Password reset email sent to $email");
-    } catch (e) {
-      print("Error sending reset email: $e");
-    }
+    } catch (e) {}
   }
 
   /// model function for logout which will call from controller
