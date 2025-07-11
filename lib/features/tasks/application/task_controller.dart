@@ -9,8 +9,13 @@ final taskLoadingProvider = StateProvider<bool>((ref) => false);
 /// Main Task Controller connected to Hive-backed TaskRepository
 class TaskController extends StateNotifier<List<TaskModel>> {
   final TaskRepository _repo;
+
+  /// riverpod object used by providers to interact with other providers and life cycle
+  /// of the application
+  /// example ref.read, ref.write etc
   final Ref ref;
 
+  /// TaskController Constructor to call it from outside
   TaskController(this._repo, this.ref) : super([]) {
     Future.microtask(() => getTask());
   }

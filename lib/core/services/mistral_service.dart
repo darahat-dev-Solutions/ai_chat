@@ -4,10 +4,13 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
+/// Mistral LLM Service implementation
 class MistralService {
+  ///OPENROUTER_AI_API_KEY you may find in .env
   static final _apiKey = dotenv.env['OPENROUTER_AI_API_KEY']!;
   static const _endpoint = 'https://openrouter.ai/api/v1/chat/completions';
 
+  /// Mistral LLM API calling procedure as like as regular jquery
   Future<String> generateSummary(String taskList) async {
     final response = await http.post(
       Uri.parse(_endpoint),
@@ -37,7 +40,6 @@ class MistralService {
       final data = jsonDecode(response.body);
       return data['choices'][0]['message']['content'];
     } else {
-      print('Mistral API error: ${response.statusCode} ${response.body}');
       throw Exception(
         'Failed to get response from Mistral: ${response.statusCode} ${response.body}',
       );

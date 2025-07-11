@@ -44,7 +44,6 @@ final routerProvider = Provider<GoRouter>((ref) {
       final isInitialized = ref.watch(initializationProvider).hasValue;
 
       final isAuthenticated = authState is Authenticated;
-      final isAuthenticating = authState is AuthLoading;
 
       final onSplash = state.matchedLocation == '/splash';
 

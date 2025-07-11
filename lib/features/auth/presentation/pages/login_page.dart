@@ -15,7 +15,6 @@ class LoginPage extends ConsumerStatefulWidget {
 }
 
 class _LoginPageState extends ConsumerState<LoginPage> {
-  bool _isLoading = false;
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -53,9 +52,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               Text(
                 'Sign in to continue',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.onSurface.withOpacity(0.7),
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 40),
@@ -69,9 +66,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         labelText: 'Email',
                         prefixIcon: Icon(
                           Icons.email_outlined,
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.onSurface.withOpacity(0.6),
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
                       validator: (value) {
@@ -96,9 +91,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         labelText: 'Password',
                         prefixIcon: Icon(
                           Icons.lock_outline,
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.onSurface.withOpacity(0.6),
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -179,9 +172,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 children: [
                   Expanded(
                     child: Divider(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onSurface.withOpacity(0.2),
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                   Padding(
@@ -189,17 +180,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     child: Text(
                       'OR',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.onSurface.withOpacity(0.5),
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                   ),
                   Expanded(
                     child: Divider(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onSurface.withOpacity(0.2),
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                 ],
@@ -215,9 +202,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
                 style: OutlinedButton.styleFrom(
                   side: BorderSide(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withOpacity(0.2),
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 12),
                 ),
@@ -251,9 +236,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
                 style: OutlinedButton.styleFrom(
                   side: BorderSide(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withOpacity(0.2),
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 12),
                 ),

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter_kit/app/router.dart';
+import 'package:flutter_starter_kit/features/auth/application/auth_state.dart';
 import 'package:flutter_starter_kit/features/auth/provider/auth_providers.dart';
 import 'package:flutter_starter_kit/features/tasks/application/task_controller.dart';
-import 'package:flutter_starter_kit/features/tasks/presentation/widgets/aiSummaryWidget.dart';
-import 'package:flutter_starter_kit/features/tasks/presentation/widgets/floatingbuttonwidget.dart';
+import 'package:flutter_starter_kit/features/tasks/presentation/widgets/ai_summary_widget.dart';
+import 'package:flutter_starter_kit/features/tasks/presentation/widgets/floating_button_widget.dart';
 import 'package:flutter_starter_kit/features/tasks/provider/task_providers.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -23,26 +23,21 @@ class _TaskDashboardState extends ConsumerState<TaskDashboard> {
 
   @override
   Widget build(BuildContext context) {
-    final router = ref.watch(routerProvider);
-
     final isLoading = ref.watch(taskLoadingProvider);
     final tasks = ref.watch(incompleteTasksProvider);
     final isRecording = ref.watch(isListeningProvider);
-    final auth = ref.read(authControllerProvider.notifier);
     String formattedDate = '';
+    ref.listen<AuthState>(authControllerProvider, (prev, next) {
+      if (next is AuthSignedOut) {
+        context.go('/login');
+      }
+    });
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () async {
-            await auth.signOut();
-            if (ref.read(authControllerProvider) == null) {
-              context.go('/tasks');
-            } else {
-              ScaffoldMessenger.of(
-                router.routerDelegate.navigatorKey.currentContext!,
-              ).showSnackBar(const SnackBar(content: Text('Logout Failed')));
-            }
+          onPressed: () {
+            ref.read(authControllerProvider.notifier).signOut();
           },
           icon: const Icon(Icons.logout),
         ),
@@ -203,7 +198,7 @@ class _TaskDashboardState extends ConsumerState<TaskDashboard> {
           ),
         ],
       ),
-      floatingActionButton: Floatingbuttonwidget(),
+      floatingActionButton: FloatingButtonWidget(),
     );
   }
 }

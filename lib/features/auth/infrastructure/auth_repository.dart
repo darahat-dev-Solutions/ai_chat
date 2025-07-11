@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart'
     show kIsWeb; // Make sure to add this import
+import 'package:flutter_starter_kit/core/errors/exceptions.dart';
+import 'package:flutter_starter_kit/core/utils/logger.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../domain/user_model.dart';
@@ -35,19 +37,19 @@ class AuthRepository {
       final googleUser = await _googleSignIn.signIn();
       if (googleUser == null) {
         /// User canceled the sign-in
-        return null;
+        throw AuthenticationException('🚀 ~ User Canceled the Sign-in');
       }
-      final googleAuth = await googleUser?.authentication;
+      final googleAuth = await googleUser.authentication;
       final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
       );
       final cred = await _auth.signInWithCredential(credential);
 
       return UserModel(uid: cred.user!.uid, email: cred.user!.email!);
     } catch (e) {
-      print('Error during google sign-in: $e');
-      return null;
+      AppLogger.error('🚀 ~ Error during Google Sign-in');
+      throw AuthenticationException('🚀 ~ Google Sign in failed $e');
     }
   }
 
@@ -63,8 +65,10 @@ class AuthRepository {
       }
       return UserModel(uid: cred.user!.uid, email: cred.user!.email!);
     } catch (e) {
-      print('Error during github sign-in: $e');
-      return null;
+      AppLogger.error('🚀 ~ Error during Github Sign-in', e);
+      throw const AuthenticationException(
+        '🚀 ~Failed to sign in with GitHub. Please try again.',
+      );
     }
   }
 
@@ -72,7 +76,12 @@ class AuthRepository {
   Future<void> sendPasswordResetEmail(String email) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
-    } catch (e) {}
+    } catch (e) {
+      AppLogger.error('🚀 ~ sendPasswordResetEmail Error', e);
+      throw const AuthenticationException(
+        '🚀 ~Failed to send Password Reset Email',
+      );
+    }
   }
 
   /// model function for logout which will call from controller

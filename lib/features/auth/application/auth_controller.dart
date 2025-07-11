@@ -114,6 +114,7 @@ class AuthController extends StateNotifier<AuthState> {
   ///
   /// set the state and put the user data to hive box
   Future<void> signOut() async {
+    state = const AuthLoading();
     await _authRepository.signOut();
     await _box.delete('user');
     state = const AuthInitial();

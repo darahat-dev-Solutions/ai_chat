@@ -55,3 +55,9 @@ class PasswordResetEmailSent extends AuthState {
   /// Const constructor for [PasswordResetEmailSent] to call it outside
   const PasswordResetEmailSent();
 }
+
+/// Represent a state where the user is signed out
+class AuthSignedOut extends AuthState {
+  /// Const constructor for [AuthSignedOut] to call it outside
+  const AuthSignedOut();
+}

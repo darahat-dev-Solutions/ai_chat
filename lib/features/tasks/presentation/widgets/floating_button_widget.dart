@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter_kit/features/tasks/presentation/widgets/micButtonWidget.dart';
-import 'package:flutter_starter_kit/features/tasks/presentation/widgets/showAddTaskDialog.dart';
+import 'package:flutter_starter_kit/features/tasks/presentation/widgets/mic_button_widget.dart';
+import 'package:flutter_starter_kit/features/tasks/presentation/widgets/show_add_task_dialog.dart';
 
-class Floatingbuttonwidget extends ConsumerStatefulWidget {
-  const Floatingbuttonwidget({super.key});
+/// Floatingbuttonwidget is for showing floating button and manage multiple options inside this
+class FloatingButtonWidget extends ConsumerStatefulWidget {
+  /// const Floatingbuttonwidget for call Floatingbuttonwidget from outside
+  const FloatingButtonWidget({super.key});
 
   @override
-  ConsumerState<Floatingbuttonwidget> createState() =>
+  ConsumerState<FloatingButtonWidget> createState() =>
       _FloatingbuttonwidgetState();
 }
 
-class _FloatingbuttonwidgetState extends ConsumerState<Floatingbuttonwidget> {
+class _FloatingbuttonwidgetState extends ConsumerState<FloatingButtonWidget> {
   bool isFabExpanded = false;
 
   @override
@@ -25,8 +27,8 @@ class _FloatingbuttonwidgetState extends ConsumerState<Floatingbuttonwidget> {
             child: GestureDetector(
               onTap: () => setState(() => isFabExpanded = false),
               child: Container(
-                color: Colors.black.withOpacity(
-                  0.2,
+                color: Colors.black.withValues(
+                  alpha: 0.2,
                 ), // semi-transparent background
               ),
             ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter_kit/features/tasks/provider/task_providers.dart';
 
+/// ShowAddTaskDialog is for Manage Task Update, delete
 void showAddTaskDialog(BuildContext context, WidgetRef ref) {
   final textController = TextEditingController();
 
@@ -21,7 +22,7 @@ void showAddTaskDialog(BuildContext context, WidgetRef ref) {
                 borderRadius: BorderRadius.circular(12),
               ),
               filled: true,
-              fillColor: Theme.of(context).colorScheme.surfaceVariant,
+              fillColor: Theme.of(context).colorScheme.surfaceContainerHighest,
             ),
             autofocus: true,
             maxLines: 3,

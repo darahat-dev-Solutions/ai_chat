@@ -39,7 +39,6 @@ class AppLogger {
   /// Log debug message(only in debug mode)
   static void debug(String message) {
     if (kDebugMode) {
-      log(message, level: LogLevel.debug);
       _logger.d(message);
       developer.log(message, name: 'FlutterStarterKit');
     }
@@ -48,7 +47,6 @@ class AppLogger {
   /// Log info messages
   static void info(String message) {
     if (kDebugMode) {
-      log(message);
       _logger.i(message);
       developer.log(message, name: 'FlutterStarterKit', level: 800);
     }
@@ -57,7 +55,6 @@ class AppLogger {
   /// Log warning messages
   static void warning(String message) {
     if (kDebugMode) {
-      log(message, level: LogLevel.warning);
       _logger.w(message);
       developer.log(message, name: 'FlutterStarterKit', level: 900);
     }
@@ -101,3 +98,9 @@ class AppLogger {
     }
   }
 }
+ // AppLogger.debug('This is a debug message');
+  // AppLogger.info('This is an info message');
+  // AppLogger.warning('This is a warning message');
+  // AppLogger.error('This is an error message', Exception('Something went wrong'));
+  // AppLogger.log('This is a custom log message with info level', level: LogLevel.info);
+  // AppLogger.log('This is a custom log message with error level', level: LogLevel.error);

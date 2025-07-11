@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
+/// SplashScreen UI presentation page
 class SplashScreenWidget extends StatefulWidget {
+  /// const SplashScreenWidget constructor for call from outside
   const SplashScreenWidget({super.key});
-
-  static String routeName = 'HomePage';
-  static String routePath = '/openingScreen';
 
   @override
   State<SplashScreenWidget> createState() => _SplashScreenWidgetState();
@@ -118,7 +117,7 @@ class _SplashScreenWidgetState extends State<SplashScreenWidget>
                             color:
                                 i == activeDot
                                     ? Colors.white
-                                    : Colors.white.withOpacity(0.3),
+                                    : Colors.white.withValues(alpha: 0.3),
                             shape: BoxShape.circle,
                           ),
                         );

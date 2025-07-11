@@ -21,13 +21,17 @@ class TaskModel {
   @HiveField(3)
   final String? taskCreationTime;
 
-  /// its contstruct of UserModel class . its for call UserModel to other dart file.  this.name is not required
+  /// its construct of UserModel class . its for call UserModel to other dart file.  this.name is not required
   TaskModel({
     this.tid,
     this.title,
     required this.isCompleted,
     this.taskCreationTime,
   });
+
+  ///creating a copy of an existing object with some updated fields and the actual object remain unchanged
+  ///its used when need to update any field .
+  ///used riverpod to state management.
   TaskModel copyWith({
     String? tid,
     String? title,

@@ -4,7 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter_kit/app/theme/app_colors.dart';
 import 'package:flutter_starter_kit/features/tasks/provider/task_providers.dart';
 
+/// Voice record which maintain record audio
 class MicButtonWidget extends ConsumerStatefulWidget {
+  ///const MicButtonWidget to call voice record button from other dart files
   const MicButtonWidget({super.key});
 
   @override
@@ -25,7 +27,7 @@ class _MicButtonWidgetState extends ConsumerState<MicButtonWidget> {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.withValues(alpha: 0.2),
             blurRadius: 8,
             spreadRadius: 1,
             offset: const Offset(0, 4),

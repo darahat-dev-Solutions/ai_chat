@@ -1,3 +1,4 @@
+/// HiveConstants is the carrier of hive boxes names
 class HiveConstants {
   // Box for TextEntry model (typeId: 0)
 

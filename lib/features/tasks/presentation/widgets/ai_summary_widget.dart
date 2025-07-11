@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter_kit/features/tasks/provider/task_providers.dart';
 
+/// AISummaryWidget is for showing AI provided summary
 class AISummaryWidget extends ConsumerStatefulWidget {
+  ///const AISummaryWidget to call AISummaryWidget from other
   const AISummaryWidget({super.key});
 
   @override
@@ -10,7 +12,7 @@ class AISummaryWidget extends ConsumerStatefulWidget {
 }
 
 class _AISummaryWidgetState extends ConsumerState<AISummaryWidget> {
-  bool isExpandedAiSummury = false;
+  bool isExpandedAiSummary = false;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,7 @@ class _AISummaryWidgetState extends ConsumerState<AISummaryWidget> {
               data: (summary) {
                 final showToggle = summary.length > 200;
                 final displayText =
-                    isExpandedAiSummury
+                    isExpandedAiSummary
                         ? summary
                         : '${summary.substring(0, 200)}...';
                 return Column(
@@ -53,11 +55,11 @@ class _AISummaryWidgetState extends ConsumerState<AISummaryWidget> {
                       TextButton(
                         onPressed: () {
                           setState(
-                            () => isExpandedAiSummury = !isExpandedAiSummury,
+                            () => isExpandedAiSummary = !isExpandedAiSummary,
                           );
                         },
                         child: Text(
-                          isExpandedAiSummury ? "See Less" : "See More",
+                          isExpandedAiSummary ? "See Less" : "See More",
                         ),
                       ),
                   ],

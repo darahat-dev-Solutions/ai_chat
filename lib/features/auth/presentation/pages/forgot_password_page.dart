@@ -4,15 +4,16 @@ import 'package:flutter_starter_kit/features/auth/application/auth_state.dart';
 import 'package:flutter_starter_kit/features/auth/provider/auth_providers.dart';
 import 'package:go_router/go_router.dart';
 
+/// Forget Password Page presentation
 class ForgetPassword extends ConsumerStatefulWidget {
-  ForgetPassword({super.key});
+  /// Forget Password page class constructor
+  const ForgetPassword({super.key});
 
   @override
   ConsumerState<ForgetPassword> createState() => _ForgetPasswordConsumerState();
 }
 
 class _ForgetPasswordConsumerState extends ConsumerState<ForgetPassword> {
-  bool _isLoading = false;
   final _emailController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
@@ -75,7 +76,7 @@ class _ForgetPasswordConsumerState extends ConsumerState<ForgetPassword> {
               Text(
                 'Enter the email associated with your account and we’ll send you a link to reset your password.',
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurface.withOpacity(0.7),
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 32),

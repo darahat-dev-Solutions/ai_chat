@@ -5,7 +5,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../provider/auth_providers.dart';
 
+/// Sign Up page presentation
 class SignUpPage extends ConsumerStatefulWidget {
+  /// Signup page Constructor
   const SignUpPage({super.key});
 
   @override
