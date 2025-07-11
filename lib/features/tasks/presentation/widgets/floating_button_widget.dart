@@ -2,22 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter_kit/features/tasks/presentation/widgets/mic_button_widget.dart';
 import 'package:flutter_starter_kit/features/tasks/presentation/widgets/show_add_task_dialog.dart';
+import 'package:flutter_starter_kit/features/tasks/provider/task_providers.dart';
 
 /// Floatingbuttonwidget is for showing floating button and manage multiple options inside this
-class FloatingButtonWidget extends ConsumerStatefulWidget {
+class FloatingButtonWidget extends ConsumerWidget {
   /// const Floatingbuttonwidget for call Floatingbuttonwidget from outside
   const FloatingButtonWidget({super.key});
 
   @override
-  ConsumerState<FloatingButtonWidget> createState() =>
-      _FloatingbuttonwidgetState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isFabExpanded = ref.watch(isExpandedFabProvider);
 
-class _FloatingbuttonwidgetState extends ConsumerState<FloatingButtonWidget> {
-  bool isFabExpanded = false;
-
-  @override
-  Widget build(BuildContext context) {
     return Stack(
       alignment: Alignment.bottomRight,
       children: [
@@ -25,7 +20,10 @@ class _FloatingbuttonwidgetState extends ConsumerState<FloatingButtonWidget> {
         if (isFabExpanded)
           Positioned.fill(
             child: GestureDetector(
-              onTap: () => setState(() => isFabExpanded = false),
+              onTap:
+                  () =>
+                      ref.read(isExpandedFabProvider.notifier).state =
+                          !isFabExpanded,
               child: Container(
                 color: Colors.black.withValues(
                   alpha: 0.2,
@@ -60,7 +58,7 @@ class _FloatingbuttonwidgetState extends ConsumerState<FloatingButtonWidget> {
               heroTag: 'addTask',
               backgroundColor: Theme.of(context).colorScheme.primary,
               onPressed: () {
-                setState(() => isFabExpanded = false);
+                ref.read(isExpandedFabProvider.notifier).state = !isFabExpanded;
                 showAddTaskDialog(context, ref);
               },
               child: const Icon(Icons.add),
@@ -74,11 +72,10 @@ class _FloatingbuttonwidgetState extends ConsumerState<FloatingButtonWidget> {
           right: 20,
           child: FloatingActionButton(
             heroTag: 'mainFab',
-            onPressed: () {
-              setState(() {
-                isFabExpanded = !isFabExpanded;
-              });
-            },
+            onPressed:
+                () =>
+                    ref.read(isExpandedFabProvider.notifier).state =
+                        !isFabExpanded,
             backgroundColor: Theme.of(context).colorScheme.primary,
             child: AnimatedRotation(
               turns: isFabExpanded ? 0.125 : 0,

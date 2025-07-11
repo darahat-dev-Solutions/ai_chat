@@ -5,17 +5,12 @@ import 'package:flutter_starter_kit/app/theme/app_colors.dart';
 import 'package:flutter_starter_kit/features/tasks/provider/task_providers.dart';
 
 /// Voice record which maintain record audio
-class MicButtonWidget extends ConsumerStatefulWidget {
+class MicButtonWidget extends ConsumerWidget {
   ///const MicButtonWidget to call voice record button from other dart files
   const MicButtonWidget({super.key});
 
   @override
-  ConsumerState<MicButtonWidget> createState() => _MicButtonWidgetState();
-}
-
-class _MicButtonWidgetState extends ConsumerState<MicButtonWidget> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isRecording = ref.watch(isListeningProvider);
     return Container(
       width: 68,

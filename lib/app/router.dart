@@ -10,7 +10,7 @@ import 'package:flutter_starter_kit/splashscreen.dart';
 import 'package:go_router/go_router.dart';
 
 /// This provider is used to control the splash screen duration.
-final initializationProvider = FutureProvider<void>((ref) async {
+final initializationFutureProvider = FutureProvider<void>((ref) async {
   // This is where you could do other async initialization
   // while the splash screen is showing.
   await Future.delayed(const Duration(seconds: 3));
@@ -41,7 +41,7 @@ final routerProvider = Provider<GoRouter>((ref) {
     ],
     redirect: (context, state) {
       // We watch the initialization provider to ensure the splash screen is shown for at least 3 seconds.
-      final isInitialized = ref.watch(initializationProvider).hasValue;
+      final isInitialized = ref.watch(initializationFutureProvider).hasValue;
 
       final isAuthenticated = authState is Authenticated;
 

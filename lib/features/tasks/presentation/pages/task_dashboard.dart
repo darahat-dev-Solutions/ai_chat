@@ -5,26 +5,21 @@ import 'package:flutter_starter_kit/features/auth/provider/auth_providers.dart';
 import 'package:flutter_starter_kit/features/tasks/application/task_controller.dart';
 import 'package:flutter_starter_kit/features/tasks/presentation/widgets/ai_summary_widget.dart';
 import 'package:flutter_starter_kit/features/tasks/presentation/widgets/floating_button_widget.dart';
+import 'package:flutter_starter_kit/features/tasks/presentation/widgets/show_update_delete_task_dialog.dart';
 import 'package:flutter_starter_kit/features/tasks/provider/task_providers.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 /// Main Task dashboard
-class TaskDashboard extends ConsumerStatefulWidget {
+class TaskDashboard extends ConsumerWidget {
   /// Main Task Dashboard constructor
   const TaskDashboard({super.key});
 
   @override
-  ConsumerState<TaskDashboard> createState() => _TaskDashboardState();
-}
-
-class _TaskDashboardState extends ConsumerState<TaskDashboard> {
-  final textController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isLoading = ref.watch(taskLoadingProvider);
     final tasks = ref.watch(incompleteTasksProvider);
+    final tasksAsync = ref.watch(taskControllerProvider);
     final isRecording = ref.watch(isListeningProvider);
     String formattedDate = '';
     ref.listen<AuthState>(authControllerProvider, (prev, next) {
@@ -37,7 +32,7 @@ class _TaskDashboardState extends ConsumerState<TaskDashboard> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            ref.read(authControllerProvider.notifier).signOut();
+            ref.watch(authControllerProvider.notifier).signOut();
           },
           icon: const Icon(Icons.logout),
         ),
@@ -82,92 +77,44 @@ class _TaskDashboardState extends ConsumerState<TaskDashboard> {
                   RefreshIndicator(
                     onRefresh:
                         () =>
-                            ref.read(taskControllerProvider.notifier).getTask(),
-                    child:
-                        isLoading
-                            ? const Center(child: CircularProgressIndicator())
-                            : ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: tasks.length,
-                              itemBuilder: (context, index) {
-                                final task = tasks[index];
+                            ref
+                                .watch(taskControllerProvider.notifier)
+                                .loadTasks(),
+                    child: tasksAsync.when(
+                      data: (tasks) {
+                        if (tasks.isEmpty) {
+                          return const Center(child: Text('No Tasks yet'));
+                        }
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: tasks.length,
+                          itemBuilder: (context, index) {
+                            final task = tasks[index];
 
-                                if (task.taskCreationTime != null) {
-                                  formattedDate = DateFormat(
-                                    'dd MMM, yyyy – hh:mm a',
-                                  ).format(
-                                    DateTime.parse(task.taskCreationTime ?? ''),
-                                  );
-                                }
-                                return CheckboxListTile(
-                                  title: Text(task.title ?? ''),
-                                  subtitle: Text(formattedDate),
-                                  value: task.isCompleted,
-                                  onChanged: (val) {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext dialogContext) {
-                                        return AlertDialog(
-                                          title: const Text('Take Action'),
-                                          content: TextField(
-                                            controller: textController,
-                                            decoration: const InputDecoration(
-                                              hintText: "Task Title",
-                                            ),
-                                          ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                ref
-                                                    .read(
-                                                      taskControllerProvider
-                                                          .notifier,
-                                                    )
-                                                    .removeTask(task.tid!);
-                                              },
-                                              child: const Text('Done'),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                ref
-                                                    .read(
-                                                      taskControllerProvider
-                                                          .notifier,
-                                                    )
-                                                    .toggleTask(task.tid!);
-                                              },
-                                              child: const Text('Delete'),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                if (textController
-                                                    .text
-                                                    .isNotEmpty) {
-                                                  ref
-                                                      .read(
-                                                        taskControllerProvider
-                                                            .notifier,
-                                                      )
-                                                      .editTask(
-                                                        task.tid!,
-                                                        textController.text,
-                                                      );
-                                                  Navigator.of(
-                                                    dialogContext,
-                                                  ).pop();
-                                                }
-                                              },
-                                              child: const Text('Save'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                );
+                            if (task.taskCreationTime != null) {
+                              formattedDate = DateFormat(
+                                'dd MMM, yyyy – hh:mm a',
+                              ).format(
+                                DateTime.parse(task.taskCreationTime ?? ''),
+                              );
+                            }
+                            return CheckboxListTile(
+                              title: Text(task.title ?? ''),
+                              subtitle: Text(formattedDate),
+                              value: task.isCompleted,
+                              onChanged: (val) {
+                                showUpdateDeleteTaskDialog(context, ref, task);
                               },
-                            ),
+                            );
+                          },
+                        );
+                      },
+                      error: (err, stack) => Center(child: Text('Error: $err')),
+                      loading:
+                          () =>
+                              const Center(child: CircularProgressIndicator()),
+                    ),
                   ),
 
                   const SizedBox(height: 20),

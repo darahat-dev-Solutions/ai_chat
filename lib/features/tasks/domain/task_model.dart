@@ -46,3 +46,19 @@ class TaskModel {
     );
   }
 }
+
+///making an extension instead of calling getTask() everytime to load all tasks
+extension TaskListUtils on <AsyncValue<List<TaskModel>>> {
+  /// Returns a task by its ID and applies the update.
+  List<TaskModel> updated(String tid, TaskModel updatedTask) {
+    return [
+      for (final task in this)
+        if (task.tid == tid)
+          /// When we find the task, create a new one with the updated title
+          updatedTask
+        else
+          /// Otherwise, keep the existing task
+          task,
+    ];
+  }
+}

@@ -1,31 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_starter_kit/features/auth/application/auth_state.dart';
 import 'package:flutter_starter_kit/features/auth/provider/auth_providers.dart';
 import 'package:go_router/go_router.dart';
 
 /// Landing Page After Login
-class HomePage extends ConsumerStatefulWidget {
+class HomePage extends ConsumerWidget {
   /// Landing page/Home Page Constructor
   const HomePage({super.key});
-  @override
-  ConsumerState<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends ConsumerState<HomePage> {
-  Future<void> _handleLogout() async {
-    final auth = ref.read(authControllerProvider.notifier);
-    await auth.signOut();
-    if (!mounted) return; // Ensure widget is still in the tree
-    context.go('/login');
-  }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen<AuthState>(authControllerProvider, (prev, next) {
+      if (next is AuthSignedOut) {
+        context.go('/login');
+      }
+    });
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
         actions: [
-          IconButton(icon: const Icon(Icons.logout), onPressed: _handleLogout),
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () {
+              ref.read(authControllerProvider.notifier).signOut();
+            },
+          ),
         ],
       ),
       body: const Center(

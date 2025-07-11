@@ -3,21 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter_kit/features/tasks/provider/task_providers.dart';
 
 /// AISummaryWidget is for showing AI provided summary
-class AISummaryWidget extends ConsumerStatefulWidget {
+class AISummaryWidget extends ConsumerWidget {
   ///const AISummaryWidget to call AISummaryWidget from other
   const AISummaryWidget({super.key});
 
   @override
-  ConsumerState<AISummaryWidget> createState() => _AISummaryWidgetState();
-}
-
-class _AISummaryWidgetState extends ConsumerState<AISummaryWidget> {
-  bool isExpandedAiSummary = false;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final tasks = ref.watch(incompleteTasksProvider);
-
+    final isExpandedAiSummary = ref.watch(isExpandedSummaryProvider);
     final summaryAsync = ref.watch(aiSummaryProvider);
     return Container(
       padding: const EdgeInsets.all(16),
@@ -36,7 +29,7 @@ class _AISummaryWidgetState extends ConsumerState<AISummaryWidget> {
             ),
           ),
           const SizedBox(height: 8),
-          if (tasks.isEmpty)
+          if (!tasks.hasValue)
             const Text("No tasks available to summarize.")
           else
             summaryAsync.when(
@@ -54,9 +47,8 @@ class _AISummaryWidgetState extends ConsumerState<AISummaryWidget> {
                     if (showToggle)
                       TextButton(
                         onPressed: () {
-                          setState(
-                            () => isExpandedAiSummary = !isExpandedAiSummary,
-                          );
+                          ref.read(isExpandedSummaryProvider.notifier).state =
+                              !isExpandedAiSummary;
                         },
                         child: Text(
                           isExpandedAiSummary ? "See Less" : "See More",

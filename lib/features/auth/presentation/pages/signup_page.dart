@@ -32,7 +32,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    final controller = ref.read(authControllerProvider.notifier);
+    final controller = ref.watch(authControllerProvider.notifier);
     final authState = ref.watch(authControllerProvider);
 
     ref.listen<AuthState>(authControllerProvider, (previous, next) {

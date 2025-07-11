@@ -19,15 +19,21 @@ final voiceToTextProvider = Provider<VoiceToTextService>((ref) {
 /// Indicates whether voice is recording
 final isListeningProvider = StateProvider<bool>((ref) => false);
 
+/// to check The AISummary is expanded or not
+final isExpandedSummaryProvider = StateProvider<bool>((ref) => false);
+
+/// to check The Floating button is expanded or not
+final isExpandedFabProvider = StateProvider<bool>((ref) => false);
+
 /// Controller for task logic and Hive access
 final taskControllerProvider =
-    StateNotifierProvider<TaskController, List<TaskModel>>((ref) {
+    StateNotifierProvider<TaskController, AsyncValue<List<TaskModel>>>((ref) {
       final repo = ref.watch(taskRepositoryProvider);
       return TaskController(repo, ref);
     });
 
 /// taking only those tasks which are incomplete
-final incompleteTasksProvider = Provider<List<TaskModel>>((ref) {
+final incompleteTasksProvider = Provider<AsyncValue<List<TaskModel>>>((ref) {
   return ref.watch(taskControllerProvider);
 });
 
@@ -37,10 +43,17 @@ final mistralServiceProvider = Provider((ref) => MistralService());
 /// Async summary from Mistral for task list
 /// Async summary from Mistral for incomplete tasks
 final aiSummaryProvider = FutureProvider<String>((ref) async {
-  final tasks = ref.watch(incompleteTasksProvider);
-  final taskTitles =
-      tasks.isEmpty ? '' : tasks.map((t) => '- ${t.title}').join('\n');
-
-  final service = ref.read(mistralServiceProvider);
-  return service.generateSummary(taskTitles);
+  final taskAsync = ref.watch(taskControllerProvider);
+  return taskAsync.when(
+    data: (tasks) {
+      if (tasks.isEmpty) {
+        return "No Tasks to summarize";
+      }
+      final taskTitles = tasks.map((t) => '- ${t.title}').join('\n');
+      final service = ref.read(mistralServiceProvider);
+      return service.generateSummary(taskTitles);
+    },
+    error: (_, __) => "Could not generate summary due to an error",
+    loading: () => "Generating summary....",
+  );
 });

@@ -29,7 +29,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final controller = ref.read(authControllerProvider.notifier);
+    final controller = ref.watch(authControllerProvider.notifier);
     // final theme = Theme.of(context);
 
     final authState = ref.watch(authControllerProvider);
