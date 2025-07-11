@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive/hive.dart';
+import 'package:flutter_starter_kit/core/services/hive_service.dart';
 
-import '../domain/user_model.dart';
 import '../infrastructure/auth_repository.dart';
 import 'auth_state.dart';
 
@@ -10,15 +9,19 @@ import 'auth_state.dart';
 /// and put user data to hive box and changin state value
 class AuthController extends StateNotifier<AuthState> {
   final AuthRepository _authRepository;
-  final Box<UserModel> _box = Hive.box<UserModel>('authBox');
+  // final Box<UserModel> _box = Hive.box<UserModel>('authBox');
 
   /// constructor so that it can be called from outside
-  AuthController(this._authRepository)
-    : super(
-        Hive.box<UserModel>('authBox').get('user') != null
-            ? Authenticated(Hive.box<UserModel>('authBox').get('user')!)
-            : const AuthInitial(),
-      );
+  AuthController(this._authRepository) : super(const AuthInitial());
+
+  void checkInitialAuthState() {
+    final user = HiveService.authBox.get('user');
+    if (user != null) {
+      state = Authenticated(user);
+    } else {
+      state = const Unauthenticated();
+    }
+  }
 
   /// SignUp controller which is calling auth model functionalities from auth_repository
   ///
@@ -29,7 +32,7 @@ class AuthController extends StateNotifier<AuthState> {
     try {
       final user = await _authRepository.signUp(email, password, name);
       if (user != null) {
-        _box.put('user', user);
+        HiveService.authBox.put('user', user);
         state = Authenticated(user);
       } else {
         state = const AuthError(' Sign up failed. Please try again.');
@@ -49,7 +52,7 @@ class AuthController extends StateNotifier<AuthState> {
     try {
       final user = await _authRepository.signIn(email, password);
       if (user != null) {
-        _box.put('user', user);
+        HiveService.authBox.put('user', user);
         state = Authenticated(user);
       } else {
         state = const AuthError(' Sign in failed. Please try again.');
@@ -67,7 +70,7 @@ class AuthController extends StateNotifier<AuthState> {
     try {
       final user = await _authRepository.signInWithGoogle();
       if (user != null) {
-        _box.put('user', user);
+        HiveService.authBox.put('user', user);
         state = Authenticated(user);
       } else {
         state = const AuthError('Google Sign in failed. Please try again.');
@@ -85,7 +88,7 @@ class AuthController extends StateNotifier<AuthState> {
     try {
       final user = await _authRepository.signInWithGithub();
       if (user != null) {
-        _box.put('user', user);
+        HiveService.authBox.put('user', user);
         state = Authenticated(user);
       } else {
         state = const AuthError('Github Sign in failed. Please try again');
@@ -116,7 +119,7 @@ class AuthController extends StateNotifier<AuthState> {
   Future<void> signOut() async {
     state = const AuthLoading();
     await _authRepository.signOut();
-    await _box.delete('user');
+    await HiveService.authBox.delete('user');
     state = const AuthInitial();
   }
 }

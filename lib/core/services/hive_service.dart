@@ -1,3 +1,5 @@
+import 'package:flutter_starter_kit/core/errors/exceptions.dart';
+import 'package:flutter_starter_kit/core/utils/logger.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../features/auth/domain/user_model.dart';
@@ -35,9 +37,13 @@ class HiveService {
       await Hive.openBox<TaskModel>(taskBoxName);
 
       _initialized = true;
+      AppLogger.info(
+        '🚀 ~This is an info message from my HiveService init so that Hive service is called',
+      );
     } catch (e) {
       _initialized = false;
-      rethrow;
+      throw ServerException('🚀 ~Server error occurred $e');
+      // rethrow;
     }
   }
 

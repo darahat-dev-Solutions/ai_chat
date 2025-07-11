@@ -58,16 +58,18 @@ class TaskController extends StateNotifier<AsyncValue<List<TaskModel>>> {
 
   /// Toggle a task and reload list
   Future<void> toggleTask(String tid) async {
-    await _repo.toggleTask(tid);
     final currentTasks = state.value ?? [];
-    final task = currentTasks.firstWhere((t) => t.tid == tid);
+    if (currentTasks.isEmpty) return;
+    await _repo.toggleTask(tid);
+
+    final taskToUpdate = currentTasks.firstWhere((t) => t.tid == tid);
 
     /// changing task according to which tid is toggled check and updated using copy with
     /// which generates copy of that exact object which is toggled
     ///
     final updatedList = currentTasks.updated(
       tid,
-      task.copyWith(isCompleted: !task.isCompleted),
+      taskToUpdate.copyWith(isCompleted: !taskToUpdate.isCompleted),
     );
 
     /// Update the state with the new list
@@ -86,8 +88,9 @@ class TaskController extends StateNotifier<AsyncValue<List<TaskModel>>> {
 
   /// Edit a task and reload list
   Future<void> editTask(String tid, String newText) async {
-    await _repo.editTask(tid, newText);
     final currentTasks = state.value ?? [];
+    if (currentTasks.isEmpty) return;
+    await _repo.editTask(tid, newText);
     final taskToUpdate = currentTasks.firstWhere((t) => t.tid == tid);
 
     /// changing task according to which tid is toggled check and updated using copy with

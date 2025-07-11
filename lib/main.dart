@@ -5,11 +5,15 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter_kit/app.dart';
 import 'package:flutter_starter_kit/core/services/hive_service.dart';
+import 'package:flutter_starter_kit/core/utils/logger.dart';
+import 'package:flutter_starter_kit/features/auth/provider/auth_providers.dart';
 
 import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  AppLogger.init();
+
   await dotenv.load();
   // // Load environment variables
   //   await EnvConfig.load();
@@ -33,6 +37,10 @@ Future<void> main() async {
     );
     return;
   }
+  // Create a ProviderContainer to access providers before the app runs.
+  final container = ProviderContainer();
 
-  runApp(const ProviderScope(child: App()));
+  /// Call the new method to safely check the auth state.
+  container.read(authControllerProvider.notifier).checkInitialAuthState();
+  runApp(UncontrolledProviderScope(container: container, child: App()));
 }

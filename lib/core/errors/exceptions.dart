@@ -107,10 +107,10 @@ class CustomException extends AppException {
 
 /// How you will call these exception
 
-// throw NetworkException('No internet connection');
-// throw ValidationException('Invalid email address');
-// throw AuthenticationException('Invalid credentials');
-// throw PermissionException('admin', 'You do not have admin rights');
-// throw NotFoundException('User', '1234');
-// throw CacheException(message: 'Failed to read from cache');
-// throw ServerException(message: 'Server error occurred');
+// throw NetworkException('🚀 ~No internet connection');
+// throw ValidationException('🚀 ~Invalid email address');
+// throw AuthenticationException('🚀 ~Invalid credentials');
+// throw PermissionException('admin', '🚀 ~You do not have admin rights');
+// throw NotFoundException('User', '🚀 ~1234');
+// throw CacheException(message: '🚀 ~Failed to read from cache');
+// throw ServerException(message: '🚀 ~Server error occurred');

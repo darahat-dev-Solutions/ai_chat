@@ -98,9 +98,9 @@ class AppLogger {
     }
   }
 }
- // AppLogger.debug('This is a debug message');
-  // AppLogger.info('This is an info message');
-  // AppLogger.warning('This is a warning message');
-  // AppLogger.error('This is an error message', Exception('Something went wrong'));
-  // AppLogger.log('This is a custom log message with info level', level: LogLevel.info);
-  // AppLogger.log('This is a custom log message with error level', level: LogLevel.error);
+ // AppLogger.debug('🚀 ~This is a debug message');
+  // AppLogger.info('🚀 ~This is an info message');
+  // AppLogger.warning('🚀 ~This is a warning message');
+  // AppLogger.error('🚀 ~This is an error message', Exception('Something went wrong'));
+  // AppLogger.log('🚀 ~This is a custom log message with info level', level: LogLevel.info);
+  // AppLogger.log('🚀 ~This is a custom log message with error level', level: LogLevel.error);

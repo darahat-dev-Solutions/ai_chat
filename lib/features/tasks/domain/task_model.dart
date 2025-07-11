@@ -48,7 +48,7 @@ class TaskModel {
 }
 
 ///making an extension instead of calling getTask() everytime to load all tasks
-extension TaskListUtils on <AsyncValue<List<TaskModel>>> {
+extension TaskListUtils on List<TaskModel> {
   /// Returns a task by its ID and applies the update.
   List<TaskModel> updated(String tid, TaskModel updatedTask) {
     return [
