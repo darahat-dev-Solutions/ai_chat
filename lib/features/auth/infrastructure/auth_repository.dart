@@ -24,11 +24,26 @@ class AuthRepository {
 
   /// this is Signin model function which will call from controller
   Future<UserModel?> signIn(String email, String password) async {
-    final cred = await _auth.signInWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-    return UserModel(uid: cred.user!.uid, email: cred.user!.email!);
+    try {
+      final cred = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return UserModel(uid: cred.user!.uid, email: cred.user!.email!);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'account-exists-with-different-credential') {
+        throw const AuthenticationException(
+          '🚀 ~An account already exists with this email. Please sign in using the provider associated with this email address',
+        );
+      } else {
+        /// Handle other Firebase-specific errors
+        throw const AuthenticationException('Sign in failed. Please try again');
+      }
+    } catch (e) {
+      throw AuthenticationException(
+        '🚀 ~ Email or Password Combination not Match',
+      );
+    }
   }
 
   /// This is Signin model function for google signin which will call from controller
@@ -47,6 +62,17 @@ class AuthRepository {
       final cred = await _auth.signInWithCredential(credential);
 
       return UserModel(uid: cred.user!.uid, email: cred.user!.email!);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'account-exists-with-different-credential') {
+        throw const AuthenticationException(
+          '🚀 ~An account already exists with this email. Please sign in using the provider associated with this email address',
+        );
+      } else {
+        /// Handle other Firebase-specific errors
+        throw const AuthenticationException(
+          'Google sign in failed. Please try again',
+        );
+      }
     } catch (e) {
       AppLogger.error('🚀 ~ Error during Google Sign-in');
       throw AuthenticationException('🚀 ~ Google Sign in failed $e');
@@ -64,6 +90,17 @@ class AuthRepository {
         cred = await _auth.signInWithProvider(githubAuthProvider);
       }
       return UserModel(uid: cred.user!.uid, email: cred.user!.email!);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'account-exists-with-different-credential') {
+        throw const AuthenticationException(
+          '🚀 ~An account already exists with this email. Please sign in using the provider associated with this email address',
+        );
+      } else {
+        /// Handle other Firebase-specific errors
+        throw const AuthenticationException(
+          'Github sign in failed. Please try again',
+        );
+      }
     } catch (e) {
       AppLogger.error('🚀 ~ Error during Github Sign-in', e);
       throw const AuthenticationException(

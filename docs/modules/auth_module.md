@@ -143,10 +143,10 @@ Future<void> signInWithGithub() async {
       _box.put('user', user);
       state = Authenticated(user);
     } else {
-      state = const AuthError('Github Sign in failed. Please try again');
+      state = const AuthError('Github Sign in failed. Please try again',AuthMethod.github);
     }
   } catch (e) {
-    state = AuthError(e.toString());
+    state = AuthError(e.toString(),AuthMethod.github);
   }
 }
 ```

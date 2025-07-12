@@ -15,3 +15,6 @@ final authControllerProvider = StateNotifierProvider<AuthController, AuthState>(
     return AuthController(repo);
   },
 );
+
+/// Obscure text provider which will be use in login and signup
+final obscureTextProvider = StateProvider<bool>((ref) => true);

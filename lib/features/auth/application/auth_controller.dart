@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_starter_kit/core/errors/exceptions.dart';
 import 'package:flutter_starter_kit/core/services/hive_service.dart';
 
 import '../infrastructure/auth_repository.dart';
@@ -35,10 +37,13 @@ class AuthController extends StateNotifier<AuthState> {
         HiveService.authBox.put('user', user);
         state = Authenticated(user);
       } else {
-        state = const AuthError(' Sign up failed. Please try again.');
+        state = const AuthError(
+          ' Sign up failed. Please try again.',
+          AuthMethod.signup,
+        );
       }
     } catch (e) {
-      state = AuthError('Sign up failed. Please Try Again');
+      state = AuthError('Sign up failed. Please Try Again', AuthMethod.signup);
     }
   }
 
@@ -55,10 +60,13 @@ class AuthController extends StateNotifier<AuthState> {
         HiveService.authBox.put('user', user);
         state = Authenticated(user);
       } else {
-        state = const AuthError(' Sign in failed. Please try again.');
+        state = const AuthError(
+          ' Sign in failed. Please try again.',
+          AuthMethod.email,
+        );
       }
     } catch (e) {
-      state = AuthError(e.toString());
+      state = AuthError(e.toString(), AuthMethod.email);
     }
   }
 
@@ -73,10 +81,26 @@ class AuthController extends StateNotifier<AuthState> {
         HiveService.authBox.put('user', user);
         state = Authenticated(user);
       } else {
-        state = const AuthError('Google Sign in failed. Please try again.');
+        state = const AuthError(
+          'Google Sign in failed. Please try again.',
+          AuthMethod.google,
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'account-exists-with-different-credential') {
+        state = const AuthError(
+          'An account already exists with this email. Please sign in using the provider associated with this email address',
+          AuthMethod.google,
+        );
+      } else {
+        /// Handle other Firebase-specific errors
+        state = AuthError(
+          e.message ?? 'Github sign in failed. Please try again',
+          AuthMethod.google,
+        );
       }
     } catch (e) {
-      state = AuthError(e.toString());
+      state = AuthError(e.toString(), AuthMethod.google);
     }
   }
 
@@ -90,11 +114,22 @@ class AuthController extends StateNotifier<AuthState> {
       if (user != null) {
         HiveService.authBox.put('user', user);
         state = Authenticated(user);
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'account-exists-with-different-credential') {
+        state = const AuthError(
+          'An account already exists with this email. Please sign in using the provider associated with this email address',
+          AuthMethod.github,
+        );
       } else {
-        state = const AuthError('Github Sign in failed. Please try again');
+        /// Handle other Firebase-specific errors
+        state = AuthError(
+          e.message ?? 'Github sign in failed. Please try again',
+          AuthMethod.github,
+        );
       }
     } catch (e) {
-      state = AuthError(e.toString());
+      state = AuthError(e.toString(), AuthMethod.github);
     }
   }
 
@@ -109,7 +144,10 @@ class AuthController extends StateNotifier<AuthState> {
         () => state = const AuthInitial(),
       );
     } catch (e) {
-      state = AuthError('Failed to send reset Email . ${e.toString()}');
+      state = AuthError(
+        'Failed to send reset Email . ${e.toString()}',
+        AuthMethod.email,
+      );
     }
   }
 
@@ -118,8 +156,12 @@ class AuthController extends StateNotifier<AuthState> {
   /// set the state and put the user data to hive box
   Future<void> signOut() async {
     state = const AuthLoading();
-    await _authRepository.signOut();
-    await HiveService.authBox.delete('user');
-    state = const AuthInitial();
+    try {
+      await _authRepository.signOut();
+      await HiveService.authBox.delete('user');
+      state = const AuthInitial();
+    } catch (e) {
+      throw AuthenticationException('Sign Out Failed');
+    }
   }
 }

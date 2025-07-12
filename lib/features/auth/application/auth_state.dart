@@ -45,9 +45,10 @@ class Unauthenticated extends AuthState {
 class AuthError extends AuthState {
   /// Error message describing the reason for authentication failure.
   final String message;
+  final AuthMethod method;
 
   /// Const constructor for [AuthError] with a specific error [message].
-  const AuthError(this.message);
+  const AuthError(this.message, this.method);
 }
 
 /// Represent a state where the password reset email has been sent
@@ -61,3 +62,5 @@ class AuthSignedOut extends AuthState {
   /// Const constructor for [AuthSignedOut] to call it outside
   const AuthSignedOut();
 }
+
+enum AuthMethod { none, email, google, github, signup, signout, forgetpassword }

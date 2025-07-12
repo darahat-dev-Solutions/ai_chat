@@ -28,12 +28,12 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
   }
 
   final _formKey = GlobalKey<FormState>();
-  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
     final controller = ref.watch(authControllerProvider.notifier);
     final authState = ref.watch(authControllerProvider);
+    final obscureText = ref.watch(obscureTextProvider);
 
     ref.listen<AuthState>(authControllerProvider, (previous, next) {
       if (next is AuthError) {
@@ -113,7 +113,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                 const SizedBox(height: 20),
                 TextFormField(
                   controller: passwordController,
-                  obscureText: _obscureText,
+                  obscureText: obscureText,
                   decoration: InputDecoration(
                     labelText: 'Password',
                     prefixIcon: const Icon(Icons.lock_outline),
@@ -122,12 +122,11 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                     ),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscureText ? Icons.visibility_off : Icons.visibility,
+                        obscureText ? Icons.visibility_off : Icons.visibility,
                       ),
                       onPressed: () {
-                        setState(() {
-                          _obscureText = !_obscureText;
-                        });
+                        ref.read(obscureTextProvider.notifier).state =
+                            !obscureText;
                       },
                     ),
                   ),
