@@ -42,3 +42,5 @@ The `lib/` directory contains all the Flutter code.
 - `.gitignore`: Files and directories to be ignored by Git
 - `README.md`: Project overview and setup guide
 ```
+ 
+---

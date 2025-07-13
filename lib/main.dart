@@ -1,7 +1,6 @@
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter_kit/app.dart';
 import 'package:flutter_starter_kit/core/services/hive_service.dart';
@@ -14,7 +13,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   AppLogger.init();
 
-  await dotenv.load();
+  // await dotenv.load();
   // // Load environment variables
   //   await EnvConfig.load();
   // Initialize Firebase
