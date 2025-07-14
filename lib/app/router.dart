@@ -5,7 +5,7 @@ import 'package:flutter_starter_kit/features/auth/presentation/pages/forgot_pass
 import 'package:flutter_starter_kit/features/auth/presentation/pages/login_page.dart';
 import 'package:flutter_starter_kit/features/auth/presentation/pages/signup_page.dart';
 import 'package:flutter_starter_kit/features/auth/provider/auth_providers.dart';
-import 'package:flutter_starter_kit/features/home/presentation/pages/home_page.dart';
+import 'package:flutter_starter_kit/features/home/presentation/layout/home_layout.dart';
 import 'package:flutter_starter_kit/splashscreen.dart';
 import 'package:go_router/go_router.dart';
 
@@ -37,7 +37,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/register',
         builder: (context, state) => const SignUpPage(),
       ),
-      GoRoute(path: '/home', builder: (context, state) => const HomePage()),
+      GoRoute(path: '/home', builder: (context, state) => const HomeLayout()),
     ],
     redirect: (context, state) {
       // We watch the initialization provider to ensure the splash screen is shown for at least 3 seconds.
