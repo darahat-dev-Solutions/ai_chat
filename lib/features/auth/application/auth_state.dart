@@ -45,6 +45,8 @@ class Unauthenticated extends AuthState {
 class AuthError extends AuthState {
   /// Error message describing the reason for authentication failure.
   final String message;
+
+  /// Auth Methods
   final AuthMethod method;
 
   /// Const constructor for [AuthError] with a specific error [message].
@@ -63,4 +65,27 @@ class AuthSignedOut extends AuthState {
   const AuthSignedOut();
 }
 
-enum AuthMethod { none, email, google, github, signup, signout, forgetpassword }
+/// Enum representing the various authentication methods and states
+/// used throughout the application.
+enum AuthMethod {
+  /// No authentication method is currently selected or used.
+  none,
+
+  /// User authentication via email and password.
+  email,
+
+  /// User authentication via Google Sign-In.
+  google,
+
+  /// User authentication via GitHub OAuth.
+  github,
+
+  /// Indicates that the user is currently signing up (registration flow).
+  signup,
+
+  /// Indicates that the user has signed out.
+  signout,
+
+  /// Indicates that the user is attempting to reset their password.
+  forgetPassword,
+}

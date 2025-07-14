@@ -8,7 +8,7 @@ import 'auth_state.dart';
 
 /// this class is calling auth_repository model functions
 ///
-/// and put user data to hive box and changin state value
+/// and put user data to hive box and changing state value
 class AuthController extends StateNotifier<AuthState> {
   final AuthRepository _authRepository;
   // final Box<UserModel> _box = Hive.box<UserModel>('authBox');
@@ -16,6 +16,7 @@ class AuthController extends StateNotifier<AuthState> {
   /// constructor so that it can be called from outside
   AuthController(this._authRepository) : super(const AuthInitial());
 
+  /// Check Initial AuthState to check that user is exist or not
   void checkInitialAuthState() {
     final user = HiveService.authBox.get('user');
     if (user != null) {

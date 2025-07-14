@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter_kit/features/auth/application/auth_state.dart';
 import 'package:flutter_starter_kit/features/auth/provider/auth_providers.dart';
-import 'package:flutter_starter_kit/features/tasks/application/task_controller.dart';
 import 'package:flutter_starter_kit/features/tasks/presentation/widgets/ai_summary_widget.dart';
 import 'package:flutter_starter_kit/features/tasks/presentation/widgets/floating_button_widget.dart';
 import 'package:flutter_starter_kit/features/tasks/presentation/widgets/show_update_delete_task_dialog.dart';
@@ -17,8 +16,6 @@ class TaskDashboard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isLoading = ref.watch(taskLoadingProvider);
-    final tasks = ref.watch(incompleteTasksProvider);
     final tasksAsync = ref.watch(taskControllerProvider);
     final isRecording = ref.watch(isListeningProvider);
     String formattedDate = '';

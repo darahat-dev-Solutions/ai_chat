@@ -6,7 +6,10 @@ import 'package:go_router/go_router.dart';
 
 import '../../provider/auth_providers.dart';
 
+/// Login Page Presentation
 class LoginPage extends ConsumerStatefulWidget {
+  /// Login Page Constructor
+
   const LoginPage({super.key});
 
   @override
@@ -321,7 +324,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             ),
             if (isLoading)
               Container(
-                color: Colors.black.withOpacity(0.3),
+                color: Colors.black.withValues(alpha: .3),
                 child: const Center(child: CircularProgressIndicator()),
               ),
           ],
@@ -330,5 +333,3 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     );
   }
 }
-
-enum AuthMethod { none, email, google, github }
