@@ -37,7 +37,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/register',
         builder: (context, state) => const SignUpPage(),
       ),
-      GoRoute(path: '/home', builder: (context, state) => const HomeLayout()),
+      GoRoute(path: '/home', builder: (context, state) => HomeLayout()),
     ],
     redirect: (context, state) {
       // We watch the initialization provider to ensure the splash screen is shown for at least 3 seconds.

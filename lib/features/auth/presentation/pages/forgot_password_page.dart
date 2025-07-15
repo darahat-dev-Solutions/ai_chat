@@ -118,12 +118,12 @@ class _ForgetPasswordConsumerState extends ConsumerState<ForgetPassword> {
                         ),
                         child:
                             authState is AuthLoading
-                                ? const SizedBox(
+                                ? SizedBox(
                                   height: 24,
                                   width: 24,
                                   child: CircularProgressIndicator(
                                     strokeWidth: 2,
-                                    color: Colors.white,
+                                    color: theme.colorScheme.onPrimary,
                                   ),
                                 )
                                 : const Text('Send Reset Email'),

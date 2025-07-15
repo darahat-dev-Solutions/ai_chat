@@ -116,8 +116,8 @@ class _SplashScreenWidgetState extends State<SplashScreenWidget>
                           decoration: BoxDecoration(
                             color:
                                 i == activeDot
-                                    ? Colors.white
-                                    : Colors.white.withValues(alpha: 0.3),
+                                    ? Theme.of(context).colorScheme.onPrimary
+                                    : Theme.of(context).colorScheme.onPrimary.withAlpha(77),
                             shape: BoxShape.circle,
                           ),
                         );

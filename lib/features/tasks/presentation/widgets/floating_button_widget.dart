@@ -25,9 +25,7 @@ class FloatingButtonWidget extends ConsumerWidget {
                       ref.read(isExpandedFabProvider.notifier).state =
                           !isFabExpanded,
               child: Container(
-                color: Colors.black.withValues(
-                  alpha: 0.2,
-                ), // semi-transparent background
+                color: Theme.of(context).colorScheme.scrim.withAlpha(100), // semi-transparent background
               ),
             ),
           ),

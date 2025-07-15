@@ -54,16 +54,18 @@ class TaskDashboard extends ConsumerWidget {
                     ),
                     child: Row(
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.calendar_today_outlined,
                           size: 20,
-                          color: Colors.black87,
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                         const SizedBox(width: 10),
 
                         Text(
                           DateFormat('MMMM d, yyyy').format(DateTime.now()),
-                          style: const TextStyle(color: Colors.black87),
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
                         ),
                       ],
                     ),
@@ -120,16 +122,18 @@ class TaskDashboard extends ConsumerWidget {
                       padding: const EdgeInsets.only(bottom: 8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           Icon(
                             Icons.fiber_manual_record,
-                            color: Colors.red,
+                            color: Theme.of(context).colorScheme.error,
                             size: 18,
                           ),
                           SizedBox(width: 8),
                           Text(
                             'Listening...',
-                            style: TextStyle(color: Colors.red),
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.error,
+                            ),
                           ),
                         ],
                       ),

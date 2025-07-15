@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_starter_kit/core/utils/logger.dart';
 
 import 'home_state.dart';
 
@@ -24,5 +25,6 @@ class ThemeController extends StateNotifier<ThemeState> {
     state = state.copyWith(
       themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
     );
+    AppLogger.info('toggle theme function hitted ${state.themeMode}');
   }
 }

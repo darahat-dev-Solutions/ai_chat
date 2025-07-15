@@ -18,7 +18,7 @@ void scaffoldMessenger(BuildContext context, next) {
       duration: const Duration(seconds: 3),
       action: SnackBarAction(
         label: 'Dismiss',
-        textColor: Colors.white,
+        textColor: Theme.of(context).colorScheme.onPrimary,
         onPressed: () {
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
         },

@@ -174,12 +174,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             child:
                                 _currentAuthMethod == AuthMethod.email &&
                                         isLoading
-                                    ? const SizedBox(
+                                    ? SizedBox(
                                       height: 24,
                                       width: 24,
                                       child: CircularProgressIndicator(
                                         strokeWidth: 2,
-                                        color: Colors.white,
+                                        color: Theme.of(context).colorScheme.onPrimary,
                                       ),
                                     )
                                     : const Text('Sign In'),
@@ -324,7 +324,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             ),
             if (isLoading)
               Container(
-                color: Colors.black.withValues(alpha: .3),
+                color: Theme.of(context).colorScheme.scrim.withAlpha(77),
                 child: const Center(child: CircularProgressIndicator()),
               ),
           ],

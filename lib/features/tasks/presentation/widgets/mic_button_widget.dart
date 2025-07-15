@@ -22,7 +22,7 @@ class MicButtonWidget extends ConsumerWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
+            color: Theme.of(context).colorScheme.scrim.withAlpha(51),
             blurRadius: 8,
             spreadRadius: 1,
             offset: const Offset(0, 4),
@@ -58,7 +58,7 @@ class MicButtonWidget extends ConsumerWidget {
                 child: Icon(
                   Icons.mic,
                   size: 30,
-                  color: isRecording ? Colors.red : AppColor.buttonText,
+                  color: isRecording ? Theme.of(context).colorScheme.error : AppColor.buttonText,
                 ),
               ),
             ),

@@ -162,11 +162,11 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                           },
                   child:
                       authState is AuthLoading
-                          ? const SizedBox(
+                          ? SizedBox(
                             height: 24,
                             width: 24,
                             child: CircularProgressIndicator(
-                              color: Colors.white,
+                              color: Theme.of(context).colorScheme.onPrimary,
                               strokeWidth: 2,
                             ),
                           )

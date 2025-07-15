@@ -7,7 +7,7 @@ import 'package:flutter_starter_kit/features/home/presentation/widgets/home_draw
 import 'package:flutter_starter_kit/features/home/presentation/widgets/search_content.dart';
 import 'package:flutter_starter_kit/features/home/provider/home_provider.dart';
 
-/// Home Layout (bottom navigation+sidebar+topbar+scrollable body)
+/// Home Layout (bottom navigation+sidebar+topBar+scrollable body)
 class HomeLayout extends ConsumerWidget {
   /// Landing page/Home Page Constructor
   const HomeLayout({super.key});
@@ -19,15 +19,18 @@ class HomeLayout extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Home', textAlign: TextAlign.center),
         centerTitle: true,
-        leading: IconButton(
-          onPressed: () => Scaffold.of(context).openDrawer(),
-          icon: const Icon(Icons.menu),
+        leading: Builder(
+          builder:
+              (context) => IconButton(
+                onPressed: () => Scaffold.of(context).openDrawer(),
+                icon: const Icon(Icons.menu),
+              ),
         ),
       ),
       drawer: const HomeDrawer(),
       body: IndexedStack(
         index: currentIndex,
-        children: [HomePage(), SearchContent(), SettingPage()],
+        children: [HomePage(), SearchContent(), SettingsPage()],
       ),
       bottomNavigationBar: const HomeBottomNav(),
     );
