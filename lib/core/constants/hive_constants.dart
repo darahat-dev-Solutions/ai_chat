@@ -2,9 +2,15 @@
 class HiveConstants {
   // Box for TextEntry model (typeId: 0)
 
-  // static const String textBox = "text_box";
-  // static const String contactInfoBox = "contact_info_box";
-  // static const String productInfoBox = "product_info_box";
+  /// The file name for the local database.
+  static const String databaseName = 'flutter_starter_kit.db';
+
+  /// The version of the local database schema.
+  static const int databaseVersion = 1;
+
+  /// The Hive box used for general settings.
+  static const String settingsBoxName = 'settings';
+
   /// table for user information saving and authentication
   static const String authBox = "user_auth_box";
 

@@ -17,6 +17,9 @@ class HiveService {
 
   static const String taskBoxName = HiveConstants.taskBox;
 
+  /// Assigned HiveConstants settingsBox table name to settingsBoxName variable
+  static const String settingsBoxName = HiveConstants.settingsBoxName;
+
   static bool _initialized = false;
 
   /// Initializing function of Hive flutter
