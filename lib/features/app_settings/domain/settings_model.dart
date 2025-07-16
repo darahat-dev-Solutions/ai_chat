@@ -1,28 +1,38 @@
 import 'dart:convert';
 
+import 'package:hive/hive.dart';
+
+part 'settings_model.g.dart';
+
+@HiveType(typeId: 3)
 /// Represents the metadata and definition of a setting
-class SettingDefinition {
+class SettingDefinitionModel {
   /// setting definition id
+  @HiveField(0)
   final int id;
 
   /// setting definition name
+  @HiveField(1)
   final String name;
 
   /// setting description name
+  @HiveField(2)
   final String description;
 
   /// Stored as String], parsed based on dataType
-
+  @HiveField(3)
   final String defaultValue;
 
   /// setting datatype
+  @HiveField(4)
   final String dataType;
 
   /// is setting userSpecific or not
+  @HiveField(5)
   final bool isUserSpecific;
 
   /// SettingDefinition constructor
-  SettingDefinition({
+  SettingDefinitionModel({
     required this.id,
     required this.name,
     required this.description,
@@ -32,8 +42,8 @@ class SettingDefinition {
   });
 
   /// Factory constructor to create from a database row map
-  factory SettingDefinition.fromMap(Map<String, dynamic> map) {
-    return SettingDefinition(
+  factory SettingDefinitionModel.fromMap(Map<String, dynamic> map) {
+    return SettingDefinitionModel(
       id: map['id'] as int,
       name: map['name'] as String,
       description: map['description'],
@@ -48,7 +58,7 @@ class SettingDefinition {
 /// The type [T]  is the expected type of the setting's value (bool int string, map)
 class Setting<T> {
   ///definition instance of SettingDefinition class
-  final SettingDefinition definition;
+  final SettingDefinitionModel definition;
 
   ///The actual parsed value;
 
@@ -83,7 +93,7 @@ class Setting<T> {
   ///Factory constructor for user setting(assuming you fetch definition separately)
   factory Setting.fromUserMap(
     Map<String, dynamic> map,
-    SettingDefinition definition,
+    SettingDefinitionModel definition,
   ) {
     return Setting<T>(
       definition: definition,
@@ -94,7 +104,7 @@ class Setting<T> {
   ///Factory constructor for user setting(assuming you fetch definition separately)
   factory Setting.fromGlobalMap(
     Map<String, dynamic> map,
-    SettingDefinition definition,
+    SettingDefinitionModel definition,
   ) {
     return Setting<T>(
       definition: definition,

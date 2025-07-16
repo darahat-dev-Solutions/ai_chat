@@ -83,6 +83,7 @@ dependencies:
   firebase_app_check: ^0.3.2+9
   flutter_web_auth_2: ^4.1.0
   recaptcha_enterprise_flutter: ^18.7.1
+  shared_preferences: ^2.5.3
 
 #---------------------------
 #Development Dependencies

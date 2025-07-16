@@ -1,9 +1,10 @@
 import 'package:flutter_starter_kit/core/errors/exceptions.dart';
 import 'package:flutter_starter_kit/core/utils/logger.dart';
+import 'package:flutter_starter_kit/features/app_settings/domain/settings_model.dart';
+import 'package:flutter_starter_kit/features/auth/domain/user_model.dart';
+import 'package:flutter_starter_kit/features/tasks/domain/task_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '../../features/auth/domain/user_model.dart';
-import '../../features/tasks/domain/task_model.dart';
 import '../constants/hive_constants.dart';
 
 /// HiveService managing hive initial and hive box close function
@@ -35,9 +36,12 @@ class HiveService {
       if (!Hive.isAdapterRegistered(1)) {
         Hive.registerAdapter(TaskModelAdapter());
       }
-
+      if (!Hive.isAdapterRegistered(2)) {
+        Hive.registerAdapter(SettingDefinitionModelAdapter());
+      }
       await Hive.openBox<UserModel>(authBoxName);
       await Hive.openBox<TaskModel>(taskBoxName);
+      await Hive.openBox<SettingDefinitionModel>(settingsBoxName);
 
       _initialized = true;
       AppLogger.info(
@@ -68,6 +72,12 @@ class HiveService {
   static Box<TaskModel> get taskBox {
     _checkInitialized();
     return Hive.box<TaskModel>(taskBoxName);
+  }
+
+  ///settingsBox initialized
+  static Box<TaskModel> get settingsBox {
+    _checkInitialized();
+    return Hive.box<TaskModel>(settingsBoxName);
   }
 
   /// check are they initialized or not

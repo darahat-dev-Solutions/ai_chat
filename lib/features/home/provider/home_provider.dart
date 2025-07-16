@@ -8,10 +8,3 @@ final homeControllerProvider = StateNotifierProvider<HomeController, HomeState>(
     return HomeController();
   },
 );
-
-/// Provide ThemeController Functions and ThemeState's state
-
-final themeControllerProvider =
-    StateNotifierProvider<ThemeController, ThemeState>((ref) {
-      return ThemeController();
-    });

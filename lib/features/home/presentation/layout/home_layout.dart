@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_starter_kit/features/app_settings/presentation/pages/setting_page.dart';
 import 'package:flutter_starter_kit/features/home/presentation/pages/home_page.dart';
-import 'package:flutter_starter_kit/features/home/presentation/pages/setting_page.dart';
 import 'package:flutter_starter_kit/features/home/presentation/widgets/home_bottom_nav.dart';
 import 'package:flutter_starter_kit/features/home/presentation/widgets/home_drawer.dart';
 import 'package:flutter_starter_kit/features/home/presentation/widgets/search_content.dart';

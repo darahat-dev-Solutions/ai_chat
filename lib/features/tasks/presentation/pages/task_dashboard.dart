@@ -29,7 +29,7 @@ class TaskDashboard extends ConsumerWidget {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            ref.watch(authControllerProvider.notifier).signOut();
+            ref.read(authControllerProvider.notifier).signOut();
           },
           icon: const Icon(Icons.logout),
         ),

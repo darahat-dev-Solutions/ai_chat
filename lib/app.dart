@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter_kit/app/router.dart';
 import 'package:flutter_starter_kit/app/theme/app_theme.dart';
-import 'package:flutter_starter_kit/features/home/provider/home_provider.dart';
+import 'package:flutter_starter_kit/features/app_settings/provider/settings_provider.dart';
 
 /// App is Main material app which called to main and assigned themes router configuration and debug show checked mode value
 class App extends ConsumerWidget {
@@ -12,7 +12,7 @@ class App extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
-    final themeMode = ref.watch(themeControllerProvider).themeMode;
+    final themeMode = ref.watch(settingsControllerProvider).themeMode;
     return MaterialApp.router(
       title: 'FlutterStarterKit',
       theme: lightTheme,

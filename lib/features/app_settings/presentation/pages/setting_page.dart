@@ -1,7 +1,8 @@
 // features/home/presentation/widgets/settings_page.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter_kit/features/home/provider/home_provider.dart';
+import 'package:flutter_starter_kit/core/utils/logger.dart';
+import 'package:flutter_starter_kit/features/app_settings/provider/settings_provider.dart';
 
 /// Flutter setting page
 class SettingsPage extends ConsumerWidget {
@@ -10,9 +11,10 @@ class SettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final asyncSettings = ref.watch(settingsControllerProvider).themeMode;
     final isDarkMode =
-        ref.watch(themeControllerProvider).themeMode == ThemeMode.dark;
-
+        ref.watch(settingsControllerProvider).themeMode == ThemeMode.dark;
+    AppLogger.debug(asyncSettings.name);
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
@@ -24,7 +26,9 @@ class SettingsPage extends ConsumerWidget {
           title: const Text('Dark Mode'),
           value: isDarkMode,
           onChanged: (value) {
-            ref.read(themeControllerProvider.notifier).toggleTheme(value);
+            ref
+                .read(settingsControllerProvider.notifier)
+                .updateThemeMode(value ? ThemeMode.dark : ThemeMode.light);
           },
         ),
         // Other settings...
