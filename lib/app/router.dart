@@ -3,6 +3,8 @@ import 'package:flutter_starter_kit/features/auth/application/auth_state.dart';
 // Correctly import the page, not the old widget name
 import 'package:flutter_starter_kit/features/auth/presentation/pages/forgot_password_page.dart';
 import 'package:flutter_starter_kit/features/auth/presentation/pages/login_page.dart';
+import 'package:flutter_starter_kit/features/auth/presentation/pages/otp_page.dart';
+import 'package:flutter_starter_kit/features/auth/presentation/pages/phone_number_page.dart';
 import 'package:flutter_starter_kit/features/auth/presentation/pages/signup_page.dart';
 import 'package:flutter_starter_kit/features/auth/provider/auth_providers.dart';
 import 'package:flutter_starter_kit/features/home/presentation/layout/home_layout.dart';
@@ -30,8 +32,13 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
       GoRoute(
+        path: '/phone-number',
+        builder: (context, state) => const PhoneNumberPage(),
+      ),
+      GoRoute(path: '/otp', builder: (context, state) => const OTPPage()),
+      GoRoute(
         path: '/forget_password',
-        builder: (context, state) => ForgetPassword(),
+        builder: (context, state) => const ForgetPassword(),
       ),
       GoRoute(
         path: '/register',
@@ -56,7 +63,9 @@ final routerProvider = Provider<GoRouter>((ref) {
       final onPublicRoutes =
           state.matchedLocation == '/login' ||
           state.matchedLocation == '/register' ||
-          state.matchedLocation == '/forget_password';
+          state.matchedLocation == '/forget_password' ||
+          state.matchedLocation == '/phone-number' ||
+          state.matchedLocation == '/otp';
 
       // After initialization, if the user is on the splash screen, redirect them.
       if (onSplash) {

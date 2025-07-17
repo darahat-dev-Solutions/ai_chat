@@ -11,12 +11,11 @@ import 'auth_state.dart';
 /// and put user data to hive box and changing state value
 class AuthController extends StateNotifier<AuthState> {
   final AuthRepository _authRepository;
-  // final Box<UserModel> _box = Hive.box<UserModel>('authBox');
+  String? _verificationId;
+  String? _phoneNumber;
 
-  /// constructor so that it can be called from outside
   AuthController(this._authRepository) : super(const AuthInitial());
 
-  /// Check Initial AuthState to check that user is exist or not
   void checkInitialAuthState() {
     final user = HiveService.authBox.get('user');
     if (user != null) {
@@ -26,10 +25,6 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
-  /// SignUp controller which is calling auth model functionalities from auth_repository
-  ///
-  ///
-  /// here just put the user to hive box and changing the state value
   Future<void> signUp(String email, String password, String name) async {
     state = const AuthLoading();
     try {
@@ -47,11 +42,6 @@ class AuthController extends StateNotifier<AuthState> {
       state = AuthError('Sign up failed. Please Try Again', AuthMethod.signup);
     }
   }
-
-  /// SignIn controller which is calling auth model functionalities from auth_repository
-  ///
-  ///
-  /// here just put the user to hive box and changing the state value
 
   Future<void> signIn(String email, String password) async {
     state = const AuthLoading();
@@ -71,9 +61,6 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
-  /// SignInWithGoogle is calling signInWithGoogle auth_repository model function
-  ///
-  /// set the state and put the user data to hive box
   Future<void> signInWithGoogle() async {
     state = const AuthLoading();
     try {
@@ -93,21 +80,12 @@ class AuthController extends StateNotifier<AuthState> {
           'An account already exists with this email. Please sign in using the provider associated with this email address',
           AuthMethod.google,
         );
-      } else {
-        /// Handle other Firebase-specific errors
-        state = AuthError(
-          e.message ?? 'Github sign in failed. Please try again',
-          AuthMethod.google,
-        );
       }
     } catch (e) {
       state = AuthError(e.toString(), AuthMethod.google);
     }
   }
 
-  /// SignInWithGithub is calling signInWithGithub auth_repository model function
-  ///
-  /// set the state and the user data to hive box
   Future<void> signInWithGithub() async {
     state = const AuthLoading();
     try {
@@ -122,19 +100,12 @@ class AuthController extends StateNotifier<AuthState> {
           'An account already exists with this email. Please sign in using the provider associated with this email address',
           AuthMethod.github,
         );
-      } else {
-        /// Handle other Firebase-specific errors
-        state = AuthError(
-          e.message ?? 'Github sign in failed. Please try again',
-          AuthMethod.github,
-        );
       }
     } catch (e) {
       state = AuthError(e.toString(), AuthMethod.github);
     }
   }
 
-  /// Sends a password reset email and updates the state
   Future<void> sendPasswordResetEmail(String email) async {
     state = const AuthLoading();
     try {
@@ -152,9 +123,6 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
-  /// signOut is calling signOut auth_repository model function
-  ///
-  /// set the state and put the user data to hive box
   Future<void> signOut() async {
     state = const AuthLoading();
     try {
@@ -163,6 +131,58 @@ class AuthController extends StateNotifier<AuthState> {
       state = const AuthInitial();
     } catch (e) {
       throw AuthenticationException('Sign Out Failed');
+    }
+  }
+
+  Future<void> sendOTP(String phoneNumber) async {
+    state = const AuthLoading();
+    _phoneNumber = phoneNumber;
+    try {
+      await _authRepository.sendOTP(
+        phoneNumber,
+        codeSent: (verificationId, resendToken) {
+          _verificationId = verificationId;
+          state = const OTPSent();
+        },
+      );
+    } catch (e) {
+      state = AuthError(e.toString(), AuthMethod.phone);
+    }
+  }
+
+  Future<void> verifyOTP(String smsCode) async {
+    state = const AuthLoading();
+    try {
+      if (_verificationId == null) {
+        throw Exception('Verification ID is null. Please resend OTP.');
+      }
+      final user = await _authRepository.verifyOTP(_verificationId!, smsCode);
+      if (user != null) {
+        HiveService.authBox.put('user', user);
+        state = Authenticated(user);
+      } else {
+        state = const AuthError('OTP verification failed', AuthMethod.phone);
+      }
+    } catch (e) {
+      state = AuthError(e.toString(), AuthMethod.phone);
+    }
+  }
+
+  Future<void> resendOTP() async {
+    state = const AuthLoading();
+    try {
+      if (_phoneNumber == null) {
+        throw Exception('Phone number is null. Please go back and re-enter.');
+      }
+      await _authRepository.resendOTP(
+        _phoneNumber!,
+        codeSent: (verificationId, resendToken) {
+          _verificationId = verificationId;
+          state = const OTPSent();
+        },
+      );
+    } catch (e) {
+      state = AuthError(e.toString(), AuthMethod.phone);
     }
   }
 }

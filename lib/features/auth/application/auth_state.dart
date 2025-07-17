@@ -59,6 +59,12 @@ class PasswordResetEmailSent extends AuthState {
   const PasswordResetEmailSent();
 }
 
+/// The state when the OTP has been sent.
+class OTPSent extends AuthState {
+  /// The state when the OTP has been sent.
+  const OTPSent();
+}
+
 /// Represent a state where the user is signed out
 class AuthSignedOut extends AuthState {
   /// Const constructor for [AuthSignedOut] to call it outside
@@ -79,6 +85,9 @@ enum AuthMethod {
 
   /// User authentication via GitHub OAuth.
   github,
+
+  /// User authentication via Phone.
+  phone,
 
   /// Indicates that the user is currently signing up (registration flow).
   signup,

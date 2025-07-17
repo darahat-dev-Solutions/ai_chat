@@ -126,4 +126,53 @@ class AuthRepository {
     await _auth.signOut();
     await _googleSignIn.signOut();
   }
+
+  Future<void> sendOTP(String phoneNumber, {required Function(String, int?) codeSent}) async {
+    try {
+      await _auth.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          await _auth.signInWithCredential(credential);
+        },
+        verificationFailed: (FirebaseAuthException e) {
+          throw AuthenticationException(e.message ?? 'Failed to send OTP');
+        },
+        codeSent: codeSent,
+        codeAutoRetrievalTimeout: (String verificationId) {},
+      );
+    } catch (e) {
+      throw AuthenticationException('Failed to send OTP');
+    }
+  }
+
+  Future<UserModel?> verifyOTP(String verificationId, String smsCode) async {
+    try {
+      final credential = PhoneAuthProvider.credential(
+        verificationId: verificationId,
+        smsCode: smsCode,
+      );
+      final cred = await _auth.signInWithCredential(credential);
+      return UserModel(uid: cred.user!.uid, email: cred.user!.email!);
+    } catch (e) {
+      throw AuthenticationException('Failed to verify OTP');
+    }
+  }
+
+  Future<void> resendOTP(String phoneNumber, {required Function(String, int?) codeSent}) async {
+    try {
+      await _auth.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          await _auth.signInWithCredential(credential);
+        },
+        verificationFailed: (FirebaseAuthException e) {
+          throw AuthenticationException(e.message ?? 'Failed to send OTP');
+        },
+        codeSent: codeSent,
+        codeAutoRetrievalTimeout: (String verificationId) {},
+      );
+    } catch (e) {
+      throw AuthenticationException('Failed to resend OTP');
+    }
+  }
 }

@@ -254,6 +254,34 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               ],
                             ),
                   ),
+                  const SizedBox(height: 16),
+                  OutlinedButton(
+                    onPressed: isLoading
+                        ? null
+                        : () {
+                            context.go('/phone-number');
+                          },
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.phone,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          'Continue with Phone',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ],
+                    ),
+                  ),
                   const SizedBox(height: 32),
                   OutlinedButton(
                     onPressed:
