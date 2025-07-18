@@ -6,7 +6,9 @@ import 'package:flutter_starter_kit/features/auth/application/auth_state.dart';
 import 'package:flutter_starter_kit/features/auth/provider/auth_providers.dart';
 import 'package:go_router/go_router.dart';
 
+/// Input PhoneNumber  for OTP authentication page
 class PhoneNumberPage extends ConsumerStatefulWidget {
+  /// Phone Number input page controller
   const PhoneNumberPage({super.key});
 
   @override

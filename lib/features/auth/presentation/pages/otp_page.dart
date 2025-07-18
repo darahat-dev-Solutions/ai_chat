@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -9,7 +8,9 @@ import 'package:flutter_starter_kit/features/auth/provider/auth_providers.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 
+/// Input OTP Presentation page
 class OTPPage extends ConsumerStatefulWidget {
+  /// input OTP presentation page controller
   const OTPPage({super.key});
 
   @override
@@ -67,9 +68,7 @@ class _OTPPageState extends ConsumerState<OTPPage> {
     });
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Enter OTP'),
-      ),
+      appBar: AppBar(title: const Text('Enter OTP')),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -80,8 +79,8 @@ class _OTPPageState extends ConsumerState<OTPPage> {
               Text(
                 'Enter the OTP sent to your phone',
                 style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 40),
               Pinput(
@@ -95,14 +94,16 @@ class _OTPPageState extends ConsumerState<OTPPage> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: isLoading
-                      ? null
-                      : () {
-                          controller.verifyOTP(pinController.text);
-                        },
-                  child: isLoading
-                      ? const CircularProgressIndicator()
-                      : const Text('Verify OTP'),
+                  onPressed:
+                      isLoading
+                          ? null
+                          : () {
+                            controller.verifyOTP(pinController.text);
+                          },
+                  child:
+                      isLoading
+                          ? const CircularProgressIndicator()
+                          : const Text('Verify OTP'),
                 ),
               ),
               const SizedBox(height: 24),

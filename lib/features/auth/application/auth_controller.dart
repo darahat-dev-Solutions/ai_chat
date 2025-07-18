@@ -15,8 +15,10 @@ class AuthController extends StateNotifier<AuthState> {
   String? _verificationId;
   String? _phoneNumber;
 
+  /// AuthController Constructor for call outside
   AuthController(this._authRepository) : super(const AuthInitial());
 
+  /// Check User is Authenticated need to call in main to check
   void checkInitialAuthState() {
     final user = HiveService.authBox.get('user');
     if (user != null) {
@@ -26,6 +28,7 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
+  /// Email & Password SignUp Controller function
   Future<void> signUp(String email, String password, String name) async {
     state = const AuthLoading();
     try {
@@ -44,6 +47,7 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
+  /// Email & Password SignIn Controller function
   Future<void> signIn(String email, String password) async {
     state = const AuthLoading();
     try {
@@ -62,6 +66,7 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
+  /// Google SignIn Controller function
   Future<void> signInWithGoogle() async {
     state = const AuthLoading();
     try {
@@ -87,6 +92,7 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
+  /// Google SignIn Controller function
   Future<void> signInWithGithub() async {
     state = const AuthLoading();
     try {
@@ -107,6 +113,7 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
+  /// Forget Password reset mail Controller function
   Future<void> sendPasswordResetEmail(String email) async {
     state = const AuthLoading();
     try {
@@ -124,6 +131,7 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
+  /// Sign out controller function
   Future<void> signOut() async {
     state = const AuthLoading();
     try {
@@ -135,6 +143,7 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
+  /// Phone authentication Sending OTP
   Future<void> sendOTP(String phoneNumber) async {
     // state = const AuthLoading();
     AppLogger.debug(
@@ -163,6 +172,8 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
+  /// Phone authentication verify OTP
+
   Future<void> verifyOTP(String smsCode) async {
     state = const AuthLoading();
     try {
@@ -180,6 +191,8 @@ class AuthController extends StateNotifier<AuthState> {
       state = AuthError(e.toString(), AuthMethod.phone);
     }
   }
+
+  /// Phone authentication if send OTP failed
 
   Future<void> resendOTP() async {
     state = const AuthLoading();

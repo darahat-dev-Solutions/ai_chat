@@ -127,6 +127,7 @@ class AuthRepository {
     await _googleSignIn.signOut();
   }
 
+  /// OTP send Repository Function
   Future<void> sendOTP(
     String phoneNumber, {
     required Function(String, int?) codeSent,
@@ -149,7 +150,7 @@ class AuthRepository {
         },
         codeSent: codeSent,
         codeAutoRetrievalTimeout: (String verificationId) {
-          AppLogger.debug('🚀 ~Code Regrival timeout $verificationId');
+          AppLogger.debug('🚀 ~Code getting timeout $verificationId');
           codeAutoRetrievalTimeoutCallback?.call(verificationId);
         },
       );
@@ -157,6 +158,8 @@ class AuthRepository {
       throw AuthenticationException('🚀 ~Failed to send OTP from cache $e');
     }
   }
+
+  /// Verify OTP auth_Repository Function
 
   Future<UserModel?> verifyOTP(String verificationId, String smsCode) async {
     try {
@@ -170,6 +173,8 @@ class AuthRepository {
       throw AuthenticationException('🚀 ~Failed to verify OTP');
     }
   }
+
+  /// Resent OTP auth_Repository Function
 
   Future<void> resendOTP(
     String phoneNumber, {
