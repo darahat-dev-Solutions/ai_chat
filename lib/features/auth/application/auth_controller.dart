@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter_kit/core/errors/exceptions.dart';
 import 'package:flutter_starter_kit/core/services/hive_service.dart';
+import 'package:flutter_starter_kit/core/utils/logger.dart';
 
 import '../infrastructure/auth_repository.dart';
 import 'auth_state.dart';
@@ -135,17 +136,29 @@ class AuthController extends StateNotifier<AuthState> {
   }
 
   Future<void> sendOTP(String phoneNumber) async {
-    state = const AuthLoading();
-    _phoneNumber = phoneNumber;
+    // state = const AuthLoading();
+    AppLogger.debug(
+      '🚀 ~ Trying to send OTP from auth controller $phoneNumber',
+    );
+
     try {
       await _authRepository.sendOTP(
         phoneNumber,
         codeSent: (verificationId, resendToken) {
+          AppLogger.debug(
+            '🚀 ~ Trying to send OTP 1 from auth controller from codesent start $verificationId , $resendToken',
+          );
+
           _verificationId = verificationId;
           state = const OTPSent();
+          AppLogger.debug(
+            '🚀 ~ what is the state after codesent $_verificationId , $state',
+          );
         },
       );
+      AppLogger.debug('🚀 ~ Trying to send OTP from auth controller');
     } catch (e) {
+      AppLogger.debug('🚀 ~ send OTP failed from auth controller');
       state = AuthError(e.toString(), AuthMethod.phone);
     }
   }

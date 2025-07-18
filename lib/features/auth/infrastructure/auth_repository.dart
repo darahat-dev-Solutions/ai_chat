@@ -127,21 +127,34 @@ class AuthRepository {
     await _googleSignIn.signOut();
   }
 
-  Future<void> sendOTP(String phoneNumber, {required Function(String, int?) codeSent}) async {
+  Future<void> sendOTP(
+    String phoneNumber, {
+    required Function(String, int?) codeSent,
+    Function(String)? codeAutoRetrievalTimeoutCallback,
+  }) async {
+    AppLogger.debug('🚀send otp called with this number $phoneNumber');
+
     try {
+      AppLogger.debug('🚀send otp called with this number2 $phoneNumber');
+
       await _auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         verificationCompleted: (PhoneAuthCredential credential) async {
           await _auth.signInWithCredential(credential);
+          AppLogger.debug('🚀 Verification completed $codeSent, $credential');
         },
         verificationFailed: (FirebaseAuthException e) {
-          throw AuthenticationException(e.message ?? 'Failed to send OTP');
+          AppLogger.debug('🚀 ~Failed to send OTP $e');
+          throw AuthenticationException(e.message ?? '🚀 ~Failed to send OTP');
         },
         codeSent: codeSent,
-        codeAutoRetrievalTimeout: (String verificationId) {},
+        codeAutoRetrievalTimeout: (String verificationId) {
+          AppLogger.debug('🚀 ~Code Regrival timeout $verificationId');
+          codeAutoRetrievalTimeoutCallback?.call(verificationId);
+        },
       );
     } catch (e) {
-      throw AuthenticationException('Failed to send OTP');
+      throw AuthenticationException('🚀 ~Failed to send OTP from cache $e');
     }
   }
 
@@ -154,11 +167,14 @@ class AuthRepository {
       final cred = await _auth.signInWithCredential(credential);
       return UserModel(uid: cred.user!.uid, email: cred.user!.email!);
     } catch (e) {
-      throw AuthenticationException('Failed to verify OTP');
+      throw AuthenticationException('🚀 ~Failed to verify OTP');
     }
   }
 
-  Future<void> resendOTP(String phoneNumber, {required Function(String, int?) codeSent}) async {
+  Future<void> resendOTP(
+    String phoneNumber, {
+    required Function(String, int?) codeSent,
+  }) async {
     try {
       await _auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
