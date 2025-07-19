@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter_kit/app.dart';
+import 'package:flutter_starter_kit/core/localization/app_localization.dart';
 import 'package:flutter_starter_kit/core/services/firebase_messaging_service.dart';
 import 'package:flutter_starter_kit/core/services/hive_service.dart';
 import 'package:flutter_starter_kit/core/utils/logger.dart';
@@ -26,7 +27,10 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   AppLogger.init();
-
+  localization.init(
+    mapLocales: mapLocales,
+    initLanguageCode: 'en', // Default language
+  );
   // await dotenv.load();
   // // Load environment variables
   //   await EnvConfig.load();
