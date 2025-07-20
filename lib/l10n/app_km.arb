@@ -1,0 +1,10 @@
+{
+  "@@locale": "km",
+  "title": "កញ្ចប់ចាប់ផ្តើមរបស់ Flutter",
+  "welcome": "ស្វាគមន៍",
+  "login": "ចូល",
+  "logout": "ចេញ",
+  "settings": "ការកំណត់",
+  "language": "ភាសា",
+  "theme": "ស្បែក"
+}

@@ -1,0 +1,10 @@
+{
+  "@@locale": "es",
+  "title": "Kit de Inicio Flutter",
+  "welcome": "Bienvenido",
+  "login": "Iniciar sesión",
+  "logout": "Cerrar sesión",
+  "settings": "Configuración",
+  "language": "Idioma",
+  "theme": "Tema"
+}

@@ -4,7 +4,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter_kit/app.dart';
-import 'package:flutter_starter_kit/core/localization/app_localization.dart';
 import 'package:flutter_starter_kit/core/services/firebase_messaging_service.dart';
 import 'package:flutter_starter_kit/core/services/hive_service.dart';
 import 'package:flutter_starter_kit/core/utils/logger.dart';
@@ -27,23 +26,14 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   AppLogger.init();
-  localization.init(
-    mapLocales: mapLocales,
-    initLanguageCode: 'en', // Default language
-  );
-  // await dotenv.load();
-  // // Load environment variables
-  //   await EnvConfig.load();
-  // Initialize Firebase
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  // Activate App Check
-  await FirebaseAppCheck.instance
-  // Your personal reCaptcha public key goes here:
-  .activate(
+
+  await FirebaseAppCheck.instance.activate(
     androidProvider: AndroidProvider.debug,
-    appleProvider: AppleProvider.appAttest, // Recommended for iOS
+    appleProvider: AppleProvider.appAttest,
   );
-  // Initialize Hive with error handling
+
   try {
     await HiveService.init();
   } catch (e) {
@@ -54,17 +44,37 @@ Future<void> main() async {
     );
     return;
   }
-  // Create a ProviderContainer to access providers before the app runs.
+
   final container = ProviderContainer();
 
-  /// Initialize firebase messaging Service
   final firebaseMessagingService = container.read(
     firebaseMessagingServiceProvider,
   );
   await firebaseMessagingService.initialize();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-  /// Call the new method to safely check the auth state.
+  /// Start Localization loading logic
+  // final List<MapLocale> mapLocales = [];
+  // for (final locale in [AppLocale.enUS, AppLocale.kmKH, AppLocale.jaJA]) {
+  //   final jsonString = await rootBundle.loadString(
+  //     'assets/locals/$locale.json',
+  //   );
+  //   final Map<String, String> jsonMap = Map<String, String>.from(
+  //     json.decode(jsonString),
+  //   );
+  //   mapLocales.add(MapLocale(locale, jsonMap));
+  // }
+
+  /// End of Localization loading logic
+  // ✅ Call ensureInitialized() before init()
+  // await localization.ensureInitialized();
+
+  /// ✅ Then call init()
+  // localization.init(
+  //   mapLocales: mapLocales,
+  //   initLanguageCode: AppLocale.enUS, // Use a valid defined locale key
+  // );
   container.read(authControllerProvider.notifier).checkInitialAuthState();
-  runApp(UncontrolledProviderScope(container: container, child: App()));
+
+  runApp(UncontrolledProviderScope(container: container, child: const App()));
 }

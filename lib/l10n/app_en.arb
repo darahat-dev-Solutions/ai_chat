@@ -1,0 +1,10 @@
+{
+  "@@locale": "en",
+  "title": "Flutter Starter Kit",
+  "welcome": "Welcome",
+  "login": "Login",
+  "logout": "Logout",
+  "settings": "Settings",
+  "language": "Language",
+  "theme": "Theme"
+}

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter_kit/core/widgets/scaffold_messenger.dart';
 import 'package:flutter_starter_kit/features/auth/application/auth_state.dart';
+import 'package:flutter_starter_kit/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../provider/auth_providers.dart';
@@ -59,7 +60,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 children: [
                   const SizedBox(height: 40),
                   Text(
-                    'Welcome Back',
+                    '${AppLocalizations.of(context)!.welcome} Back',
                     style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -179,7 +180,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                       width: 24,
                                       child: CircularProgressIndicator(
                                         strokeWidth: 2,
-                                        color: Theme.of(context).colorScheme.onPrimary,
+                                        color:
+                                            Theme.of(
+                                              context,
+                                            ).colorScheme.onPrimary,
                                       ),
                                     )
                                     : const Text('Sign In'),
@@ -256,11 +260,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   ),
                   const SizedBox(height: 16),
                   OutlinedButton(
-                    onPressed: isLoading
-                        ? null
-                        : () {
-                            context.go('/phone-number');
-                          },
+                    onPressed:
+                        isLoading
+                            ? null
+                            : () {
+                              context.go('/phone-number');
+                            },
                     style: OutlinedButton.styleFrom(
                       side: BorderSide(
                         color: Theme.of(context).colorScheme.onSurface,

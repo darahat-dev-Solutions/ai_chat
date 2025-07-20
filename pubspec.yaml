@@ -127,10 +127,10 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  generate: true
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/locals/
     - assets/icon/icon.png
     - assets/icon/google_logo.png
     - assets/icon/github_logo.png
@@ -160,3 +160,15 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+  # ✅ Proper localization config under "flutter_gen"
+flutter_gen:
+  l10n:
+    arb-dir: lib/l10n
+    template-arb-file: app_en.arb
+    output-localization-file: app_localizations.dart
+    output-class: AppLocalizations
+    preferred-supported-locales:
+      - en
+      - km
+      - ja
+      - es
