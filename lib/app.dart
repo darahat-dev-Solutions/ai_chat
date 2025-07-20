@@ -15,19 +15,20 @@ class App extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
-    final themeMode = ref.watch(settingsControllerProvider).themeMode;
+    final settings = ref.watch(settingsControllerProvider);
+
     return MaterialApp.router(
       title: 'FlutterStarterKit',
       theme: lightTheme,
       darkTheme: darkTheme,
-      themeMode: themeMode,
-      locale: const Locale('ja'), // e.g., for Japanese
-      supportedLocales: const [
-        Locale('en'),
-        Locale('km'),
-        Locale('ja'),
-        Locale('es'),
-      ],
+      themeMode: settings.themeMode,
+      locale: settings.locale, // e.g., for Japanese
+      // supportedLocales: const [
+      //   Locale('en'),
+      //   Locale('km'),
+      //   Locale('ja'),
+      //   Locale('es'),
+      // ],
       // supportedLocales: AppLocale.flutterSupportedLocales,
       localizationsDelegates: [
         AppLocalizations.delegate,

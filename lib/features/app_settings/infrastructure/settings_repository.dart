@@ -14,6 +14,15 @@ class SettingsRepository {
         dataType: 'STRING',
         isUserSpecific: false,
       );
+  static final SettingDefinitionModel _localeSettingDefinition =
+      SettingDefinitionModel(
+        id: 2,
+        name: 'Locale',
+        description: "Application language",
+        defaultValue: 'en',
+        dataType: 'STRING',
+        isUserSpecific: false,
+      );
 
   /// Theme Mode get request will hit here and
   Future<String?> getThemeMode() async {
@@ -53,5 +62,47 @@ class SettingsRepository {
     /// Store the actual theme mode string
     final Box<String> themeBox = await Hive.openBox<String>('themeSettings');
     await themeBox.put(_themeModeSettingDefinition.name, themeMode);
+  }
+
+  /// Theme Mode get request will hit here and
+  Future<String?> getLocale() async {
+    final Box<SettingDefinitionModel> settingsBox =
+        Hive.box<SettingDefinitionModel>(HiveConstants.settingsBoxName);
+
+    /// getting data from app Shared Preferences data
+    SettingDefinitionModel? storedDefinition = settingsBox.get(
+      _localeSettingDefinition.id,
+    );
+    // If not found, store the default definition
+    if (storedDefinition == null) {
+      await settingsBox.put(
+        _localeSettingDefinition.id,
+        _localeSettingDefinition,
+      );
+      storedDefinition = _localeSettingDefinition;
+    } else {
+      final Box<String> localeBox = await Hive.openBox<String>(
+        'localeSettings',
+      );
+      return localeBox.get(_localeSettingDefinition.name);
+    }
+    return null;
+  }
+
+  /// Save on changed data from app to Shared Preferences data
+
+  Future<void> saveLocale(String locale) async {
+    final Box<SettingDefinitionModel> settingsBox =
+        Hive.box<SettingDefinitionModel>(HiveConstants.settingsBoxName);
+
+    /// Ensure the definition exists in the box
+    await settingsBox.put(
+      _localeSettingDefinition.id,
+      _localeSettingDefinition,
+    );
+
+    /// Store the actual theme mode string
+    final Box<String> localeBox = await Hive.openBox<String>('localeSettings');
+    await localeBox.put(_localeSettingDefinition.name, locale);
   }
 }
