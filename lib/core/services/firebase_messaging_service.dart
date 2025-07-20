@@ -95,6 +95,7 @@ class FirebaseMessagingService {
   }
 }
 
+/// Firebase Local Notification instance call
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 Future<void> _initializeLocalNotifications() async {
