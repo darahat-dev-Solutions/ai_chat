@@ -18,12 +18,12 @@ class SettingsPage extends ConsumerWidget {
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        const Text(
-          'Appearance',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        Text(
+          AppLocalizations.of(context)!.appearance,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         SwitchListTile(
-          title: const Text('Dark Mode'),
+          title: Text(AppLocalizations.of(context)!.darkMode),
           value: isDarkMode,
           onChanged: (value) {
             ref
@@ -32,9 +32,9 @@ class SettingsPage extends ConsumerWidget {
           },
         ),
         const SizedBox(height: 20),
-        const Text(
-          'Language',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        Text(
+          AppLocalizations.of(context)!.language,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         DropdownButton<Locale>(
           value: asyncSettings.locale,

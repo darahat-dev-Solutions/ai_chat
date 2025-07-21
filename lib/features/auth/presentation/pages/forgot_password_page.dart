@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter_kit/features/auth/application/auth_state.dart';
 import 'package:flutter_starter_kit/features/auth/provider/auth_providers.dart';
+import 'package:flutter_starter_kit/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
 /// Forget Password Page presentation
@@ -32,18 +33,20 @@ class _ForgetPasswordConsumerState extends ConsumerState<ForgetPassword> {
         if (!mounted) return; // ✅ avoid using context if disposed
 
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Reset email sent (if account exists).'),
-          ),
+          SnackBar(content: Text(AppLocalizations.of(context)!.resetEmailSent)),
         );
 
         context.go('/login'); // Optional: Navigate to login
       } catch (e) {
         if (!mounted) return;
 
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Error: ${e.toString()}')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              '${AppLocalizations.of(context)!.error}${e.toString()}',
+            ),
+          ),
+        );
       }
     }
   }
@@ -55,7 +58,7 @@ class _ForgetPasswordConsumerState extends ConsumerState<ForgetPassword> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Forgot Password'),
+        title: Text(AppLocalizations.of(context)!.forgotPasswordTitle),
         centerTitle: true,
         elevation: 0,
       ),
@@ -67,14 +70,16 @@ class _ForgetPasswordConsumerState extends ConsumerState<ForgetPassword> {
             children: [
               const SizedBox(height: 24),
               Text(
-                'Reset your password',
+                AppLocalizations.of(context)!.resetYourPassword,
                 style: theme.textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 8),
               Text(
-                'Enter the email associated with your account and we’ll send you a link to reset your password.',
+                AppLocalizations.of(
+                  context,
+                )!.enterTheEmailAssociatedWithYourAccount,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: theme.colorScheme.onSurface,
                 ),
@@ -87,7 +92,7 @@ class _ForgetPasswordConsumerState extends ConsumerState<ForgetPassword> {
                     TextFormField(
                       controller: _emailController,
                       decoration: InputDecoration(
-                        labelText: 'Email Address',
+                        labelText: AppLocalizations.of(context)!.emailAddress,
                         prefixIcon: const Icon(Icons.email_outlined),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -95,10 +100,10 @@ class _ForgetPasswordConsumerState extends ConsumerState<ForgetPassword> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Email is required';
+                          return AppLocalizations.of(context)!.emailIsRequired;
                         }
                         if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
-                          return 'Enter a valid email';
+                          return AppLocalizations.of(context)!.enterAValidEmail;
                         }
                         return null;
                       },
@@ -126,7 +131,9 @@ class _ForgetPasswordConsumerState extends ConsumerState<ForgetPassword> {
                                     color: theme.colorScheme.onPrimary,
                                   ),
                                 )
-                                : const Text('Send Reset Email'),
+                                : Text(
+                                  AppLocalizations.of(context)!.sendResetEmail,
+                                ),
                       ),
                     ),
                   ],
@@ -137,7 +144,7 @@ class _ForgetPasswordConsumerState extends ConsumerState<ForgetPassword> {
                 child: TextButton(
                   onPressed: () => context.go('login'),
                   child: Text(
-                    'Back to Login',
+                    AppLocalizations.of(context)!.backToLogin,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: theme.colorScheme.primary,
                       fontWeight: FontWeight.w600,

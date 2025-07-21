@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter_kit/features/home/provider/home_provider.dart';
+import 'package:flutter_starter_kit/l10n/app_localizations.dart';
 
 /// HomeBottomNav widget class
 class HomeBottomNav extends ConsumerWidget {
@@ -15,10 +16,19 @@ class HomeBottomNav extends ConsumerWidget {
       onTap: (index) {
         ref.read(homeControllerProvider.notifier).changeTab(index);
       },
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
-        BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
+      items: [
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.home),
+          label: AppLocalizations.of(context)!.home,
+        ),
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.search),
+          label: AppLocalizations.of(context)!.search,
+        ),
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.settings),
+          label: AppLocalizations.of(context)!.settings,
+        ),
       ],
     );
   }

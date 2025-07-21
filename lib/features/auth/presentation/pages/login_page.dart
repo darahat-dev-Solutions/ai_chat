@@ -67,7 +67,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Sign in to continue',
+                    AppLocalizations.of(context)!.signInToContinue,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
@@ -80,7 +80,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         TextFormField(
                           controller: emailController,
                           decoration: InputDecoration(
-                            labelText: 'Email',
+                            labelText: AppLocalizations.of(context)!.email,
                             prefixIcon: Icon(
                               Icons.email_outlined,
                               color: Theme.of(context).colorScheme.onSurface,
@@ -88,10 +88,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter your email';
+                              return AppLocalizations.of(
+                                context,
+                              )!.pleaseEnterYourEmail;
                             }
                             if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
-                              return 'Please enter a valid email address';
+                              return AppLocalizations.of(
+                                context,
+                              )!.pleaseEnterAValidEmailAddress;
                             }
                             return null;
                           },
@@ -103,7 +107,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           controller: passwordController,
                           obscureText: obscureText,
                           decoration: InputDecoration(
-                            labelText: 'Password',
+                            labelText: AppLocalizations.of(context)!.password,
                             prefixIcon: Icon(
                               Icons.lock_outline,
                               color: Theme.of(context).colorScheme.onSurface,
@@ -125,10 +129,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter your password';
+                              return AppLocalizations.of(
+                                context,
+                              )!.pleaseEnterYourPassword;
                             }
                             if (value.length < 6) {
-                              return 'Password must be at least 6 characters';
+                              return AppLocalizations.of(
+                                context,
+                              )!.passwordMustBeAtLeast6Characters;
                             }
                             return null;
                           },
@@ -144,7 +152,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                       context.go('/forget_password');
                                     },
                             child: Text(
-                              'Forgot Password?',
+                              AppLocalizations.of(context)!.forgotPassword,
                               style: Theme.of(
                                 context,
                               ).textTheme.bodyMedium?.copyWith(
@@ -186,7 +194,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                             ).colorScheme.onPrimary,
                                       ),
                                     )
-                                    : const Text('Sign In'),
+                                    : Text(
+                                      AppLocalizations.of(context)!.signIn,
+                                    ),
                           ),
                         ),
                       ],
@@ -203,7 +213,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Text(
-                          'OR',
+                          AppLocalizations.of(context)!.or,
                           style: Theme.of(
                             context,
                           ).textTheme.bodyMedium?.copyWith(
@@ -252,7 +262,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 ),
                                 const SizedBox(width: 12),
                                 Text(
-                                  'Continue with Google',
+                                  AppLocalizations.of(
+                                    context,
+                                  )!.continueWithGoogle,
                                   style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                               ],
@@ -281,7 +293,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         ),
                         const SizedBox(width: 12),
                         Text(
-                          'Continue with Phone',
+                          AppLocalizations.of(context)!.continueWithPhone,
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ],
@@ -321,7 +333,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 ),
                                 const SizedBox(width: 12),
                                 Text(
-                                  'Continue with Github',
+                                  AppLocalizations.of(
+                                    context,
+                                  )!.continueWithGithub,
                                   style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                               ],
@@ -334,11 +348,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           isLoading ? null : () => context.go('/register'),
                       child: RichText(
                         text: TextSpan(
-                          text: "Don't have an account? ",
+                          text: AppLocalizations.of(context)!.dontHaveAnAccount,
                           style: Theme.of(context).textTheme.bodyMedium,
                           children: [
                             TextSpan(
-                              text: 'Sign Up',
+                              text: AppLocalizations.of(context)!.signUp,
                               style: Theme.of(
                                 context,
                               ).textTheme.bodyMedium?.copyWith(

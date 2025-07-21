@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter_kit/features/auth/provider/auth_providers.dart';
 import 'package:flutter_starter_kit/features/home/presentation/widgets/user_profile_header.dart';
 import 'package:flutter_starter_kit/features/home/provider/home_provider.dart';
+import 'package:flutter_starter_kit/l10n/app_localizations.dart';
 
 /// HomeDrawer for side drawer
 class HomeDrawer extends ConsumerWidget {
@@ -49,7 +50,7 @@ class HomeDrawer extends ConsumerWidget {
                       color: theme.colorScheme.onSurface,
                     ),
                     title: Text(
-                      'Home',
+                      AppLocalizations.of(context)!.home,
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.colorScheme.onSurface,
                       ),
@@ -65,7 +66,9 @@ class HomeDrawer extends ConsumerWidget {
                       color: theme.colorScheme.onSurface,
                     ),
                     title: Text(
-                      'Logout', // Fixed typo from 'Logot'
+                      AppLocalizations.of(
+                        context,
+                      )!.logout, // Fixed typo from 'Logot'
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.colorScheme.onSurface,
                       ),

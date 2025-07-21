@@ -99,11 +99,11 @@ abstract class AppLocalizations {
     Locale('km')
   ];
 
-  /// No description provided for @title.
+  /// No description provided for @signInToContinue.
   ///
   /// In en, this message translates to:
-  /// **'Flutter Starter Kit'**
-  String get title;
+  /// **'Sign in to continue'**
+  String get signInToContinue;
 
   /// No description provided for @welcome.
   ///
@@ -111,17 +111,41 @@ abstract class AppLocalizations {
   /// **'Welcome'**
   String get welcome;
 
-  /// No description provided for @login.
+  /// No description provided for @home.
   ///
   /// In en, this message translates to:
-  /// **'Login'**
-  String get login;
+  /// **'Home'**
+  String get home;
 
-  /// No description provided for @logout.
+  /// No description provided for @cancel.
   ///
   /// In en, this message translates to:
-  /// **'Logout'**
-  String get logout;
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @done.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get done;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @search.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get search;
 
   /// No description provided for @settings.
   ///
@@ -129,17 +153,359 @@ abstract class AppLocalizations {
   /// **'Settings'**
   String get settings;
 
+  /// No description provided for @logout.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get logout;
+
+  /// No description provided for @flutterStarterKit.
+  ///
+  /// In en, this message translates to:
+  /// **'Flutter Starter Kit'**
+  String get flutterStarterKit;
+
+  /// No description provided for @email.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get email;
+
+  /// No description provided for @pleaseEnterYourEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your email'**
+  String get pleaseEnterYourEmail;
+
+  /// No description provided for @pleaseEnterAValidEmailAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email address'**
+  String get pleaseEnterAValidEmailAddress;
+
+  /// No description provided for @password.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get password;
+
+  /// No description provided for @pleaseEnterYourPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your password'**
+  String get pleaseEnterYourPassword;
+
+  /// No description provided for @passwordMustBeAtLeast6Characters.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters'**
+  String get passwordMustBeAtLeast6Characters;
+
+  /// No description provided for @forgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password?'**
+  String get forgotPassword;
+
+  /// No description provided for @signIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In'**
+  String get signIn;
+
+  /// No description provided for @or.
+  ///
+  /// In en, this message translates to:
+  /// **'OR'**
+  String get or;
+
+  /// No description provided for @continueWithGoogle.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Google'**
+  String get continueWithGoogle;
+
+  /// No description provided for @continueWithPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Phone'**
+  String get continueWithPhone;
+
+  /// No description provided for @continueWithGithub.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Github'**
+  String get continueWithGithub;
+
+  /// No description provided for @dontHaveAnAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account? '**
+  String get dontHaveAnAccount;
+
+  /// No description provided for @signUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Up'**
+  String get signUp;
+
+  /// No description provided for @createAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get createAccount;
+
+  /// No description provided for @letsGetYouStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s get you started!'**
+  String get letsGetYouStarted;
+
+  /// No description provided for @name.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get name;
+
+  /// No description provided for @pleaseEnterYourName.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your name'**
+  String get pleaseEnterYourName;
+
+  /// No description provided for @pleaseEnterAValidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email'**
+  String get pleaseEnterAValidEmail;
+
+  /// No description provided for @alreadyHaveAnAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account? '**
+  String get alreadyHaveAnAccount;
+
+  /// No description provided for @resetEmailSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset email sent (if account exists).'**
+  String get resetEmailSent;
+
+  /// No description provided for @error.
+  ///
+  /// In en, this message translates to:
+  /// **'Error: '**
+  String get error;
+
+  /// No description provided for @forgotPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password'**
+  String get forgotPasswordTitle;
+
+  /// No description provided for @resetYourPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset your password'**
+  String get resetYourPassword;
+
+  /// No description provided for @enterTheEmailAssociatedWithYourAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the email associated with your account and we’ll send you a link to reset your password.'**
+  String get enterTheEmailAssociatedWithYourAccount;
+
+  /// No description provided for @emailAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Email Address'**
+  String get emailAddress;
+
+  /// No description provided for @emailIsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Email is required'**
+  String get emailIsRequired;
+
+  /// No description provided for @enterAValidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email'**
+  String get enterAValidEmail;
+
+  /// No description provided for @sendResetEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Reset Email'**
+  String get sendResetEmail;
+
+  /// No description provided for @backToLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Login'**
+  String get backToLogin;
+
+  /// No description provided for @enterOTP.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter OTP'**
+  String get enterOTP;
+
+  /// No description provided for @enterTheOTPSentToYourPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the OTP sent to your phone'**
+  String get enterTheOTPSentToYourPhone;
+
+  /// No description provided for @verifyOTP.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify OTP'**
+  String get verifyOTP;
+
+  /// No description provided for @resendOTP.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend OTP'**
+  String get resendOTP;
+
+  /// No description provided for @resendOTPIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend OTP in '**
+  String get resendOTPIn;
+
+  /// No description provided for @enterPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Phone Number'**
+  String get enterPhoneNumber;
+
+  /// No description provided for @enterYourPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your phone number'**
+  String get enterYourPhoneNumber;
+
+  /// No description provided for @weWillSendYouAVerificationCode.
+  ///
+  /// In en, this message translates to:
+  /// **'We will send you a verification code'**
+  String get weWillSendYouAVerificationCode;
+
+  /// No description provided for @phoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone Number'**
+  String get phoneNumber;
+
+  /// No description provided for @pleaseEnterYourPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your phone number'**
+  String get pleaseEnterYourPhoneNumber;
+
+  /// No description provided for @sendOTP.
+  ///
+  /// In en, this message translates to:
+  /// **'Send OTP'**
+  String get sendOTP;
+
+  /// No description provided for @appearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get appearance;
+
+  /// No description provided for @darkMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark Mode'**
+  String get darkMode;
+
   /// No description provided for @language.
   ///
   /// In en, this message translates to:
   /// **'Language'**
   String get language;
 
-  /// No description provided for @theme.
+  /// No description provided for @addNewTask.
   ///
   /// In en, this message translates to:
-  /// **'Theme'**
-  String get theme;
+  /// **'Add New Task'**
+  String get addNewTask;
+
+  /// No description provided for @enterTaskDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter task description'**
+  String get enterTaskDescription;
+
+  /// No description provided for @addTask.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Task'**
+  String get addTask;
+
+  /// No description provided for @takeAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Take Action'**
+  String get takeAction;
+
+  /// No description provided for @taskTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Task Title'**
+  String get taskTitle;
+
+  /// No description provided for @aiGeneratedSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'AI-Generated Summary'**
+  String get aiGeneratedSummary;
+
+  /// No description provided for @noTasksAvailableToSummarize.
+  ///
+  /// In en, this message translates to:
+  /// **'No tasks available to summarize.'**
+  String get noTasksAvailableToSummarize;
+
+  /// No description provided for @seeLess.
+  ///
+  /// In en, this message translates to:
+  /// **'See Less'**
+  String get seeLess;
+
+  /// No description provided for @seeMore.
+  ///
+  /// In en, this message translates to:
+  /// **'See More'**
+  String get seeMore;
+
+  /// No description provided for @generatingSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Generating summary...'**
+  String get generatingSummary;
+
+  /// No description provided for @unableToGenerateSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to generate summary. Please try again.'**
+  String get unableToGenerateSummary;
+
+  /// No description provided for @noTasksYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No Tasks yet'**
+  String get noTasksYet;
+
+  /// No description provided for @listening.
+  ///
+  /// In en, this message translates to:
+  /// **'Listening...'**
+  String get listening;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

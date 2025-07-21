@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter_kit/features/tasks/provider/task_providers.dart';
+import 'package:flutter_starter_kit/l10n/app_localizations.dart';
 
 /// AISummaryWidget is for showing AI provided summary
 class AISummaryWidget extends ConsumerWidget {
@@ -22,7 +23,7 @@ class AISummaryWidget extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "AI-Generated Summary",
+            AppLocalizations.of(context)!.aiGeneratedSummary,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Theme.of(context).textTheme.bodyMedium?.color,
@@ -30,7 +31,7 @@ class AISummaryWidget extends ConsumerWidget {
           ),
           const SizedBox(height: 8),
           if (!tasks.hasValue)
-            const Text("No tasks available to summarize.")
+            Text(AppLocalizations.of(context)!.noTasksAvailableToSummarize)
           else
             summaryAsync.when(
               data: (summary) {
@@ -51,20 +52,24 @@ class AISummaryWidget extends ConsumerWidget {
                               !isExpandedAiSummary;
                         },
                         child: Text(
-                          isExpandedAiSummary ? "See Less" : "See More",
+                          isExpandedAiSummary
+                              ? AppLocalizations.of(context)!.seeLess
+                              : AppLocalizations.of(context)!.seeMore,
                         ),
                       ),
                   ],
                 );
               },
               loading:
-                  () => const Padding(
-                    padding: EdgeInsets.only(top: 8.0),
-                    child: Text("Generating summary..."),
+                  () => Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Text(
+                      AppLocalizations.of(context)!.generatingSummary,
+                    ),
                   ),
               error:
-                  (e, _) => const Text(
-                    "Unable to generate summary. Please try again.",
+                  (e, _) => Text(
+                    AppLocalizations.of(context)!.unableToGenerateSummary,
                   ),
             ),
         ],

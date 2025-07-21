@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter_kit/features/tasks/provider/task_providers.dart';
+import 'package:flutter_starter_kit/l10n/app_localizations.dart';
 
 /// Dialog Task Update and Delete function
 void showUpdateDeleteTaskDialog(BuildContext context, WidgetRef ref, task) {
@@ -9,23 +10,25 @@ void showUpdateDeleteTaskDialog(BuildContext context, WidgetRef ref, task) {
     context: context,
     builder:
         (context) => AlertDialog(
-          title: const Text('Take Action'),
+          title: Text(AppLocalizations.of(context)!.takeAction),
           content: TextField(
             controller: textController,
-            decoration: const InputDecoration(hintText: "Task Title"),
+            decoration: InputDecoration(
+              hintText: AppLocalizations.of(context)!.taskTitle,
+            ),
           ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 ref.read(taskControllerProvider.notifier).removeTask(task.tid!);
               },
-              child: const Text('Done'),
+              child: Text(AppLocalizations.of(context)!.done),
             ),
             TextButton(
               onPressed: () {
                 ref.read(taskControllerProvider.notifier).toggleTask(task.tid!);
               },
-              child: const Text('Delete'),
+              child: Text(AppLocalizations.of(context)!.delete),
             ),
             TextButton(
               onPressed: () {
@@ -36,7 +39,7 @@ void showUpdateDeleteTaskDialog(BuildContext context, WidgetRef ref, task) {
                   Navigator.of(context).pop();
                 }
               },
-              child: const Text('Save'),
+              child: Text(AppLocalizations.of(context)!.save),
             ),
           ],
         ),

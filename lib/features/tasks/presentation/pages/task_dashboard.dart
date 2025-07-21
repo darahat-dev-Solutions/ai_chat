@@ -6,6 +6,7 @@ import 'package:flutter_starter_kit/features/tasks/presentation/widgets/ai_summa
 import 'package:flutter_starter_kit/features/tasks/presentation/widgets/floating_button_widget.dart';
 import 'package:flutter_starter_kit/features/tasks/presentation/widgets/show_update_delete_task_dialog.dart';
 import 'package:flutter_starter_kit/features/tasks/provider/task_providers.dart';
+import 'package:flutter_starter_kit/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -33,13 +34,13 @@ class TaskDashboard extends ConsumerWidget {
           },
           icon: const Icon(Icons.logout),
         ),
-        title: const Text('FlutterStarterKit'),
+        title: Text(AppLocalizations.of(context)!.flutterStarterKit),
       ),
       body: Column(
         children: [
           Expanded(
             child: SingleChildScrollView(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -71,7 +72,7 @@ class TaskDashboard extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  AISummaryWidget(),
+                  const AISummaryWidget(),
                   const SizedBox(height: 16),
                   RefreshIndicator(
                     onRefresh:
@@ -82,7 +83,11 @@ class TaskDashboard extends ConsumerWidget {
                     child: tasksAsync.when(
                       data: (tasks) {
                         if (tasks.isEmpty) {
-                          return const Center(child: Text('No Tasks yet'));
+                          return Center(
+                            child: Text(
+                              AppLocalizations.of(context)!.noTasksYet,
+                            ),
+                          );
                         }
                         return ListView.builder(
                           shrinkWrap: true,
@@ -109,7 +114,12 @@ class TaskDashboard extends ConsumerWidget {
                           },
                         );
                       },
-                      error: (err, stack) => Center(child: Text('Error: $err')),
+                      error:
+                          (err, stack) => Center(
+                            child: Text(
+                              '${AppLocalizations.of(context)!.error}$err',
+                            ),
+                          ),
                       loading:
                           () =>
                               const Center(child: CircularProgressIndicator()),
@@ -128,9 +138,9 @@ class TaskDashboard extends ConsumerWidget {
                             color: Theme.of(context).colorScheme.error,
                             size: 18,
                           ),
-                          SizedBox(width: 8),
+                          const SizedBox(width: 8),
                           Text(
-                            'Listening...',
+                            AppLocalizations.of(context)!.listening,
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.error,
                             ),

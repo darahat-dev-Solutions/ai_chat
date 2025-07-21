@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter_kit/core/widgets/scaffold_messenger.dart';
 import 'package:flutter_starter_kit/features/auth/application/auth_state.dart';
 import 'package:flutter_starter_kit/features/auth/provider/auth_providers.dart';
+import 'package:flutter_starter_kit/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
 /// Input PhoneNumber  for OTP authentication page
@@ -42,7 +43,9 @@ class _PhoneNumberPageState extends ConsumerState<PhoneNumberPage> {
     });
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Enter Phone Number')),
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.enterPhoneNumber),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -53,14 +56,14 @@ class _PhoneNumberPageState extends ConsumerState<PhoneNumberPage> {
               children: [
                 const SizedBox(height: 40),
                 Text(
-                  'Enter your phone number',
+                  AppLocalizations.of(context)!.enterYourPhoneNumber,
                   style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'We will send you a verification code',
+                  AppLocalizations.of(context)!.weWillSendYouAVerificationCode,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
@@ -99,12 +102,14 @@ class _PhoneNumberPageState extends ConsumerState<PhoneNumberPage> {
                     Expanded(
                       child: TextFormField(
                         controller: phoneNumberController,
-                        decoration: const InputDecoration(
-                          labelText: 'Phone Number',
+                        decoration: InputDecoration(
+                          labelText: AppLocalizations.of(context)!.phoneNumber,
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your phone number';
+                            return AppLocalizations.of(
+                              context,
+                            )!.pleaseEnterYourPhoneNumber;
                           }
                           return null;
                         },
@@ -131,7 +136,7 @@ class _PhoneNumberPageState extends ConsumerState<PhoneNumberPage> {
                     child:
                         isLoading
                             ? const CircularProgressIndicator()
-                            : const Text('Send OTP'),
+                            : Text(AppLocalizations.of(context)!.sendOTP),
                   ),
                 ),
               ],

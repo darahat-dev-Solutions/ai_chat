@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter_kit/features/tasks/provider/task_providers.dart';
+import 'package:flutter_starter_kit/l10n/app_localizations.dart';
 
 /// ShowAddTaskDialog is for Manage Task Update, delete
 void showAddTaskDialog(BuildContext context, WidgetRef ref) {
@@ -10,14 +11,14 @@ void showAddTaskDialog(BuildContext context, WidgetRef ref) {
     context: context,
     builder:
         (context) => AlertDialog(
-          title: const Text(
-            "Add New Task",
-            style: TextStyle(fontWeight: FontWeight.bold),
+          title: Text(
+            AppLocalizations.of(context)!.addNewTask,
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           content: TextField(
             controller: textController,
             decoration: InputDecoration(
-              hintText: "Enter task description",
+              hintText: AppLocalizations.of(context)!.enterTaskDescription,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -30,7 +31,7 @@ void showAddTaskDialog(BuildContext context, WidgetRef ref) {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text("Cancel"),
+              child: Text(AppLocalizations.of(context)!.cancel),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -45,7 +46,7 @@ void showAddTaskDialog(BuildContext context, WidgetRef ref) {
                   Navigator.pop(context);
                 }
               },
-              child: const Text("Add Task"),
+              child: Text(AppLocalizations.of(context)!.addTask),
             ),
           ],
           shape: RoundedRectangleBorder(

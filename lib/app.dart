@@ -3,7 +3,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter_kit/app/router.dart';
 import 'package:flutter_starter_kit/app/theme/app_theme.dart';
-import 'package:flutter_starter_kit/core/localization/app_localization.dart';
 import 'package:flutter_starter_kit/features/app_settings/provider/settings_provider.dart';
 import 'package:flutter_starter_kit/l10n/app_localizations.dart';
 
@@ -23,19 +22,18 @@ class App extends ConsumerWidget {
       darkTheme: darkTheme,
       themeMode: settings.themeMode,
       locale: settings.locale, // e.g., for Japanese
-      // supportedLocales: const [
-      //   Locale('en'),
-      //   Locale('km'),
-      //   Locale('ja'),
-      //   Locale('es'),
-      // ],
+      supportedLocales: const [
+        Locale('en'),
+        Locale('km'),
+        Locale('ja'),
+        Locale('es'),
+      ],
       // supportedLocales: AppLocale.flutterSupportedLocales,
-      localizationsDelegates: [
+      localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
-        ...localization.localizationsDelegates,
       ],
       localeResolutionCallback: (locale, supportedLocales) {
         for (var supportedLocale in supportedLocales) {

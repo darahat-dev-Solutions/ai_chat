@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter_kit/core/widgets/scaffold_messenger.dart';
 import 'package:flutter_starter_kit/features/auth/application/auth_state.dart';
 import 'package:flutter_starter_kit/features/auth/provider/auth_providers.dart';
+import 'package:flutter_starter_kit/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 
@@ -68,7 +69,7 @@ class _OTPPageState extends ConsumerState<OTPPage> {
     });
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Enter OTP')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.enterOTP)),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -77,7 +78,7 @@ class _OTPPageState extends ConsumerState<OTPPage> {
             children: [
               const SizedBox(height: 40),
               Text(
-                'Enter the OTP sent to your phone',
+                AppLocalizations.of(context)!.enterTheOTPSentToYourPhone,
                 style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -103,7 +104,7 @@ class _OTPPageState extends ConsumerState<OTPPage> {
                   child:
                       isLoading
                           ? const CircularProgressIndicator()
-                          : const Text('Verify OTP'),
+                          : Text(AppLocalizations.of(context)!.verifyOTP),
                 ),
               ),
               const SizedBox(height: 24),
@@ -116,10 +117,12 @@ class _OTPPageState extends ConsumerState<OTPPage> {
                     });
                     startTimer();
                   },
-                  child: const Text('Resend OTP'),
+                  child: Text(AppLocalizations.of(context)!.resendOTP),
                 )
               else
-                Text('Resend OTP in $_start seconds'),
+                Text(
+                  '${AppLocalizations.of(context)!.resendOTPIn}$_start seconds',
+                ),
             ],
           ),
         ),

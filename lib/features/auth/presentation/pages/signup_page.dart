@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter_kit/features/auth/application/auth_state.dart';
+import 'package:flutter_starter_kit/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../provider/auth_providers.dart';
@@ -58,7 +59,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
               children: [
                 const SizedBox(height: 80),
                 Text(
-                  'Create Account',
+                  AppLocalizations.of(context)!.createAccount,
                   style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).colorScheme.onSurface,
@@ -67,7 +68,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  "Let's get you started!",
+                  AppLocalizations.of(context)!.letsGetYouStarted,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
@@ -77,7 +78,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                 TextFormField(
                   controller: nameController,
                   decoration: InputDecoration(
-                    labelText: 'Name',
+                    labelText: AppLocalizations.of(context)!.name,
                     prefixIcon: const Icon(Icons.person_outline),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -85,7 +86,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your name';
+                      return AppLocalizations.of(context)!.pleaseEnterYourName;
                     }
                     return null;
                   },
@@ -94,7 +95,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                 TextFormField(
                   controller: emailController,
                   decoration: InputDecoration(
-                    labelText: 'Email',
+                    labelText: AppLocalizations.of(context)!.email,
                     prefixIcon: const Icon(Icons.email_outlined),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -102,10 +103,12 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
+                      return AppLocalizations.of(context)!.pleaseEnterYourEmail;
                     }
                     if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                      return 'Please enter a valid email';
+                      return AppLocalizations.of(
+                        context,
+                      )!.pleaseEnterAValidEmail;
                     }
                     return null;
                   },
@@ -115,7 +118,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                   controller: passwordController,
                   obscureText: obscureText,
                   decoration: InputDecoration(
-                    labelText: 'Password',
+                    labelText: AppLocalizations.of(context)!.password,
                     prefixIcon: const Icon(Icons.lock_outline),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -132,10 +135,14 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your password';
+                      return AppLocalizations.of(
+                        context,
+                      )!.pleaseEnterYourPassword;
                     }
                     if (value.length < 6) {
-                      return 'Password must be at least 6 characters';
+                      return AppLocalizations.of(
+                        context,
+                      )!.passwordMustBeAtLeast6Characters;
                     }
                     return null;
                   },
@@ -170,7 +177,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                               strokeWidth: 2,
                             ),
                           )
-                          : const Text('Sign Up'),
+                          : Text(AppLocalizations.of(context)!.signUp),
                 ),
                 const SizedBox(height: 20),
                 TextButton(
@@ -179,11 +186,11 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                   },
                   child: RichText(
                     text: TextSpan(
-                      text: "Already have an account? ",
+                      text: AppLocalizations.of(context)!.alreadyHaveAnAccount,
                       style: Theme.of(context).textTheme.bodyMedium,
                       children: [
                         TextSpan(
-                          text: 'Sign In',
+                          text: AppLocalizations.of(context)!.signIn,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context).colorScheme.primary,
