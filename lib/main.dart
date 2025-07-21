@@ -52,28 +52,6 @@ Future<void> main() async {
   );
   await firebaseMessagingService.initialize();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
-  /// Start Localization loading logic
-  // final List<MapLocale> mapLocales = [];
-  // for (final locale in [AppLocale.enUS, AppLocale.kmKH, AppLocale.jaJA]) {
-  //   final jsonString = await rootBundle.loadString(
-  //     'assets/locals/$locale.json',
-  //   );
-  //   final Map<String, String> jsonMap = Map<String, String>.from(
-  //     json.decode(jsonString),
-  //   );
-  //   mapLocales.add(MapLocale(locale, jsonMap));
-  // }
-
-  /// End of Localization loading logic
-  // ✅ Call ensureInitialized() before init()
-  // await localization.ensureInitialized();
-
-  /// ✅ Then call init()
-  // localization.init(
-  //   mapLocales: mapLocales,
-  //   initLanguageCode: AppLocale.enUS, // Use a valid defined locale key
-  // );
   container.read(authControllerProvider.notifier).checkInitialAuthState();
 
   runApp(UncontrolledProviderScope(container: container, child: const App()));
