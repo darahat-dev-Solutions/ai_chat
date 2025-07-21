@@ -2,17 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter_kit/features/app_settings/application/settings_state.dart';
 import 'package:flutter_starter_kit/features/app_settings/infrastructure/settings_repository.dart';
+import 'package:flutter_starter_kit/features/app_settings/provider/settings_provider.dart';
 
 /// Setting Controller class
-class SettingsController extends StateNotifier<SettingState> {
+///
+/// Manages the application settings (theme and locale) asynchronously
+class SettingsController extends AsyncNotifier<SettingState> {
   /// Setting Controller constructor
-  SettingsController(this._settingsRepository) : super(const SettingState()) {
-    _loadThemeMode();
-    _loadLocale();
-  }
-  final SettingsRepository _settingsRepository;
-  Future<void> _loadThemeMode() async {
+  late final SettingsRepository _settingsRepository;
+
+  /// The `build` method is called once when the notifier is first created.
+  /// It should return a Future that resolves to the initial state.
+  @override
+  Future<SettingState> build() async {
+    _settingsRepository = ref.watch(settingsRepositoryProvider);
+
+    ///Inject repository
+    ///Load initial theme mode and locale concurrently
     final themeModeString = await _settingsRepository.getThemeMode();
+    final localeString = await _settingsRepository.getLocale();
+
     ThemeMode themeMode;
     switch (themeModeString) {
       case 'light':
@@ -23,46 +32,44 @@ class SettingsController extends StateNotifier<SettingState> {
       default:
         themeMode = ThemeMode.light;
     }
-    state = state.copyWith(themeMode: themeMode);
-  }
 
-  /// Get Locale update data
-  Future<void> _loadLocale() async {
-    final localeString = await _settingsRepository.getLocale();
+    /// Get Locale update data
+
+    Locale? locale;
     if (localeString != null) {
-      state = state.copyWith(locale: Locale(localeString));
+      locale = Locale(localeString);
+    } else {
+      /// Fallback to a default locale if none is saved
+      locale = const Locale('en');
     }
+    return SettingState(themeMode: themeMode, locale: locale);
   }
 
   /// Update Theme mode controller function
   Future<void> updateThemeMode(ThemeMode? newThemeMode) async {
-    if (newThemeMode == null) {
-      return;
-    }
-
-    /// Do not perform any work if new and old ThemeMode are the same
-    if (newThemeMode == state.themeMode) {
-      return;
+    if (newThemeMode == null || newThemeMode == state.value?.themeMode) {
+      return; // Do not perform  any work if new and old themeMode are the same or newThemeMode is null
     }
 
     ///Otherwise, update the state and persist the new theme mode
-    state = state.copyWith(themeMode: newThemeMode);
+    state = AsyncData(state.value!.copyWith(themeMode: newThemeMode));
+
+    /// Persist the new theme mode
     await _settingsRepository.saveThemeMode(newThemeMode.name);
   }
 
   /// Update Locale controller function
   Future<void> updateLocale(Locale? newLocale) async {
-    if (newLocale == null) {
-      return;
-    }
-
-    /// Do not perform any work if new and old ThemeMode are the same
-    if (newLocale == state.locale) {
+    if (newLocale == null || newLocale == state.value?.locale) {
       return;
     }
 
     ///Otherwise, update the state and persist the new theme mode
-    state = state.copyWith(locale: newLocale);
+    ///
+    ///Update the state optimistically
+    state = AsyncData(state.value!.copyWith(locale: newLocale));
+
+    /// persist the new locale
     await _settingsRepository.saveLocale(newLocale.languageCode);
   }
 }
