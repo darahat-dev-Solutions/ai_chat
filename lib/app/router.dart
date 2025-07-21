@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_starter_kit/app/app_route.dart';
 import 'package:flutter_starter_kit/features/auth/application/auth_state.dart';
+import 'package:flutter_starter_kit/features/auth/domain/user_role.dart';
 // Correctly import the page, not the old widget name
 import 'package:flutter_starter_kit/features/auth/presentation/pages/forgot_password_page.dart';
 import 'package:flutter_starter_kit/features/auth/presentation/pages/login_page.dart';
@@ -8,8 +10,21 @@ import 'package:flutter_starter_kit/features/auth/presentation/pages/phone_numbe
 import 'package:flutter_starter_kit/features/auth/presentation/pages/signup_page.dart';
 import 'package:flutter_starter_kit/features/auth/provider/auth_providers.dart';
 import 'package:flutter_starter_kit/features/home/presentation/layout/home_layout.dart';
+import 'package:flutter_starter_kit/features/home/presentation/pages/home_page.dart';
 import 'package:flutter_starter_kit/splashscreen.dart';
 import 'package:go_router/go_router.dart';
+
+/// helper class to bridge Riverpod's StateNotifier to
+class AuthListenable extends ChangeNotifier {
+  final Ref ref;
+  late final StateNotifierProvider<dynamic, AuthState> _provider;
+
+  AuthListenable(this.ref, this._provider) {
+    ref.listen<AuthState>(_provider, (previous, next) {
+      notifyListeners();
+    });
+  }
+}
 
 /// This provider is used to control the splash screen duration.
 final initializationFutureProvider = FutureProvider<void>((ref) async {
@@ -22,7 +37,29 @@ final initializationFutureProvider = FutureProvider<void>((ref) async {
 
 final routerProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authControllerProvider);
+  final authListenable = AuthListenable(ref, authControllerProvider);
 
+  /// Define your routes using the custom AppRoute
+  final routes = [
+    AppRoute(
+      path: '/login',
+      name: 'login',
+      // Only non-authenticated users (guests) can see the login page.
+      allowedRoles: [UserRole.guest],
+      builder: (context, state) => const LoginPage(),
+    ),
+    AppRoute(
+      path: '/home',
+      name: 'home',
+      // Only authenticated users  can see the Home page.
+      allowedRoles: [UserRole.admin, UserRole.authenticatedUser],
+      builder: (context, state) => const HomePage(),
+    ),
+    //      AppRoute(path: '/admin',name: 'admin',
+    // // Only Admin  can see the AdminDashboard page.
+    //  allowedRoles: [UserRole.admin],
+    //  builder: (context, state) => const AdminDashboardPage()),
+  ];
   return GoRouter(
     initialLocation: '/splash',
     routes: [

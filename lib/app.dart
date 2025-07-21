@@ -20,8 +20,8 @@ class App extends ConsumerWidget {
       title: 'FlutterStarterKit',
       theme: lightTheme,
       darkTheme: darkTheme,
-      themeMode: settings.themeMode,
-      locale: settings.locale, // e.g., for Japanese
+      themeMode: settings.value?.themeMode ?? ThemeMode.light,
+      locale: settings.value?.locale,
       supportedLocales: const [
         Locale('en'),
         Locale('km'),

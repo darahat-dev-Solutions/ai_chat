@@ -1,3 +1,4 @@
+import 'package:flutter_starter_kit/features/auth/domain/user_role.dart';
 import 'package:hive/hive.dart';
 
 part 'user_model.g.dart';
@@ -17,6 +18,15 @@ class UserModel {
   @HiveField(2)
   final String email;
 
-  /// its contstruct of UserModel class . its for call UserModel to other dart file.  this.name is not required
-  UserModel({required this.uid, required this.email, this.name});
+  /// Field for what is role of user
+  @HiveField(3)
+  final UserRole role;
+
+  /// its construct of UserModel class . its for call UserModel to other dart file.  this.name is not required
+  UserModel({
+    required this.uid,
+    required this.email,
+    this.name,
+    this.role = UserRole.authenticatedUser,
+  });
 }
