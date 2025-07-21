@@ -77,52 +77,105 @@ This command will generate `app_localizations.dart` (and other related files) in
 
 ## 3. Managing Locale State with Riverpod
 
-To allow users to change the application's language dynamically, we can manage the `Locale` state using Riverpod.
+To allow users to change the application's language dynamically, we can manage the `Locale` state using Riverpod. For asynchronous initialization and robust state management (loading, data, error), we use `AsyncNotifier`.
 
-### 3.1. Define the Locale State and Controller
+### 3.1. Define the Locale State and Controller (`AsyncNotifier`)
 
-Create a Riverpod `StateNotifierProvider` to hold and update the current `Locale`.
+Create a Riverpod `AsyncNotifierProvider` to hold and update the current `Locale` and `ThemeMode`. The `build` method handles asynchronous initialization.
 
-**File:** `lib/features/app_settings/provider/settings_provider.dart` (or similar)
+**File:** `lib/features/app_settings/application/settings_controller.dart`
 
 ```dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_starter_kit/features/app_settings/application/settings_state.dart';
+import 'package:flutter_starter_kit/features/app_settings/infrastructure/settings_repository.dart';
 
-// Define a SettingsState to hold both theme and locale
-class SettingsState {
-  final ThemeMode themeMode;
-  final Locale locale;
+/// Setting Controller class
+/// Manages the application settings (theme and locale) asynchronously.
+class SettingsController extends AsyncNotifier<SettingState> {
+  /// The repository for persisting and retrieving settings.
+  late final SettingsRepository _settingsRepository;
 
-  SettingsState({required this.themeMode, required this.locale});
+  /// The `build` method is called once when the notifier is first created.
+  /// It should return a Future that resolves to the initial state.
+  @override
+  Future<SettingState> build() async {
+    _settingsRepository = ref.watch(settingsRepositoryProvider); // Inject repository
 
-  SettingsState copyWith({ThemeMode? themeMode, Locale? locale}) {
-    return SettingsState(
-      themeMode: themeMode ?? this.themeMode,
-      locale: locale ?? this.locale,
-    );
-  }
-}
+    // Load initial theme mode and locale concurrently
+    final themeModeString = await _settingsRepository.getThemeMode();
+    final localeString = await _settingsRepository.getLocale();
 
-// StateNotifier to manage settings
-class SettingsController extends StateNotifier<SettingsState> {
-  SettingsController() : super(SettingsState(themeMode: ThemeMode.system, locale: const Locale('en'))); // Default locale
-
-  void updateThemeMode(ThemeMode newThemeMode) {
-    state = state.copyWith(themeMode: newThemeMode);
-  }
-
-  void updateLocale(Locale? newLocale) {
-    if (newLocale != null) {
-      state = state.copyWith(locale: newLocale);
+    ThemeMode themeMode;
+    switch (themeModeString) {
+      case 'light':
+        themeMode = ThemeMode.light;
+        break;
+      case 'dark':
+        themeMode = ThemeMode.dark;
+        break;
+      default:
+        themeMode = ThemeMode.system; // Default to system theme if not set
     }
+
+    Locale? locale;
+    if (localeString != null) {
+      locale = Locale(localeString);
+    }
+    // Fallback to a default locale if none is saved or if localeString is null
+    locale ??= const Locale('en');
+
+    return SettingState(themeMode: themeMode, locale: locale);
+  }
+
+  /// Update Theme mode controller function
+  Future<void> updateThemeMode(ThemeMode? newThemeMode) async {
+    if (newThemeMode == null || newThemeMode == state.value?.themeMode) {
+      return; // Do not perform any work if new and old ThemeMode are the same or newThemeMode is null
+    }
+
+    // Update the state optimistically (UI updates immediately)
+    state = AsyncData(state.value!.copyWith(themeMode: newThemeMode));
+
+    // Persist the new theme mode
+    await _settingsRepository.saveThemeMode(newThemeMode.name);
+  }
+
+  /// Update Locale controller function
+  Future<void> updateLocale(Locale? newLocale) async {
+    if (newLocale == null || newLocale == state.value?.locale) {
+      return; // Do not perform any work if new and old Locale are the same or newLocale is null
+    }
+
+    // Update the state optimistically
+    state = AsyncData(state.value!.copyWith(locale: newLocale));
+
+    // Persist the new locale
+    await _settingsRepository.saveLocale(newLocale.languageCode);
   }
 }
+```
 
-// Provider for the SettingsController
-final settingsControllerProvider = StateNotifierProvider<SettingsController, SettingsState>(
-  (ref) => SettingsController(),
-);
+**File:** `lib/features/app_settings/provider/settings_provider.dart`
+
+```dart
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_starter_kit/features/app_settings/application/settings_controller.dart';
+import 'package:flutter_starter_kit/features/app_settings/application/settings_state.dart';
+import 'package:flutter_starter_kit/features/app_settings/infrastructure/settings_repository.dart';
+
+/// Provider for the SettingsRepository.
+/// This is a simple Provider as it doesn't manage mutable state.
+final settingsRepositoryProvider = Provider((ref) => SettingsRepository());
+
+/// Provider for the SettingsController.
+/// Changed to AsyncNotifierProvider to handle asynchronous initialization.
+/// The state will be an AsyncValue<SettingState>.
+final settingsControllerProvider =
+    AsyncNotifierProvider<SettingsController, SettingState>(() {
+  return SettingsController();
+});
 ```
 
 ### 3.2. Integrate with `MaterialApp`
@@ -152,8 +205,8 @@ class App extends ConsumerWidget {
       title: 'FlutterStarterKit', // Static title for OS task switcher
       theme: lightTheme,
       darkTheme: darkTheme,
-      themeMode: settings.themeMode,
-      locale: settings.locale, // Use locale from Riverpod state
+      themeMode: settings.themeMode, // This will now be accessed via settings.value.themeMode if using AsyncValue
+      locale: settings.locale, // This will now be accessed via settings.value.locale if using AsyncValue
       supportedLocales: AppLocalizations.supportedLocales, // From generated file
       localizationsDelegates: const [
         AppLocalizations.delegate, // From generated file
@@ -177,9 +230,11 @@ class App extends ConsumerWidget {
 }
 ```
 
-### 3.3. Usage in Widgets
+### 3.3. Usage in Widgets (Consuming `AsyncValue`)
 
-Access translated strings using `AppLocalizations.of(context)!` and update the locale via the `SettingsController`.
+When consuming an `AsyncNotifierProvider`, the watched state will be an `AsyncValue`. You must handle the `loading`, `error`, and `data` states explicitly.
+
+**File:** `lib/features/app_settings/presentation/pages/setting_page.dart`
 
 ```dart
 import 'package:flutter/material.dart';
@@ -194,25 +249,52 @@ class SettingsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final asyncSettings = ref.watch(settingsControllerProvider);
 
-    return Column(
-      children: [
-        Text(AppLocalizations.of(context)!.language), // Access translated string
-
-        DropdownButton<Locale>(
-          value: asyncSettings.locale,
-          onChanged: (Locale? newLocale) {
-            ref.read(settingsControllerProvider.notifier).updateLocale(newLocale); // Update locale
-          },
-          items: AppLocalizations.supportedLocales.map<DropdownMenuItem<Locale>>(
-            (Locale locale) {
-              return DropdownMenuItem<Locale>(
-                value: locale,
-                child: Text(locale.languageCode),
-              );
-            },
-          ).toList(),
-        ),
-      ],
+    return asyncSettings.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (err, stack) => Center(child: Text('Error: $err')),
+      data: (settings) { // 'settings' is now of type SettingState
+        final isDarkMode = settings.themeMode == ThemeMode.dark;
+        // AppLogger.debug(settings.themeMode.name); // Logging can be re-added if needed
+        return ListView(
+          padding: const EdgeInsets.all(16),
+          children: [
+            Text(
+              AppLocalizations.of(context)!.appearance,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            SwitchListTile(
+              title: Text(AppLocalizations.of(context)!.darkMode),
+              value: isDarkMode,
+              onChanged: (value) {
+                ref
+                    .read(settingsControllerProvider.notifier)
+                    .updateThemeMode(value ? ThemeMode.dark : ThemeMode.light);
+              },
+            ),
+            const SizedBox(height: 20),
+            Text(
+              AppLocalizations.of(context)!.language,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            DropdownButton<Locale>(
+              value: settings.locale,
+              onChanged: (Locale? newLocale) {
+                ref
+                    .read(settingsControllerProvider.notifier)
+                    .updateLocale(newLocale);
+              },
+              items: AppLocalizations.supportedLocales.map<DropdownMenuItem<Locale>>(
+                (Locale locale) {
+                  return DropdownMenuItem<Locale>(
+                    value: locale,
+                    child: Text(locale.languageCode),
+                  );
+                },
+              ).toList(),
+            ),
+          ],
+        );
+      },
     );
   }
 }
