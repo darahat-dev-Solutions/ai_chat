@@ -6,6 +6,7 @@ import 'package:flutter_starter_kit/features/home/presentation/widgets/home_bott
 import 'package:flutter_starter_kit/features/home/presentation/widgets/home_drawer.dart';
 import 'package:flutter_starter_kit/features/home/presentation/widgets/search_content.dart';
 import 'package:flutter_starter_kit/features/home/provider/home_provider.dart';
+import 'package:flutter_starter_kit/l10n/app_localizations.dart';
 
 /// Home Layout (bottom navigation+sidebar+topBar+scrollable body)
 class HomeLayout extends ConsumerWidget {
@@ -17,7 +18,10 @@ class HomeLayout extends ConsumerWidget {
     final currentIndex = ref.watch(homeControllerProvider).currentTabIndex;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home', textAlign: TextAlign.center),
+        title: Text(
+          AppLocalizations.of(context)!.home,
+          textAlign: TextAlign.center,
+        ),
         centerTitle: true,
         leading: Builder(
           builder:
