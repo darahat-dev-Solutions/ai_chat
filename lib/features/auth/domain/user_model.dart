@@ -1,4 +1,4 @@
-import 'package:flutter_starter_kit/features/auth/domain/user_role.dart';
+import 'package:ai_chat/features/auth/domain/user_role.dart';
 import 'package:hive/hive.dart';
 
 part 'user_model.g.dart';

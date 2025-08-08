@@ -1,8 +1,8 @@
+import 'package:ai_chat/app/theme/app_colors.dart';
+import 'package:ai_chat/features/tasks/provider/task_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter_kit/app/theme/app_colors.dart';
-import 'package:flutter_starter_kit/features/tasks/provider/task_providers.dart';
 
 /// Voice record which maintain record audio
 class MicButtonWidget extends ConsumerWidget {
@@ -58,7 +58,10 @@ class MicButtonWidget extends ConsumerWidget {
                 child: Icon(
                   Icons.mic,
                   size: 30,
-                  color: isRecording ? Theme.of(context).colorScheme.error : AppColor.buttonText,
+                  color:
+                      isRecording
+                          ? Theme.of(context).colorScheme.error
+                          : AppColor.buttonText,
                 ),
               ),
             ),

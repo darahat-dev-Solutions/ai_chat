@@ -1,6 +1,6 @@
+import 'package:ai_chat/core/constants/hive_constants.dart';
+import 'package:ai_chat/features/app_settings/domain/settings_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_starter_kit/core/constants/hive_constants.dart';
-import 'package:flutter_starter_kit/features/app_settings/domain/settings_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 /// Settings Repository class where all get and Save functions will exist

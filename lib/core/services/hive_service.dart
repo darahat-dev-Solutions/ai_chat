@@ -1,8 +1,8 @@
-import 'package:flutter_starter_kit/core/errors/exceptions.dart';
-import 'package:flutter_starter_kit/core/utils/logger.dart';
-import 'package:flutter_starter_kit/features/app_settings/domain/settings_model.dart';
-import 'package:flutter_starter_kit/features/auth/domain/user_model.dart';
-import 'package:flutter_starter_kit/features/tasks/domain/task_model.dart';
+import 'package:ai_chat/core/errors/exceptions.dart';
+import 'package:ai_chat/core/utils/logger.dart';
+import 'package:ai_chat/features/app_settings/domain/settings_model.dart';
+import 'package:ai_chat/features/auth/domain/user_model.dart';
+import 'package:ai_chat/features/tasks/domain/task_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../constants/hive_constants.dart';

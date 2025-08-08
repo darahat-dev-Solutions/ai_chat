@@ -1,12 +1,12 @@
+import 'package:ai_chat/features/app_settings/presentation/pages/setting_page.dart';
+import 'package:ai_chat/features/home/presentation/pages/home_page.dart';
+import 'package:ai_chat/features/home/presentation/widgets/home_bottom_nav.dart';
+import 'package:ai_chat/features/home/presentation/widgets/home_drawer.dart';
+import 'package:ai_chat/features/home/presentation/widgets/search_content.dart';
+import 'package:ai_chat/features/home/provider/home_provider.dart';
+import 'package:ai_chat/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter_kit/features/app_settings/presentation/pages/setting_page.dart';
-import 'package:flutter_starter_kit/features/home/presentation/pages/home_page.dart';
-import 'package:flutter_starter_kit/features/home/presentation/widgets/home_bottom_nav.dart';
-import 'package:flutter_starter_kit/features/home/presentation/widgets/home_drawer.dart';
-import 'package:flutter_starter_kit/features/home/presentation/widgets/search_content.dart';
-import 'package:flutter_starter_kit/features/home/provider/home_provider.dart';
-import 'package:flutter_starter_kit/l10n/app_localizations.dart';
 
 /// Home Layout (bottom navigation+sidebar+topBar+scrollable body)
 class HomeLayout extends ConsumerWidget {

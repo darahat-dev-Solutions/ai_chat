@@ -1,9 +1,9 @@
 // features/home/presentation/widgets/settings_page.dart
+import 'package:ai_chat/core/utils/logger.dart';
+import 'package:ai_chat/features/app_settings/provider/settings_provider.dart';
+import 'package:ai_chat/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter_kit/core/utils/logger.dart';
-import 'package:flutter_starter_kit/features/app_settings/provider/settings_provider.dart';
-import 'package:flutter_starter_kit/l10n/app_localizations.dart';
 
 /// Flutter setting page
 class SettingsPage extends ConsumerWidget {

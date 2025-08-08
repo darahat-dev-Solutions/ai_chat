@@ -13,7 +13,7 @@
 /// and set the `theme` and `darkTheme` properties.
 ///
 /// `dart
-/// import 'package:flutter_starter_kit/app/theme/app_theme.dart';
+/// import 'package:ai_chat/app/theme/app_theme.dart';
 ///
 /// MaterialApp(
 ///   title: 'My App',

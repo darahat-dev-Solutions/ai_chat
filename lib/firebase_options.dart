@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBWPF6fjoi6ZD7wnwRIjyWLXMMZXyS7s8Q',
-    appId: '1:25940150454:android:a12183c9c0114a0e9ebe17',
+    appId: '1:25940150454:android:93feb76864dc9c0f9ebe17',
     messagingSenderId: '25940150454',
     projectId: 'flutter-starter-kit-3bd18',
     storageBucket: 'flutter-starter-kit-3bd18.firebasestorage.app',
@@ -63,10 +63,9 @@ class DefaultFirebaseOptions {
     messagingSenderId: '25940150454',
     projectId: 'flutter-starter-kit-3bd18',
     storageBucket: 'flutter-starter-kit-3bd18.firebasestorage.app',
-    androidClientId:
-        '25940150454-4qklgv283cfevtpjpk39u68dqibjl4nm.apps.googleusercontent.com',
-    iosClientId:
-        '25940150454-4tb4hqrefifuj33n916ctsbpijs421dd.apps.googleusercontent.com',
-    iosBundleId: 'com.example.flutter_starter_kit',
+    androidClientId: '25940150454-4qklgv283cfevtpjpk39u68dqibjl4nm.apps.googleusercontent.com',
+    iosClientId: '25940150454-4tb4hqrefifuj33n916ctsbpijs421dd.apps.googleusercontent.com',
+    iosBundleId: 'com.example.opsmate',
   );
+
 }

@@ -1,13 +1,13 @@
+import 'package:ai_chat/app.dart';
+import 'package:ai_chat/core/services/firebase_messaging_service.dart';
+import 'package:ai_chat/core/services/hive_service.dart';
+import 'package:ai_chat/core/utils/logger.dart';
+import 'package:ai_chat/features/auth/provider/auth_providers.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter_kit/app.dart';
-import 'package:flutter_starter_kit/core/services/firebase_messaging_service.dart';
-import 'package:flutter_starter_kit/core/services/hive_service.dart';
-import 'package:flutter_starter_kit/core/utils/logger.dart';
-import 'package:flutter_starter_kit/features/auth/provider/auth_providers.dart';
 
 import 'firebase_options.dart';
 

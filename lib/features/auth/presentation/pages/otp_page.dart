@@ -1,11 +1,11 @@
 import 'dart:async';
 
+import 'package:ai_chat/core/widgets/scaffold_messenger.dart';
+import 'package:ai_chat/features/auth/application/auth_state.dart';
+import 'package:ai_chat/features/auth/provider/auth_providers.dart';
+import 'package:ai_chat/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter_kit/core/widgets/scaffold_messenger.dart';
-import 'package:flutter_starter_kit/features/auth/application/auth_state.dart';
-import 'package:flutter_starter_kit/features/auth/provider/auth_providers.dart';
-import 'package:flutter_starter_kit/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 

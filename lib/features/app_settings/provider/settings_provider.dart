@@ -1,7 +1,7 @@
+import 'package:ai_chat/features/app_settings/application/settings_controller.dart';
+import 'package:ai_chat/features/app_settings/application/settings_state.dart';
+import 'package:ai_chat/features/app_settings/infrastructure/settings_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter_kit/features/app_settings/application/settings_controller.dart';
-import 'package:flutter_starter_kit/features/app_settings/application/settings_state.dart';
-import 'package:flutter_starter_kit/features/app_settings/infrastructure/settings_repository.dart';
 
 /// its carry all functionality of AuthRepository functions
 final settingsRepositoryProvider = Provider((ref) => SettingsRepository());
@@ -9,7 +9,7 @@ final settingsRepositoryProvider = Provider((ref) => SettingsRepository());
 /// settingsControllerProvider will use for all kind of controller function calling
 /// Provider for the Settings Controller
 /// Changed to AsyncNotifierProvider to handle asynchronous initialization
-/// The state will be an AsyncValue<SettingState>.
+/// The state will be an AsyncValue<`SettingState`>.
 final settingsControllerProvider = AsyncNotifierProvider<
   SettingsController,
   SettingState

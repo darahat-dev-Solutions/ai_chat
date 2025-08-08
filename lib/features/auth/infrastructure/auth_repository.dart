@@ -1,8 +1,8 @@
+import 'package:ai_chat/core/errors/exceptions.dart';
+import 'package:ai_chat/core/utils/logger.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart'
     show kIsWeb; // Make sure to add this import
-import 'package:flutter_starter_kit/core/errors/exceptions.dart';
-import 'package:flutter_starter_kit/core/utils/logger.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../domain/user_model.dart';

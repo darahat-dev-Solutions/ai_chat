@@ -1,9 +1,9 @@
+import 'package:ai_chat/features/auth/provider/auth_providers.dart';
+import 'package:ai_chat/features/home/presentation/widgets/user_profile_header.dart';
+import 'package:ai_chat/features/home/provider/home_provider.dart';
+import 'package:ai_chat/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter_kit/features/auth/provider/auth_providers.dart';
-import 'package:flutter_starter_kit/features/home/presentation/widgets/user_profile_header.dart';
-import 'package:flutter_starter_kit/features/home/provider/home_provider.dart';
-import 'package:flutter_starter_kit/l10n/app_localizations.dart';
 
 /// HomeDrawer for side drawer
 class HomeDrawer extends ConsumerWidget {

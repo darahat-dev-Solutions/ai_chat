@@ -43,6 +43,7 @@ flutter_gen:
 All your `.arb` files for different languages should reside directly within the `arb-dir` specified in `pubspec.yaml` (e.g., `lib/l10n/`).
 
 For example:
+
 ```
 lib/l10n/
 ├── app_en.arb
@@ -54,14 +55,15 @@ lib/l10n/
 Each `.arb` file is a JSON file. The `template-arb-file` (e.g., `app_en.arb`) defines all the keys, and other language files provide translations for those keys.
 
 **Example `app_en.arb` content:**
+
 ```json
 {
-    "@@locale": "en",
-    "appTitle": "Flutter Starter Kit",
-    "signInToContinue": "Sign in to continue",
-    "email": "Email",
-    "home": "Home",
-    "darkMode": "Dark Mode"
+  "@@locale": "en",
+  "appTitle": "Flutter Starter Kit",
+  "signInToContinue": "Sign in to continue",
+  "email": "Email",
+  "home": "Home",
+  "darkMode": "Dark Mode"
 }
 ```
 
@@ -88,8 +90,8 @@ Create a Riverpod `AsyncNotifierProvider` to hold and update the current `Locale
 ```dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter_kit/features/app_settings/application/settings_state.dart';
-import 'package:flutter_starter_kit/features/app_settings/infrastructure/settings_repository.dart';
+import 'package:ai_chat/features/app_settings/application/settings_state.dart';
+import 'package:ai_chat/_settings/infrastructure/settings_repository.dart';
 
 /// Setting Controller class
 /// Manages the application settings (theme and locale) asynchronously.
@@ -161,9 +163,9 @@ class SettingsController extends AsyncNotifier<SettingState> {
 
 ```dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter_kit/features/app_settings/application/settings_controller.dart';
-import 'package:flutter_starter_kit/features/app_settings/application/settings_state.dart';
-import 'package:flutter_starter_kit/features/app_settings/infrastructure/settings_repository.dart';
+import 'package:ai_chat/_settings/application/settings_controller.dart';
+import 'package:ai_chat/_settings/application/settings_state.dart';
+import 'package:ai_chat/_settings/infrastructure/settings_repository.dart';
 
 /// Provider for the SettingsRepository.
 /// This is a simple Provider as it doesn't manage mutable state.
@@ -188,10 +190,10 @@ In your main `App` widget, use the Riverpod provider to set the `locale` and `th
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter_kit/app/router.dart';
-import 'package:flutter_starter_kit/app/theme/app_theme.dart';
-import 'package:flutter_starter_kit/features/app_settings/provider/settings_provider.dart';
-import 'package:flutter_starter_kit/l10n/app_localizations.dart'; // Import generated localizations
+import 'package:ai_chat/art';
+import 'package:ai_chat/p_theme.dart';
+import 'package:ai_chat/_settings/provider/settings_provider.dart';
+import 'package:ai_chat/alizations.dart'; // Import generated localizations
 
 class App extends ConsumerWidget {
   const App({super.key});
@@ -239,8 +241,8 @@ When consuming an `AsyncNotifierProvider`, the watched state will be an `AsyncVa
 ```dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter_kit/features/app_settings/provider/settings_provider.dart';
-import 'package:flutter_starter_kit/l10n/app_localizations.dart'; // Import generated localizations
+import 'package:ai_chat/_settings/provider/settings_provider.dart';
+import 'package:ai_chat/alizations.dart'; // Import generated localizations
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
@@ -305,7 +307,7 @@ class SettingsPage extends ConsumerWidget {
 ### 4.1. `FormatException: Unexpected character` in `.arb` file
 
 **Problem:**
-This error occurs when your `.arb` JSON file has a syntax error, most commonly a missing comma after a key-value pair, or an extra character. The error message usually points to the line *after* the actual problem.
+This error occurs when your `.arb` JSON file has a syntax error, most commonly a missing comma after a key-value pair, or an extra character. The error message usually points to the line _after_ the actual problem.
 
 ```
 FormatException: Unexpected character (at line X, character Y)
@@ -315,11 +317,12 @@ FormatException: Unexpected character (at line X, character Y)
 
 **Solution:**
 Carefully review the `.arb` file at and around the indicated line number. Ensure:
-*   Every key-value pair (except the very last one in an object) is followed by a comma.
-*   There are no stray characters.
-*   All strings are properly quoted.
-*   The JSON structure is valid (e.g., all braces and brackets are matched).
-It's often safest to replace the entire file content with a known good JSON structure if you suspect deep corruption.
+
+- Every key-value pair (except the very last one in an object) is followed by a comma.
+- There are no stray characters.
+- All strings are properly quoted.
+- The JSON structure is valid (e.g., all braces and brackets are matched).
+  It's often safest to replace the entire file content with a known good JSON structure if you suspect deep corruption.
 
 ### 4.2. `Null check operator used on a null value` for `AppLocalizations.of(context)!`
 
@@ -354,6 +357,7 @@ If you organize your `.arb` files into multiple files per language (e.g., `auth_
 The `flutter gen-l10n` tool expects a single, consolidated `.arb` file for each language. To maintain your modular `.arb` file structure while still generating a single `AppLocalizations` class, you need a pre-build step to merge these files.
 
 **Steps:**
+
 1.  **Keep your individual `.arb` files** (e.g., `auth_en.arb`, `home_en.arb`, etc.) in `lib/l10n/`.
 2.  **Create a Python script** (e.g., `merge_arb.py` in your project root) to read all these individual `.arb` files for a given language, merge their contents, and write them to a single `app_en.arb` (and `app_es.arb`, etc.) file in `lib/l10n/`.
 
@@ -375,7 +379,7 @@ The `flutter gen-l10n` tool expects a single, consolidated `.arb` file for each 
                         for key, value in data.items():
                             if key != "@@locale":
                                 merged_data[key] = value
-            
+
             output_file_path = os.path.join(input_dir, f"app_{lang}.arb") # Output to app_en.arb, app_es.arb etc.
             with open(output_file_path, 'w', encoding='utf-8') as f:
                 json.dump(merged_data, f, indent=4, ensure_ascii=False)
@@ -383,9 +387,10 @@ The `flutter gen-l10n` tool expects a single, consolidated `.arb` file for each 
 
     if __name__ == "__main__":
         l10n_dir = os.path.join(os.path.dirname(__file__), "lib", "l10n")
-        languages = ["en", "es", "ja", "km"] 
+        languages = ["en", "es", "ja", "km"]
         merge_arb_files(l10n_dir, languages)
     ```
+
 3.  **Update `pubspec.yaml`** to point `template-arb-file` to the merged `app_en.arb`:
 
     ```yaml
@@ -397,6 +402,7 @@ The `flutter gen-l10n` tool expects a single, consolidated `.arb` file for each 
         output-class: AppLocalizations
         # ... other settings
     ```
+
 4.  **Run the commands in sequence:**
     ```bash
     python merge_arb.py

@@ -1,8 +1,8 @@
+import 'package:ai_chat/core/errors/exceptions.dart';
+import 'package:ai_chat/core/services/hive_service.dart';
+import 'package:ai_chat/core/utils/logger.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter_kit/core/errors/exceptions.dart';
-import 'package:flutter_starter_kit/core/services/hive_service.dart';
-import 'package:flutter_starter_kit/core/utils/logger.dart';
 
 import '../infrastructure/auth_repository.dart';
 import 'auth_state.dart';

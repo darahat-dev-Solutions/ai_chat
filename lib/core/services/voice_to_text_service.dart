@@ -1,7 +1,7 @@
 import 'dart:async';
 
+import 'package:ai_chat/core/utils/logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter_kit/core/utils/logger.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 /// voice to text related service

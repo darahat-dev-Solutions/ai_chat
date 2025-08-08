@@ -33,8 +33,9 @@ class SettingState {
   /// and locale properties are identical
   @override
   bool operator ==(Object other) {
-    if (identical(this, other))
+    if (identical(this, other)) {
       return true; // Optimization for same object reference
+    }
     return other is SettingState && // Ensure other is of the same type
         other.themeMode == themeMode && // Compare themeMode values
         other.locale == locale;

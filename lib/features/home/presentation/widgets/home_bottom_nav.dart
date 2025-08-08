@@ -1,7 +1,7 @@
+import 'package:ai_chat/features/home/provider/home_provider.dart';
+import 'package:ai_chat/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter_kit/features/home/provider/home_provider.dart';
-import 'package:flutter_starter_kit/l10n/app_localizations.dart';
 
 /// HomeBottomNav widget class
 class HomeBottomNav extends ConsumerWidget {

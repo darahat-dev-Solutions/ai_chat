@@ -1,12 +1,12 @@
+import 'package:ai_chat/features/auth/application/auth_state.dart';
+import 'package:ai_chat/features/auth/provider/auth_providers.dart';
+import 'package:ai_chat/features/tasks/presentation/widgets/ai_summary_widget.dart';
+import 'package:ai_chat/features/tasks/presentation/widgets/floating_button_widget.dart';
+import 'package:ai_chat/features/tasks/presentation/widgets/show_update_delete_task_dialog.dart';
+import 'package:ai_chat/features/tasks/provider/task_providers.dart';
+import 'package:ai_chat/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter_kit/features/auth/application/auth_state.dart';
-import 'package:flutter_starter_kit/features/auth/provider/auth_providers.dart';
-import 'package:flutter_starter_kit/features/tasks/presentation/widgets/ai_summary_widget.dart';
-import 'package:flutter_starter_kit/features/tasks/presentation/widgets/floating_button_widget.dart';
-import 'package:flutter_starter_kit/features/tasks/presentation/widgets/show_update_delete_task_dialog.dart';
-import 'package:flutter_starter_kit/features/tasks/provider/task_providers.dart';
-import 'package:flutter_starter_kit/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 

@@ -1,7 +1,7 @@
+import 'package:ai_chat/core/utils/logger.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter_kit/core/utils/logger.dart';
 
 /// Manage Firebase Notifications
 class FirebaseMessagingService {

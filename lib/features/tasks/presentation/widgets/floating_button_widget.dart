@@ -1,8 +1,8 @@
+import 'package:ai_chat/features/tasks/presentation/widgets/mic_button_widget.dart';
+import 'package:ai_chat/features/tasks/presentation/widgets/show_add_task_dialog.dart';
+import 'package:ai_chat/features/tasks/provider/task_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter_kit/features/tasks/presentation/widgets/mic_button_widget.dart';
-import 'package:flutter_starter_kit/features/tasks/presentation/widgets/show_add_task_dialog.dart';
-import 'package:flutter_starter_kit/features/tasks/provider/task_providers.dart';
 
 /// Floatingbuttonwidget is for showing floating button and manage multiple options inside this
 class FloatingButtonWidget extends ConsumerWidget {
@@ -25,7 +25,9 @@ class FloatingButtonWidget extends ConsumerWidget {
                       ref.read(isExpandedFabProvider.notifier).state =
                           !isFabExpanded,
               child: Container(
-                color: Theme.of(context).colorScheme.scrim.withAlpha(100), // semi-transparent background
+                color: Theme.of(context).colorScheme.scrim.withAlpha(
+                  100,
+                ), // semi-transparent background
               ),
             ),
           ),
