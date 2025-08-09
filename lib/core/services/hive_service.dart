@@ -1,5 +1,6 @@
 import 'package:ai_chat/core/errors/exceptions.dart';
 import 'package:ai_chat/core/utils/logger.dart';
+import 'package:ai_chat/features/ai_chat/domain/ai_chat_model.dart';
 import 'package:ai_chat/features/app_settings/domain/settings_model.dart';
 import 'package:ai_chat/features/auth/domain/user_model.dart';
 import 'package:ai_chat/features/tasks/domain/task_model.dart';
@@ -17,6 +18,10 @@ class HiveService {
   ///Assigned HiveConstants taskBox table names to variable
 
   static const String taskBoxName = HiveConstants.taskBox;
+
+  ///Assigned HiveConstants aiChatBox table names to variable
+
+  static const String aiChatBoxName = HiveConstants.aiChatBox;
 
   /// Assigned HiveConstants settingsBox table name to settingsBoxName variable
   static const String settingsBoxName = HiveConstants.settingsBoxName;
@@ -39,8 +44,12 @@ class HiveService {
       if (!Hive.isAdapterRegistered(2)) {
         Hive.registerAdapter(SettingDefinitionModelAdapter());
       }
+      if (!Hive.isAdapterRegistered(3)) {
+        Hive.registerAdapter(AiChatModelAdapter());
+      }
       await Hive.openBox<UserModel>(authBoxName);
       await Hive.openBox<TaskModel>(taskBoxName);
+      await Hive.openBox<TaskModel>(aiChatBoxName);
       await Hive.openBox<SettingDefinitionModel>(settingsBoxName);
 
       _initialized = true;
@@ -49,7 +58,9 @@ class HiveService {
       );
     } catch (e) {
       _initialized = false;
-      throw ServerException('🚀 ~Server error occurred $e');
+      throw ServerException(
+        '🚀 ~Server error occurrede (hive.service.dart) $e',
+      );
       // rethrow;
     }
   }
@@ -72,6 +83,13 @@ class HiveService {
   static Box<TaskModel> get taskBox {
     _checkInitialized();
     return Hive.box<TaskModel>(taskBoxName);
+  }
+
+  ///aiChatBox initialized
+
+  static Box<AiChatModel> get aiChatBoxInit {
+    _checkInitialized();
+    return Hive.box<AiChatModel>(aiChatBoxName);
   }
 
   ///settingsBox initialized

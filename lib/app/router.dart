@@ -101,6 +101,13 @@ final routerProvider = Provider<GoRouter>((ref) {
       allowedRoles: [UserRole.authenticatedUser, UserRole.admin],
       builder: (context, state) => const HomeLayout(),
     ),
+    AppRoute(
+      path: '/aiChat',
+      name: 'aiChat',
+      // Only authenticated users  can see the Home page.
+      allowedRoles: [UserRole.authenticatedUser, UserRole.admin],
+      builder: (context, state) => const HomeLayout(),
+    ),
     // Example of an admin-only route
     // AppRoute(
     //   path: '/admin',
