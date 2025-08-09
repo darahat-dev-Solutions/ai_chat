@@ -20,13 +20,13 @@ class UserModel {
 
   /// Field for what is role of user
   @HiveField(3)
-  final UserRole? role;
+  final UserRole role;
 
   /// its construct of UserModel class . its for call UserModel to other dart file.  this.name is not required
   UserModel({
     required this.uid,
     required this.email,
     this.name,
-    this.role = UserRole.authenticatedUser,
+    this.role = UserRole.guest,
   });
 }
