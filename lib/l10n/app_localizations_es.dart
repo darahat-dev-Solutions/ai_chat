@@ -36,6 +36,24 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settings => 'Configuración';
 
   @override
+  String get aiChat => 'Chatear con IA';
+
+  @override
+  String get typeMessage => 'Escribe un mensaje...';
+
+  @override
+  String get systemSummaryPrompt => 'Eres un asistente útil que genera resúmenes de tareas y planes.';
+
+  @override
+  String get userSummaryPrompt => 'Basado en la siguiente lista de tareas, genera un resumen y sugiere un plan diario inteligente:\n';
+
+  @override
+  String get systemQuickReplyPrompt => 'Eres un compañero de conversación profesional y humano. Responde en menos de 100 caracteres. Sé cálido pero conciso, y responde de forma natural como en conversaciones reales.';
+
+  @override
+  String get errorMistralRequest => 'No se pudo obtener respuesta de Mistral: ';
+
+  @override
   String get logout => 'Cerrar sesión';
 
   @override

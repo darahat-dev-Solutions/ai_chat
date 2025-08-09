@@ -17,14 +17,15 @@ class AiChatRepository {
   }
 
   /// Adds a new aiChat with the given [text] as the title.
-  Future<AiChatModel?> addAiChat(String text) async {
+  Future<AiChatModel?> addAiChat(String usersText) async {
     final key = DateTime.now().millisecondsSinceEpoch.toString();
     final aiChat = AiChatModel(
       id: key,
-      chatTextBody: text,
+      chatTextBody: usersText,
       sentTime: DateTime.now().toIso8601String(),
       isSeen: false,
       isReplied: false,
+      replyText: '',
     );
     await _box.put(key, aiChat);
     return aiChat;
@@ -56,11 +57,16 @@ class AiChatRepository {
   }
 
   /// Updates the title of the aiChat identified by [id] with [chatTextBody]
-  Future<void> editAiChat(String id, String newChatTextBody) async {
+  Future<void> editUserChat(String id, String newChatTextBody) async {
     final aiChat = _box.get(id);
     if (aiChat != null) {
       final updated = aiChat.copyWith(chatTextBody: newChatTextBody);
       await _box.put(id, updated);
     }
+  }
+
+  /// Update an existing chat in the database
+  Future<void> updateAiChat(String id, AiChatModel chat) async {
+    await _box.put(id, chat);
   }
 }
