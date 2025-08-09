@@ -1,3 +1,5 @@
+import 'package:ai_chat/core/errors/exceptions.dart';
+import 'package:ai_chat/features/ai_chat/provider/ai_chat_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../domain/ai_chat_model.dart';
@@ -45,13 +47,57 @@ class AiChatController extends StateNotifier<AsyncValue<List<AiChatModel>>> {
   // }
 
   /// Add a new aiChat and reload list
-  Future<void> addAiChat(String text) async {
+  Future<void> addAiChat(
+    String usersText,
+    String systemPrompt,
+    String userPromptPrefix,
+    String systemQuickReplyPrompt,
+    String errorMistralRequest,
+  ) async {
     /// Get The current list of aiChats from the state's value
     final currentAiChats = state.value ?? [];
-    final newChat = await _repo.addAiChat(text);
-    if (newChat != null) {
-      state = AsyncValue.data([...currentAiChats, newChat]);
+    final usersMessage = await _repo.addAiChat(usersText);
+    if (usersMessage == null) return;
+
+    state = AsyncValue.data([...currentAiChats, usersMessage]);
+    try {
+      /// Get AI Reply
+      final mistralService = ref.read(mistralServiceProvider);
+      final aiReplyText = await mistralService.generateQuickReply(
+        usersText,
+        systemPrompt,
+        userPromptPrefix,
+        systemQuickReplyPrompt,
+        errorMistralRequest,
+      );
+
+      /// Update the message with AI's reply
+      final updatedMessage = usersMessage.copyWith(
+        replyText: aiReplyText,
+        isReplied: true,
+        isSeen: true,
+
+        /// mark as Seen by AI
+      );
+      await _repo.updateAiChat(usersMessage.id!, updatedMessage);
+      state = AsyncValue.data(
+        state.value!.updated(usersMessage.id!, updatedMessage),
+      );
+    } catch (e, s) {
+      throw ServerException(
+        '🚀 ~Save on hive of mistral reply from (ai_chat_controller.dart) $e and this is $s',
+      );
+    } finally {
+      final updatedMessage = usersMessage.copyWith(
+        replyText: "Sorry, I couldn't get a response",
+        isReplied: true,
+      );
+      await _repo.updateAiChat(usersMessage.id!, updatedMessage);
+      state = AsyncValue.data(
+        state.value!.updated(usersMessage.id!, updatedMessage),
+      );
     }
+    ;
   }
 
   /// Toggle a aiChat and reload list
@@ -105,7 +151,7 @@ class AiChatController extends StateNotifier<AsyncValue<List<AiChatModel>>> {
   Future<void> editAiChat(String id, String newText) async {
     final currentAiChats = state.value ?? [];
     if (currentAiChats.isEmpty) return;
-    await _repo.editAiChat(id, newText);
+    await _repo.editUserChat(id, newText);
     final aiChatToUpdate = currentAiChats.firstWhere((t) => t.id == id);
 
     /// changing aiChat according to which tid is toggled check and updated using copy with

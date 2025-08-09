@@ -36,6 +36,24 @@ class AppLocalizationsKm extends AppLocalizations {
   String get settings => 'ការកំណត់';
 
   @override
+  String get aiChat => 'ជជែកជាមួយ AI';
+
+  @override
+  String get typeMessage => 'វាយសារ...';
+
+  @override
+  String get systemSummaryPrompt => 'អ្នកគឺជាជំនួយការដែលមានប្រយោជន៍ក្នុងការបង្កើតសង្ខេបភារកិច្ច និងផែនការ។';
+
+  @override
+  String get userSummaryPrompt => 'ផ្អែកលើបញ្ជីភារកិច្ចខាងក្រោម សូមបង្កើតសង្ខេប និងផ្តល់ផែនការប្រចាំថ្ងៃឆ្លាតវៃ:\n';
+
+  @override
+  String get systemQuickReplyPrompt => 'អ្នកគឺជាដៃគូសន្ទនាជាមនុស្ស និងមានវិជ្ជាជីវៈ។ សូមឆ្លើយក្នុងចំណោមតួអក្សរតិចជាង 100។ សូមឆ្លើយឱ្យក្តៅស្នេហ៍ តែសង្ខេប និងធម្មជាតិដូចជាការសន្ទនាជាក់ស្តែង។';
+
+  @override
+  String get errorMistralRequest => 'មិនអាចទទួលបានការឆ្លើយតបពី Mistral: ';
+
+  @override
   String get logout => 'ចេញពីប្រព័ន្ធ';
 
   @override

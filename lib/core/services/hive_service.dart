@@ -34,22 +34,22 @@ class HiveService {
 
     try {
       await Hive.initFlutter();
-
-      if (!Hive.isAdapterRegistered(0)) {
+      if (!Hive.isAdapterRegistered(2)) {
         Hive.registerAdapter(UserModelAdapter());
       }
       if (!Hive.isAdapterRegistered(1)) {
         Hive.registerAdapter(TaskModelAdapter());
       }
-      if (!Hive.isAdapterRegistered(2)) {
+
+      if (!Hive.isAdapterRegistered(3)) {
         Hive.registerAdapter(SettingDefinitionModelAdapter());
       }
-      if (!Hive.isAdapterRegistered(3)) {
+      if (!Hive.isAdapterRegistered(4)) {
         Hive.registerAdapter(AiChatModelAdapter());
       }
       await Hive.openBox<UserModel>(authBoxName);
       await Hive.openBox<TaskModel>(taskBoxName);
-      await Hive.openBox<TaskModel>(aiChatBoxName);
+      await Hive.openBox<AiChatModel>(aiChatBoxName);
       await Hive.openBox<SettingDefinitionModel>(settingsBoxName);
 
       _initialized = true;
@@ -65,13 +65,6 @@ class HiveService {
     }
   }
 
-  /// Close Hive boxes function if there any need to close Hive boxes
-  // static Future<void> _closeAllBoxes() async {
-  //   try {
-  //     if (Hive.isBoxOpen(authBoxName)) await Hive.box(authBoxName).close();
-  //     if (Hive.isBoxOpen(taskBoxName)) await Hive.box(taskBoxName).close();
-  //   } catch (_) {}
-  // }
   /// Auth box initialized
   static Box<UserModel> get authBox {
     _checkInitialized();
@@ -93,9 +86,9 @@ class HiveService {
   }
 
   ///settingsBox initialized
-  static Box<TaskModel> get settingsBox {
+  static Box<SettingDefinitionModel> get settingsBox {
     _checkInitialized();
-    return Hive.box<TaskModel>(settingsBoxName);
+    return Hive.box<SettingDefinitionModel>(settingsBoxName);
   }
 
   /// check are they initialized or not

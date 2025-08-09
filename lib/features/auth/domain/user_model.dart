@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 
 part 'user_model.g.dart';
 
-@HiveType(typeId: 0)
+@HiveType(typeId: 2)
 /// its User model for authentication
 class UserModel {
   /// first field for the hive/table is uid
@@ -20,13 +20,9 @@ class UserModel {
 
   /// Field for what is role of user
   @HiveField(3)
-  final UserRole role;
+  final UserRole? role;
 
   /// its construct of UserModel class . its for call UserModel to other dart file.  this.name is not required
-  UserModel({
-    required this.uid,
-    required this.email,
-    this.name,
-    this.role = UserRole.guest,
-  });
+  UserModel({required this.uid, required this.email, this.name, UserRole? role})
+    : role = role ?? UserRole.guest;
 }
