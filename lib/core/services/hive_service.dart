@@ -1,5 +1,6 @@
 import 'package:ai_chat/core/errors/exceptions.dart';
 import 'package:ai_chat/core/utils/logger.dart';
+import 'package:ai_chat/features/ai_chat/domain/ai_chat_model.dart';
 import 'package:ai_chat/features/app_settings/domain/settings_model.dart';
 import 'package:ai_chat/features/auth/domain/user_model.dart';
 import 'package:ai_chat/features/tasks/domain/task_model.dart';
@@ -18,6 +19,10 @@ class HiveService {
 
   static const String taskBoxName = HiveConstants.taskBox;
 
+  ///Assigned HiveConstants aiChatBox table names to variable
+
+  static const String aiChatBoxName = HiveConstants.aiChatBox;
+
   /// Assigned HiveConstants settingsBox table name to settingsBoxName variable
   static const String settingsBoxName = HiveConstants.settingsBoxName;
 
@@ -29,18 +34,22 @@ class HiveService {
 
     try {
       await Hive.initFlutter();
-
-      if (!Hive.isAdapterRegistered(0)) {
+      if (!Hive.isAdapterRegistered(2)) {
         Hive.registerAdapter(UserModelAdapter());
       }
       if (!Hive.isAdapterRegistered(1)) {
         Hive.registerAdapter(TaskModelAdapter());
       }
-      if (!Hive.isAdapterRegistered(2)) {
+
+      if (!Hive.isAdapterRegistered(3)) {
         Hive.registerAdapter(SettingDefinitionModelAdapter());
+      }
+      if (!Hive.isAdapterRegistered(4)) {
+        Hive.registerAdapter(AiChatModelAdapter());
       }
       await Hive.openBox<UserModel>(authBoxName);
       await Hive.openBox<TaskModel>(taskBoxName);
+      await Hive.openBox<AiChatModel>(aiChatBoxName);
       await Hive.openBox<SettingDefinitionModel>(settingsBoxName);
 
       _initialized = true;
@@ -49,18 +58,13 @@ class HiveService {
       );
     } catch (e) {
       _initialized = false;
-      throw ServerException('🚀 ~Server error occurred $e');
+      throw ServerException(
+        '🚀 ~Server error occurrede (hive.service.dart) $e',
+      );
       // rethrow;
     }
   }
 
-  /// Close Hive boxes function if there any need to close Hive boxes
-  // static Future<void> _closeAllBoxes() async {
-  //   try {
-  //     if (Hive.isBoxOpen(authBoxName)) await Hive.box(authBoxName).close();
-  //     if (Hive.isBoxOpen(taskBoxName)) await Hive.box(taskBoxName).close();
-  //   } catch (_) {}
-  // }
   /// Auth box initialized
   static Box<UserModel> get authBox {
     _checkInitialized();
@@ -74,10 +78,17 @@ class HiveService {
     return Hive.box<TaskModel>(taskBoxName);
   }
 
-  ///settingsBox initialized
-  static Box<TaskModel> get settingsBox {
+  ///aiChatBox initialized
+
+  static Box<AiChatModel> get aiChatBoxInit {
     _checkInitialized();
-    return Hive.box<TaskModel>(settingsBoxName);
+    return Hive.box<AiChatModel>(aiChatBoxName);
+  }
+
+  ///settingsBox initialized
+  static Box<SettingDefinitionModel> get settingsBox {
+    _checkInitialized();
+    return Hive.box<SettingDefinitionModel>(settingsBoxName);
   }
 
   /// check are they initialized or not

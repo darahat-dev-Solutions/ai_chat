@@ -153,6 +153,42 @@ abstract class AppLocalizations {
   /// **'Settings'**
   String get settings;
 
+  /// No description provided for @aiChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat with AI'**
+  String get aiChat;
+
+  /// No description provided for @typeMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Type a message...'**
+  String get typeMessage;
+
+  /// No description provided for @systemSummaryPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'You are a helpful assistant that generates task summaries and plans.'**
+  String get systemSummaryPrompt;
+
+  /// No description provided for @userSummaryPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Based on the following task list, generate a summary and suggest smart daily plan:\n'**
+  String get userSummaryPrompt;
+
+  /// No description provided for @systemQuickReplyPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'You are a human-like, professional conversational partner. Reply in under 100 characters. Be warm yet concise, and respond naturally like in real human chats.'**
+  String get systemQuickReplyPrompt;
+
+  /// No description provided for @errorMistralRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to get response from Mistral: '**
+  String get errorMistralRequest;
+
   /// No description provided for @logout.
   ///
   /// In en, this message translates to:
