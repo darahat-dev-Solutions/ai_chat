@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/ai_chat_model.dart';
+import '../../domain/utou_chat_model.dart';
 
 class ChatBubble extends StatelessWidget {
-  final AiChatModel chat;
+  final UToUChatModel chat;
   const ChatBubble({super.key, required this.chat});
 
   @override
@@ -27,13 +27,13 @@ class ChatBubble extends StatelessWidget {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      if (chat.isReplied ?? false)
+                      if (chat.isDelivered ?? false)
                         const Icon(
                           Icons.done_all,
                           size: 16,
                           color: Colors.blue,
                         ),
-                      if (chat.isSeen ?? false)
+                      if (chat.isRead ?? false)
                         const Icon(
                           Icons.remove_red_eye,
                           size: 16,
@@ -47,7 +47,7 @@ class ChatBubble extends StatelessWidget {
           ),
         ),
         // AI's reply
-        if (chat.isReplied == true && chat.replyText?.isNotEmpty == true)
+        if (chat.isDelivered == true && chat.chatTextBody?.isNotEmpty == true)
           Container(
             alignment: Alignment.centerLeft,
             child: Card(
@@ -55,7 +55,7 @@ class ChatBubble extends StatelessWidget {
               margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
-                child: Text(chat.replyText!),
+                child: Text(chat.chatTextBody!),
               ),
             ),
           ),

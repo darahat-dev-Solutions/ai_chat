@@ -1,120 +1,119 @@
-import 'package:ai_chat/core/errors/exceptions.dart';
-import 'package:ai_chat/features/ai_chat/provider/ai_chat_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../domain/ai_chat_model.dart';
-import '../infrastructure/ai_chat_repository.dart';
+import 'package:ai_chat/features/utou_chat/domain/utou_chat_model.dart';
+import '../infrastructure/utou_chat_repository.dart';
 
 /// Used to indicate loading status in the UI
-final aiChatLoadingProvider = StateProvider<bool>((ref) => false);
+final uToUChatLoadingProvider = StateProvider<bool>((ref) => false);
 
-/// Main Ai Chat Controller connected to Hive-backed AiChatRepository
-class AiChatController extends StateNotifier<AsyncValue<List<AiChatModel>>> {
-  final AiChatRepository _repo;
+/// Main UToU Chat Controller connected to Hive-backed UToUChatRepository
+class UToUChatController
+    extends StateNotifier<AsyncValue<List<UToUChatModel>>> {
+  final UToUChatRepository _repo;
 
   /// ref is a riverpod object which used by providers to interact with other providers and life cycle
   /// of the application
   /// example ref.read, ref.write etc
   final Ref ref;
 
-  /// AiChatController Constructor to call it from outside
-  AiChatController(this._repo, this.ref) : super(const AsyncValue.loading()) {
-    loadAiChat();
+  /// UToUChatController Constructor to call it from outside
+  UToUChatController(this._repo, this.ref) : super(const AsyncValue.loading()) {
+    loadUToUChat();
   }
 
-  /// Load all aiChats from repository and update the state
-  Future<void> loadAiChat() async {
+  /// Load all uToUChats from repository and update the state
+  Future<void> loadUToUChat() async {
     state = const AsyncValue.loading();
     try {
-      final aiChats = await _repo.getAiChat();
+      final uToUChats = await _repo.getUtoUChat();
 
-      /// Filter for incomplete aiChats and set the data state
-      state = AsyncValue.data(aiChats);
+      /// Filter for incomplete uToUChats and set the data state
+      state = AsyncValue.data(uToUChats);
     } catch (e, s) {
       /// If loading fails, set the error state
       state = AsyncValue.error(e, s);
     }
   }
 
-  /// Load all aiChats from repository
-  // Future<void> getAiChats() async {
-  //   ref.read(aiChatLoadingProvider.notifier).state = true;
+  /// Load all uToUChats from repository
+  // Future<void> getUToUChats() async {
+  //   ref.read(uToUChatLoadingProvider.notifier).state = true;
 
-  //   final aiChats = await _repo.aiChats();
-  //   state = aiChats.where((aiChat) => aiChat.isCompleted == false).toList();
+  //   final uToUChats = await _repo.uToUChats();
+  //   state = uToUChats.where((uToUChat) => uToUChat.isCompleted == false).toList();
 
-  //   ref.read(aiChatLoadingProvider.notifier).state = false;
+  //   ref.read(uToUChatLoadingProvider.notifier).state = false;
   // }
 
-  /// Add a new aiChat and reload list
-  Future<void> addAiChat(
+  /// Add a new uToUChat and reload list
+  Future<void> addUToUChat(
     String usersText,
     String systemPrompt,
     String userPromptPrefix,
     String systemQuickReplyPrompt,
     String errorMistralRequest,
   ) async {
-    /// Get The current list of aiChats from the state's value
-    final currentAiChats = state.value ?? [];
-    final usersMessage = await _repo.addAiChat(usersText);
+    /// Get The current list of uToUChats from the state's value
+    final currentUToUChats = state.value ?? [];
+    final usersMessage = await _repo.addUtoUChat(usersText);
     if (usersMessage == null) return;
 
-    state = AsyncValue.data([...currentAiChats, usersMessage]);
-    try {
-      /// Get AI Reply
-      final mistralService = ref.read(mistralServiceProvider);
-      final aiReplyText = await mistralService.generateQuickReply(
-        usersText,
-        systemPrompt,
-        userPromptPrefix,
-        systemQuickReplyPrompt,
-        errorMistralRequest,
-      );
+    state = AsyncValue.data([...currentUToUChats, usersMessage]);
+    // try {
+    //   /// Get AI Reply
+    //   final mistralService = ref.read(mistralServiceProvider);
+    //   final uToUReplyText = await mistralService.generateQuickReply(
+    //     usersText,
+    //     systemPrompt,
+    //     userPromptPrefix,
+    //     systemQuickReplyPrompt,
+    //     errorMistralRequest,
+    //   );
 
-      /// Update the message with AI's reply
-      final updatedMessage = usersMessage.copyWith(
-        replyText: aiReplyText,
-        isReplied: true,
-        isSeen: true,
+    //   /// Update the message with AI's reply
+    //   final updatedMessage = usersMessage.copyWith(
+    //     replyText: uToUReplyText,
+    //     isDelivered: true,
+    //     isRead: true,
 
-        /// mark as Seen by AI
-      );
-      await _repo.updateAiChat(usersMessage.id!, updatedMessage);
-      state = AsyncValue.data(
-        state.value!.updated(usersMessage.id!, updatedMessage),
-      );
-    } catch (e, s) {
-      throw ServerException(
-        '🚀 ~Save on hive of mistral reply from (ai_chat_controller.dart) $e and this is $s',
-      );
-    }
+    //     /// mark as Seen by AI
+    //   );
+    //   await _repo.updateUToUChat(usersMessage.id!, updatedMessage);
+    //   state = AsyncValue.data(
+    //     state.value!.updated(usersMessage.id!, updatedMessage),
+    //   );
+    // } catch (e, s) {
+    //   throw ServerException(
+    //     '🚀 ~Save on hive of mistral reply from (ai_chat_controller.dart) $e and this is $s',
+    //   );
+    // }
     // finally {
     //   final updatedMessage = usersMessage.copyWith(
     //     replyText: "Sorry, I couldn't get a response",
     //     isReplied: true,
     //   );
-    //   await _repo.updateAiChat(usersMessage.id!, updatedMessage);
+    //   await _repo.updateUToUChat(usersMessage.id!, updatedMessage);
     //   state = AsyncValue.data(
     //     state.value!.updated(usersMessage.id!, updatedMessage),
     //   );
     // }
   }
 
-  /// Toggle a aiChat and reload list
-  Future<void> toggleIsSeenChat(String id) async {
+  /// Toggle a uToUChat and reload list
+  Future<void> toggleIsReadChat(String id) async {
     final currentChats = state.value ?? [];
     if (currentChats.isEmpty) return;
-    await _repo.toggleIsSeenChat(id);
+    await _repo.toggleIsReadChat(id);
 
     // final chatToUpdate = currentChats.firstWhere((t) => t.id == id);
 
-    /// changing aiChat according to which tid is toggled check and updated using copy with
+    /// changing uToUChat according to which tid is toggled check and updated using copy with
     /// which generates copy of that exact object which is toggled
     ///
     final updatedList =
         currentChats.map((chat) {
           if (chat.id == id) {
-            return chat.copyWith(isSeen: !(chat.isSeen ?? false));
+            return chat.copyWith(isRead: !(chat.isRead ?? false));
           }
           return chat;
         }).toList();
@@ -128,37 +127,37 @@ class AiChatController extends StateNotifier<AsyncValue<List<AiChatModel>>> {
     final currentChats = state.value ?? [];
     if (currentChats.isEmpty) return;
 
-    await _repo.toggleIsRepliedChat(id);
+    await _repo.toggleIsDeliveredChat(id);
     final chatToUpdate = currentChats.firstWhere((chat) => chat.id == id);
     final updatedList = currentChats.updated(
       id,
-      chatToUpdate.copyWith(isReplied: !(chatToUpdate.isReplied ?? false)),
+      chatToUpdate.copyWith(isDelivered: !(chatToUpdate.isDelivered ?? false)),
     );
     state = AsyncValue.data(updatedList);
   }
 
-  /// Remove a aiChat and reload list
-  Future<void> removeAiChat(String id) async {
-    final currentAiChats = state.value ?? [];
+  /// Remove a uToUChat and reload list
+  Future<void> removeUToUChat(String id) async {
+    final currentUToUChats = state.value ?? [];
 
     await _repo.removeChat(id);
     state = AsyncValue.data(
-      currentAiChats.where((chat) => chat.id != id).toList(),
+      currentUToUChats.where((chat) => chat.id != id).toList(),
     );
   }
 
-  /// Edit a aiChat and reload list
-  Future<void> editAiChat(String id, String newText) async {
-    final currentAiChats = state.value ?? [];
-    if (currentAiChats.isEmpty) return;
+  /// Edit a uToUChat and reload list
+  Future<void> editUToUChat(String id, String newText) async {
+    final currentUToUChats = state.value ?? [];
+    if (currentUToUChats.isEmpty) return;
     await _repo.editUserChat(id, newText);
-    final aiChatToUpdate = currentAiChats.firstWhere((t) => t.id == id);
+    final uToUChatToUpdate = currentUToUChats.firstWhere((t) => t.id == id);
 
     /// changing aiChat according to which tid is toggled check and updated using copy with
     /// which generates copy of that exact object which is toggled
-    final updatedList = currentAiChats.updated(
+    final updatedList = currentUToUChats.updated(
       id,
-      aiChatToUpdate.copyWith(chatTextBody: newText),
+      uToUChatToUpdate.copyWith(chatTextBody: newText),
     );
 
     /// Update the state with the new list
