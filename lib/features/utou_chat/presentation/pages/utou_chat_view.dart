@@ -1,20 +1,20 @@
-import 'package:ai_chat/features/ai_chat/provider/ai_chat_providers.dart';
+import 'package:ai_chat/features/utou_chat/provider/utou_chat_providers.dart';
 import 'package:ai_chat/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../ai_chat copy/presentation/widgets/ChatBubble.dart'; // Import the new widget
+import '../../../utou_chat/presentation/widgets/ChatBubble.dart'; // Import the new widget
 
 /// Forget Password Page presentation
-class AiChatView extends ConsumerStatefulWidget {
+class UToUChatView extends ConsumerStatefulWidget {
   /// Forget Password page class constructor
-  const AiChatView({super.key});
+  const UToUChatView({super.key});
 
   @override
-  ConsumerState<AiChatView> createState() => _AiChatViewConsumerState();
+  ConsumerState<UToUChatView> createState() => _UToUChatViewConsumerState();
 }
 
-class _AiChatViewConsumerState extends ConsumerState<AiChatView> {
+class _UToUChatViewConsumerState extends ConsumerState<UToUChatView> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _textController = TextEditingController();
 
@@ -41,10 +41,10 @@ class _AiChatViewConsumerState extends ConsumerState<AiChatView> {
 
   @override
   Widget build(BuildContext context) {
-    final chatsAsync = ref.watch(aiChatControllerProvider);
+    final chatsAsync = ref.watch(uToUChatControllerProvider);
 
     /// Listen to changes in the chat list when new data arrives scroll to the bottom
-    ref.listen(aiChatControllerProvider, (previous, next) {
+    ref.listen(uToUChatControllerProvider, (previous, next) {
       if (next is AsyncData) {
         /// Check if a message was added
         final prevLength = previous?.asData?.value.length ?? 0;
@@ -112,8 +112,8 @@ class _AiChatViewConsumerState extends ConsumerState<AiChatView> {
                 /// Allow submitting with keyboard
                 if (text.isNotEmpty) {
                   ref
-                      .read(aiChatControllerProvider.notifier)
-                      .addAiChat(
+                      .read(uToUChatControllerProvider.notifier)
+                      .addUToUChat(
                         text,
                         systemPrompt,
                         userPromptPrefix,
@@ -131,8 +131,8 @@ class _AiChatViewConsumerState extends ConsumerState<AiChatView> {
               final text = textController.text;
               if (text.isNotEmpty) {
                 ref
-                    .read(aiChatControllerProvider.notifier)
-                    .addAiChat(
+                    .read(uToUChatControllerProvider.notifier)
+                    .addUToUChat(
                       text,
                       systemPrompt,
                       userPromptPrefix,

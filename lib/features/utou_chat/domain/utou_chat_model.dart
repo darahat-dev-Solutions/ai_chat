@@ -1,9 +1,9 @@
 import 'package:hive/hive.dart';
 
-part 'ai_chat_model.g.dart';
+part 'utou_chat_model.g.dart';
 
-@HiveType(typeId: 4)
-/// its User model for authentication
+@HiveType(typeId: 5)
+/// Model for peer-to-peer chat messages.
 class UToUChatModel {
   /// first field for the hive/table is id
   @HiveField(0)
