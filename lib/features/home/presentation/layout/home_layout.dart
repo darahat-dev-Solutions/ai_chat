@@ -1,3 +1,4 @@
+import 'package:ai_chat/features/ai_chat/presentation/pages/ai_chat_view.dart';
 import 'package:ai_chat/features/app_settings/presentation/pages/setting_page.dart';
 import 'package:ai_chat/features/home/presentation/pages/home_page.dart';
 import 'package:ai_chat/features/home/presentation/widgets/home_bottom_nav.dart';
@@ -34,7 +35,7 @@ class HomeLayout extends ConsumerWidget {
       drawer: const HomeDrawer(),
       body: IndexedStack(
         index: currentIndex,
-        children: [HomePage(), SearchContent(), SettingsPage()],
+        children: [HomePage(), SearchContent(), SettingsPage(), AiChatView()],
       ),
       bottomNavigationBar: const HomeBottomNav(),
     );

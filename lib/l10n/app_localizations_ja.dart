@@ -36,6 +36,24 @@ class AppLocalizationsJa extends AppLocalizations {
   String get settings => '設定';
 
   @override
+  String get aiChat => 'AIとチャット';
+
+  @override
+  String get typeMessage => 'メッセージを入力...';
+
+  @override
+  String get systemSummaryPrompt => 'あなたは、タスクの要約と計画を作成する有能なアシスタントです。';
+
+  @override
+  String get userSummaryPrompt => '次のタスクリストに基づいて、要約を作成し、賢い日次計画を提案してください:\n';
+
+  @override
+  String get systemQuickReplyPrompt => 'あなたは人間らしく、プロフェッショナルな会話パートナーです。100文字以内で返答してください。温かみがあり簡潔に、自然な会話のように応答してください。';
+
+  @override
+  String get errorMistralRequest => 'Mistralからの応答を取得できませんでした: ';
+
+  @override
   String get logout => 'ログアウト';
 
   @override
