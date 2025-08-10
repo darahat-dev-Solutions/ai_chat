@@ -87,17 +87,17 @@ class AiChatController extends StateNotifier<AsyncValue<List<AiChatModel>>> {
       throw ServerException(
         '🚀 ~Save on hive of mistral reply from (ai_chat_controller.dart) $e and this is $s',
       );
-    } finally {
-      final updatedMessage = usersMessage.copyWith(
-        replyText: "Sorry, I couldn't get a response",
-        isReplied: true,
-      );
-      await _repo.updateAiChat(usersMessage.id!, updatedMessage);
-      state = AsyncValue.data(
-        state.value!.updated(usersMessage.id!, updatedMessage),
-      );
     }
-    ;
+    // finally {
+    //   final updatedMessage = usersMessage.copyWith(
+    //     replyText: "Sorry, I couldn't get a response",
+    //     isReplied: true,
+    //   );
+    //   await _repo.updateAiChat(usersMessage.id!, updatedMessage);
+    //   state = AsyncValue.data(
+    //     state.value!.updated(usersMessage.id!, updatedMessage),
+    //   );
+    // }
   }
 
   /// Toggle a aiChat and reload list
