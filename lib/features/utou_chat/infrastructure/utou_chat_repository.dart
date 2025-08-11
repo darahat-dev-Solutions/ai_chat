@@ -1,34 +1,85 @@
 import 'package:ai_chat/core/services/hive_service.dart';
 import 'package:ai_chat/features/utou_chat/domain/utou_chat_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hive/hive.dart';
+import 'package:path/path.dart';
 
 /// A repository class for managing uToUChat-related operation using hive
 class UToUChatRepository {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   /// The hive box containing [UToUChatModel] instances.
 
   Box<UToUChatModel> get _box => HiveService.uTouChatBoxInit;
 
-  /// Retrives all uToUChat from the local Hive storages.
+  /// get Chat Room ID
+  String getChatRoomId(String? userId1, String userId2) {
+    if (userId1.hashCode <= userId2.hashCode) {
+      return '$userId1-$userId2';
+    } else {
+      return '$userId2-$userId1';
+    }
+  }
+
+  /// SendMessage function to send message to specific Chat room
+  Future<void> sendMessage(UToUChatModel chat) async {
+    final chatRoomId = getChatRoomId(chat.senderId!, chat.receiverId!);
+    final messageRef = _firestore
+        .collection('chats')
+        .doc(chatRoomId)
+        .collection('messages')
+        .doc(chat.id);
+    await messageRef.set(chat.toJson());
+    await _box.put(chat.id, chat);
+  }
+
+  /// Get Online messages from firestore
+  Stream<List<UToUChatModel>> getMessages(
+    String? currentUserId,
+    String otherUserId,
+  ) {
+    final chatRoomId = getChatRoomId(currentUserId ?? '', otherUserId);
+
+    return _firestore
+        .collection('chats')
+        .doc(chatRoomId)
+        .collection('messages')
+        .orderBy('sentTime', descending: false)
+        .snapshots()
+        .map((snapshot) {
+          final messages =
+              snapshot.docs.map((doc) {
+                final message = UToUChatModel.fromJson(doc.data());
+                _box.put(message.id, message);
+                return message;
+              }).toList();
+          return messages;
+        });
+  }
+
+  /// get offline uToUChat from the local Hive storages.
   ///
   /// Returns a [List] of [UToUChatModel] instances
-  Future<List<UToUChatModel>> getUtoUChat() async {
-    return _box.values.toList();
+  Future<List<UToUChatModel>> getOfflineUtoUMessages(
+    String currentUserId,
+    String otherUserId,
+  ) async {
+    final allMessages = _box.values.toList();
+    return allMessages
+        .where(
+          (message) =>
+              (message.senderId == currentUserId &&
+                  message.receiverId == otherUserId) ||
+              (message.senderId == otherUserId &&
+                  message.receiverId == current),
+        )
+        .toList();
   }
 
   /// Adds a new uToUChat with the given [text] as the title.
-  Future<UToUChatModel?> addUtoUChat(String usersText) async {
-    final key = DateTime.now().millisecondsSinceEpoch.toString();
-    final uToUChat = UToUChatModel(
-      id: key,
-      chatTextBody: usersText,
-      sentTime: DateTime.now().toIso8601String(),
-      isRead: false,
-      isDelivered: false,
-      senderId: '',
-      receiverId: '',
-    );
-    await _box.put(key, uToUChat);
-    return uToUChat;
+  Future<UToUChatModel?> addOfflineUtoUChat(UToUChatModel message) async {
+    await _box.put(message.id, message);
+    return message;
   }
 
   /// Toggles the completion status of a isSeen identified by [id]
