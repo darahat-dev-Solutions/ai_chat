@@ -4,6 +4,7 @@ import 'package:ai_chat/features/ai_chat/domain/ai_chat_model.dart';
 import 'package:ai_chat/features/app_settings/domain/settings_model.dart';
 import 'package:ai_chat/features/auth/domain/user_model.dart';
 import 'package:ai_chat/features/tasks/domain/task_model.dart';
+import 'package:ai_chat/features/utou_chat/domain/uTou_chat_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../constants/hive_constants.dart';
@@ -22,6 +23,9 @@ class HiveService {
   ///Assigned HiveConstants aiChatBox table names to variable
 
   static const String aiChatBoxName = HiveConstants.aiChatBox;
+
+  /// Assigned HiveConstants uTouChatBoxName table name to uTouBoxName variable
+  static const String uTouChatBoxName = HiveConstants.uTouChatBox;
 
   /// Assigned HiveConstants settingsBox table name to settingsBoxName variable
   static const String settingsBoxName = HiveConstants.settingsBoxName;
@@ -47,10 +51,14 @@ class HiveService {
       if (!Hive.isAdapterRegistered(4)) {
         Hive.registerAdapter(AiChatModelAdapter());
       }
+      if (!Hive.isAdapterRegistered(5)) {
+        Hive.registerAdapter(UToUChatModelAdapter());
+      }
       await Hive.openBox<UserModel>(authBoxName);
       await Hive.openBox<TaskModel>(taskBoxName);
       await Hive.openBox<AiChatModel>(aiChatBoxName);
       await Hive.openBox<SettingDefinitionModel>(settingsBoxName);
+      await Hive.openBox<UToUChatModel>(uTouChatBoxName);
 
       _initialized = true;
       AppLogger.info(
@@ -83,6 +91,13 @@ class HiveService {
   static Box<AiChatModel> get aiChatBoxInit {
     _checkInitialized();
     return Hive.box<AiChatModel>(aiChatBoxName);
+  }
+
+  ///uTouBox initialized
+
+  static Box<UToUChatModel> get uTouChatBoxInit {
+    _checkInitialized();
+    return Hive.box<UToUChatModel>(uTouChatBoxName);
   }
 
   ///settingsBox initialized
