@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/utou_chat_model.dart';
+import 'package:ai_chat/features/utou_chat/domain/utou_chat_model.dart';
 
 class ChatBubble extends StatelessWidget {
   final UToUChatModel chat;

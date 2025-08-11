@@ -4,7 +4,7 @@ import 'package:ai_chat/features/ai_chat/domain/ai_chat_model.dart';
 import 'package:ai_chat/features/app_settings/domain/settings_model.dart';
 import 'package:ai_chat/features/auth/domain/user_model.dart';
 import 'package:ai_chat/features/tasks/domain/task_model.dart';
-import 'package:ai_chat/features/utou_chat/domain/utou_chat_model.dart';
+import 'package:ai_chat/features/utou_chat/domain/uTou_chat_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../constants/hive_constants.dart';

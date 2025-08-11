@@ -1,7 +1,6 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:ai_chat/features/utou_chat/domain/utou_chat_model.dart';
-import '../infrastructure/utou_chat_repository.dart';
+import 'package:ai_chat/features/utou_chat/infrastructure/utou_chat_repository.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Used to indicate loading status in the UI
 final uToUChatLoadingProvider = StateProvider<bool>((ref) => false);
