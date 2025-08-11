@@ -1,5 +1,6 @@
 import 'package:ai_chat/core/errors/exceptions.dart';
 import 'package:ai_chat/core/utils/logger.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart'
     show kIsWeb; // Make sure to add this import
@@ -9,6 +10,7 @@ import '../domain/user_model.dart';
 
 /// this is the file where auth_controller connect with repositories
 class AuthRepository {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   final _googleSignIn = GoogleSignIn();
   // final _box = Hive.box<UserModel>('authBox');
@@ -195,5 +197,19 @@ class AuthRepository {
     } catch (e) {
       throw AuthenticationException('Failed to resend OTP');
     }
+  }
+
+  /// Get User's data from firebase authentication
+  Stream<List<UserModel>> getUsers() {
+    return _firestore.collection('users').snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) {
+        final data = doc.data();
+        return UserModel(
+          uid: doc.id,
+          email: data['email'] ?? '',
+          name: data['displayName'] ?? 'No Name',
+        );
+      }).toList();
+    });
   }
 }

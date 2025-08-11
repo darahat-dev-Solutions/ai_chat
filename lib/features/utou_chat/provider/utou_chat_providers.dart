@@ -1,5 +1,7 @@
-import 'package:ai_chat/core/services/mistral_service.dart';
 import 'package:ai_chat/core/services/voice_to_text_service.dart';
+import 'package:ai_chat/features/auth/domain/user_model.dart';
+import 'package:ai_chat/features/auth/infrastructure/auth_repository.dart';
+import 'package:ai_chat/features/auth/provider/auth_providers.dart';
 import 'package:ai_chat/features/utou_chat/application/utou_chat_controller.dart';
 import 'package:ai_chat/features/utou_chat/domain/utou_chat_model.dart';
 import 'package:ai_chat/features/utou_chat/infrastructure/utou_chat_repository.dart';
@@ -9,6 +11,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final uToUChatRepositoryProvider = Provider<UToUChatRepository>(
   (ref) => UToUChatRepository(),
 );
+
+/// Get authentication provider functions
+final authRepositoryProvider = Provider<AuthRepository>(
+  (ref) => AuthRepository(),
+);
+
+/// Get User Provider infos
+final usersProvider = StreamProvider<List<UserModel>>((ref) {
+  final authRepo = ref.watch(authRepositoryProvider);
+  return authRepo.getUsers();
+});
 
 /// Voice input for adding uToUChat
 final voiceToTextProvider = Provider<VoiceToTextService>((ref) {
@@ -33,33 +46,18 @@ final uToUChatControllerProvider =
       return UToUChatController(repo, ref);
     });
 
-/// taking only those uToUChats which are incomplete
-// final incompleteTasksProvider = Provider<AsyncValue<List<UToUChatModel>>>((ref) {
-//   return ref.watch(uToUChatControllerProvider);
-// });
+final messagesProvider = StreamProvider.family<List<UToUChatModel>, String>((
+  ref,
+  otherUserId,
+) {
+  final repo = ref.watch(uToUChatRepositoryProvider);
+  // final authState = ref.watch(authControllerProvider);
+  final authState = ref.read(authControllerProvider);
 
-/// Mistral AI summary service
-final mistralServiceProvider = Provider((ref) => MistralService());
-
-/// Async summary from Mistral for uToUChat list
-/// Async summary from Mistral for incomplete uToUChats
-final uToUSummaryProvider = FutureProvider<String>((ref) async {
-  final uToUChatAsync = ref.watch(uToUChatControllerProvider);
-  return uToUChatAsync.when(
-    data: (uToUChats) {
-      if (uToUChats.isEmpty) {
-        return "No Chat to answer";
-      }
-      final uToUFeed = uToUChats
-          .map(
-            (t) =>
-                'just give answer very shortly.Like as human chat. the text is- ${t.chatTextBody}',
-          )
-          .join('\n');
-      final service = ref.read(mistralServiceProvider);
-      return service.generateSummary(uToUFeed);
-    },
-    error: (_, __) => "Could not generate answer due to an error",
-    loading: () => "Generating answer....",
-  );
+  final currentUserId = authState.uid;
+  // final currentUser = switch (authState) {
+  //       Authenticated(user: final user) => (user.),
+  //       _ => (UserRole.guest, false),
+  //     };
+  return repo.getMessages(currentUserId, otherUserId);
 });

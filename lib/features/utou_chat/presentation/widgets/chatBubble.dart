@@ -1,10 +1,20 @@
+import 'package:ai_chat/features/utou_chat/domain/utou_chat_model.dart';
 import 'package:flutter/material.dart';
 
-import 'package:ai_chat/features/utou_chat/domain/utou_chat_model.dart';
-
+/// Chat Bubble
 class ChatBubble extends StatelessWidget {
+  /// get the chat object
   final UToUChatModel chat;
-  const ChatBubble({super.key, required this.chat});
+
+  /// check is currentUser or not
+  final bool isCurrentUser;
+
+  /// ChatBubble Constructor
+  const ChatBubble({
+    super.key,
+    required this.chat,
+    required this.isCurrentUser,
+  });
 
   @override
   Widget build(BuildContext context) {
