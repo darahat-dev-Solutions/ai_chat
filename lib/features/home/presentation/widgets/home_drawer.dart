@@ -1,9 +1,9 @@
 import 'package:ai_chat/features/auth/provider/auth_providers.dart';
 import 'package:ai_chat/features/home/presentation/widgets/user_profile_header.dart';
-import 'package:ai_chat/features/home/provider/home_provider.dart';
 import 'package:ai_chat/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 /// HomeDrawer for side drawer
 class HomeDrawer extends ConsumerWidget {
@@ -46,6 +46,21 @@ class HomeDrawer extends ConsumerWidget {
                 children: [
                   ListTile(
                     leading: Icon(
+                      Icons.settings,
+                      color: theme.colorScheme.onSurface,
+                    ),
+                    title: Text(
+                      AppLocalizations.of(context)!.settings,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurface,
+                      ),
+                    ),
+                    onTap: () {
+                      context.push('/settings');
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(
                       Icons.home,
                       color: theme.colorScheme.onSurface,
                     ),
@@ -56,8 +71,9 @@ class HomeDrawer extends ConsumerWidget {
                       ),
                     ),
                     onTap: () {
-                      ref.read(homeControllerProvider.notifier).changeTab(0);
-                      Navigator.pop(context);
+                      // ref.read(homeControllerProvider.notifier).changeTab(0);
+                      // context.pop(); // Close the drawer
+                      context.go('/home'); // go back to home
                     },
                   ),
                   ListTile(
@@ -75,7 +91,7 @@ class HomeDrawer extends ConsumerWidget {
                     ),
                     onTap: () {
                       ref.read(authControllerProvider.notifier).signOut();
-                      Navigator.pop(context);
+                      context.go('/login');
                     },
                   ),
                 ],
