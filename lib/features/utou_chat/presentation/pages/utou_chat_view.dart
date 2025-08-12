@@ -1,3 +1,4 @@
+import 'package:ai_chat/features/auth/provider/auth_providers.dart';
 import 'package:ai_chat/features/utou_chat/presentation/widgets/ChatBubble.dart'; // Import the new widget
 import 'package:ai_chat/features/utou_chat/provider/utou_chat_providers.dart';
 import 'package:ai_chat/l10n/app_localizations.dart';
@@ -6,8 +7,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Forget Password Page presentation
 class UToUChatView extends ConsumerStatefulWidget {
+  /// it will take receiverId from user list
+  final String receiverId;
+  final String receiverName;
+
   /// Forget Password page class constructor
-  const UToUChatView({super.key});
+  const UToUChatView({
+    super.key,
+    required this.receiverId,
+    required this.receiverName,
+  });
 
   @override
   ConsumerState<UToUChatView> createState() => _UToUChatViewConsumerState();
@@ -16,6 +25,8 @@ class UToUChatView extends ConsumerStatefulWidget {
 class _UToUChatViewConsumerState extends ConsumerState<UToUChatView> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _textController = TextEditingController();
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
+  // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   void dispose() {
@@ -40,7 +51,16 @@ class _UToUChatViewConsumerState extends ConsumerState<UToUChatView> {
 
   @override
   Widget build(BuildContext context) {
-    final chatsAsync = ref.watch(uToUChatControllerProvider);
+    final chatsAsync = ref.watch(messagesProvider(widget.receiverId));
+    final currentUser = ref.watch(authControllerProvider);
+    // final chatRoomId = getChatRoomId(_auth.currentUser?.uid, widget.receiverId);
+
+    /// get Firestore message updates
+    ref.listen(messagesProvider(widget.receiverId), (previous, next) {
+      if (next.asData != null) {
+        _scrollToBottom();
+      }
+    });
 
     /// Listen to changes in the chat list when new data arrives scroll to the bottom
     ref.listen(uToUChatControllerProvider, (previous, next) {
@@ -71,7 +91,8 @@ class _UToUChatViewConsumerState extends ConsumerState<UToUChatView> {
                 itemCount: chats.length,
                 itemBuilder: (context, index) {
                   final chat = chats[index];
-                  return ChatBubble(chat: chat);
+                  final isCurrentUser = chat.senderId == currentUser.uid;
+                  return ChatBubble(chat: chat, isCurrentUser: isCurrentUser);
                 },
               );
             },
@@ -79,7 +100,12 @@ class _UToUChatViewConsumerState extends ConsumerState<UToUChatView> {
             error: (err, stack) => Center(child: Text('Error: $err')),
           ),
         ),
-        _buildMessageInput(ref, _textController, context),
+        _buildMessageInput(
+          ref,
+          _textController,
+          context,
+          currentUser.uid ?? '',
+        ),
       ],
     );
   }
@@ -88,6 +114,7 @@ class _UToUChatViewConsumerState extends ConsumerState<UToUChatView> {
     WidgetRef ref,
     TextEditingController textController,
     BuildContext context,
+    String currentUserId,
   ) {
     final systemPrompt = AppLocalizations.of(context)!.systemSummaryPrompt;
     final userPromptPrefix = AppLocalizations.of(context)!.userSummaryPrompt;
@@ -118,6 +145,8 @@ class _UToUChatViewConsumerState extends ConsumerState<UToUChatView> {
                         userPromptPrefix,
                         systemQuickReplyPrompt,
                         errorMistralRequest,
+                        currentUserId,
+                        widget.receiverId,
                       );
                   textController.clear();
                 }
@@ -137,6 +166,8 @@ class _UToUChatViewConsumerState extends ConsumerState<UToUChatView> {
                       userPromptPrefix,
                       systemQuickReplyPrompt,
                       errorMistralRequest,
+                      currentUserId,
+                      widget.receiverId,
                     );
                 textController.clear();
               }

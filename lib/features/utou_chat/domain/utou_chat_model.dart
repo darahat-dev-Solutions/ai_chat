@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hive/hive.dart';
 
 part 'utou_chat_model.g.dart';
@@ -15,7 +16,7 @@ class UToUChatModel {
 
   /// when the message sent
   @HiveField(2)
-  final String sentTime;
+  final DateTime sentTime;
 
   /// is user/Ai isDelivered
   @HiveField(3)
@@ -50,7 +51,7 @@ class UToUChatModel {
   UToUChatModel copyWith({
     String? id,
     String? chatTextBody,
-    String? sentTime,
+    DateTime? sentTime,
     bool? isRead,
     bool? isDelivered,
     String? senderId,
@@ -65,6 +66,32 @@ class UToUChatModel {
       senderId: senderId ?? this.senderId,
       receiverId: receiverId ?? this.receiverId,
     );
+  }
+
+  /// Map firestore returned data and set them to modal variables
+  factory UToUChatModel.fromJson(Map<String, dynamic> json) {
+    return UToUChatModel(
+      id: json['id'] as String?,
+      chatTextBody: json['chatTextBody'] as String?,
+      sentTime: (json['sentTime'] as Timestamp).toDate(),
+      isRead: json['isRead'] as bool?,
+      isDelivered: json['isDelivered'] as bool?,
+      senderId: json['senderId'] as String?,
+      receiverId: json['receiverId'] as String?,
+    );
+  }
+
+  /// make modal object to json to use in firestore
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'chatTextBody': chatTextBody,
+      'sentTime': Timestamp.fromDate(sentTime),
+      'isRead': isRead,
+      'isDelivered': isDelivered,
+      'senderId': senderId,
+      'receiverId': receiverId,
+    };
   }
 }
 

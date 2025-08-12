@@ -16,15 +16,19 @@ class UToUChatController
   final Ref ref;
 
   /// UToUChatController Constructor to call it from outside
-  UToUChatController(this._repo, this.ref) : super(const AsyncValue.loading()) {
-    loadUToUChat();
-  }
+  UToUChatController(this._repo, this.ref) : super(const AsyncValue.loading());
 
   /// Load all uToUChats from repository and update the state
-  Future<void> loadUToUChat() async {
+  Future<void> loadUToUOfflineChat(
+    String currentUserId,
+    String otherUserId,
+  ) async {
     state = const AsyncValue.loading();
     try {
-      final uToUChats = await _repo.getUtoUChat();
+      final uToUChats = await _repo.getOfflineUtoUMessages(
+        currentUserId,
+        otherUserId,
+      );
 
       /// Filter for incomplete uToUChats and set the data state
       state = AsyncValue.data(uToUChats);
@@ -51,10 +55,21 @@ class UToUChatController
     String userPromptPrefix,
     String systemQuickReplyPrompt,
     String errorMistralRequest,
+    String senderId,
+    String receiverId,
   ) async {
     /// Get The current list of uToUChats from the state's value
     final currentUToUChats = state.value ?? [];
-    final usersMessage = await _repo.addUtoUChat(usersText);
+    final message = UToUChatModel(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      chatTextBody: usersText,
+      sentTime: DateTime.now(),
+      senderId: senderId,
+      receiverId: receiverId,
+      isRead: false,
+      isDelivered: true, // Message is sent to Firestore
+    );
+    final usersMessage = await _repo.addOfflineUtoUChat(message);
     if (usersMessage == null) return;
 
     state = AsyncValue.data([...currentUToUChats, usersMessage]);

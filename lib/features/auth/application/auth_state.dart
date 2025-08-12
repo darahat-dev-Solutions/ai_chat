@@ -8,7 +8,12 @@ import 'package:flutter/foundation.dart';
 /// [AuthInitial], [AuthLoading], [Authenticated], [Unauthenticated], and [AuthError].
 @immutable
 abstract class AuthState {
+  /// get user id from anywhere
+  String? get uid =>
+      this is Authenticated ? (this as Authenticated).user.uid : null;
+
   /// Const constructor for [AuthState].
+
   const AuthState();
 }
 
