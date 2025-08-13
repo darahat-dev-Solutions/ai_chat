@@ -21,7 +21,12 @@ class AuthRepository {
       email: email,
       password: password,
     );
-    return UserModel(uid: cred.user!.uid, email: cred.user!.email!);
+    await _saveUserData(cred.user!, cred.user!.displayName);
+    return UserModel(
+      uid: cred.user!.uid,
+      email: cred.user!.email!,
+      name: cred.user!.displayName,
+    );
   }
 
   /// this is Signin model function which will call from controller
@@ -31,6 +36,7 @@ class AuthRepository {
         email: email,
         password: password,
       );
+      await _saveUserData(cred.user!, cred.user!.displayName);
       return UserModel(uid: cred.user!.uid, email: cred.user!.email!);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'account-exists-with-different-credential') {
@@ -62,7 +68,7 @@ class AuthRepository {
         idToken: googleAuth.idToken,
       );
       final cred = await _auth.signInWithCredential(credential);
-
+      await _saveUserData(cred.user!, cred.user!.displayName);
       return UserModel(uid: cred.user!.uid, email: cred.user!.email!);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'account-exists-with-different-credential') {
@@ -91,7 +97,12 @@ class AuthRepository {
       } else {
         cred = await _auth.signInWithProvider(githubAuthProvider);
       }
-      return UserModel(uid: cred.user!.uid, email: cred.user!.email!);
+      await _saveUserData(cred.user!, cred.user!.displayName);
+      return UserModel(
+        uid: cred.user!.uid,
+        email: cred.user!.email!,
+        name: cred.user!.displayName,
+      );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'account-exists-with-different-credential') {
         throw const AuthenticationException(
@@ -170,7 +181,12 @@ class AuthRepository {
         smsCode: smsCode,
       );
       final cred = await _auth.signInWithCredential(credential);
-      return UserModel(uid: cred.user!.uid, email: cred.user!.email!);
+      await _saveUserData(cred.user!, cred.user!.displayName);
+      return UserModel(
+        uid: cred.user!.uid,
+        email: cred.user!.email!,
+        name: cred.user!.displayName,
+      );
     } catch (e) {
       throw AuthenticationException('🚀 ~Failed to verify OTP');
     }
@@ -204,6 +220,7 @@ class AuthRepository {
     return _firestore.collection('users').snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
         final data = doc.data();
+
         return UserModel(
           uid: doc.id,
           email: data['email'] ?? '',
@@ -211,5 +228,30 @@ class AuthRepository {
         );
       }).toList();
     });
+  }
+
+  Future<void> _saveUserData(User user, String? displayName) async {
+    final userDoc = _firestore.collection('users').doc(user.uid);
+    final snapshot = await userDoc.get();
+
+    if (!snapshot.exists) {
+      await userDoc.set({
+        'email': user.email,
+        'displayName': displayName ?? user.email,
+        'createdAt': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+    }
+  }
+
+  /// get Current uSer info so that can assre user is logged in
+  Future<UserModel?> getCurrentUser() async {
+    final user = _auth.currentUser;
+    if (user != null) {
+      final userDoc = await _firestore.collection('users').doc(user.uid).get();
+      if (userDoc.exists) {
+        return UserModel.fromFirestore(userDoc);
+      }
+    }
+    return null;
   }
 }
