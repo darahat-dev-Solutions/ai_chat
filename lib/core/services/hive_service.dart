@@ -3,6 +3,7 @@ import 'package:ai_chat/core/utils/logger.dart';
 import 'package:ai_chat/features/ai_chat/domain/ai_chat_model.dart';
 import 'package:ai_chat/features/app_settings/domain/settings_model.dart';
 import 'package:ai_chat/features/auth/domain/user_model.dart';
+import 'package:ai_chat/features/auth/domain/user_role.dart';
 import 'package:ai_chat/features/tasks/domain/task_model.dart';
 import 'package:ai_chat/features/utou_chat/domain/utou_chat_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -45,13 +46,20 @@ class HiveService {
         Hive.registerAdapter(TaskModelAdapter());
       }
 
+      if (!Hive.isAdapterRegistered(6)) {
+        // Register UserRoleAdapter with typeId 4
+        Hive.registerAdapter(UserRoleAdapter());
+      }
       if (!Hive.isAdapterRegistered(3)) {
+        // This is for SettingDefinitionModelAdapter
         Hive.registerAdapter(SettingDefinitionModelAdapter());
       }
       if (!Hive.isAdapterRegistered(4)) {
+        // Assuming typeId 5 for AiChatModelAdapter
         Hive.registerAdapter(AiChatModelAdapter());
       }
       if (!Hive.isAdapterRegistered(5)) {
+        // Assuming typeId 6 for UToUChatModelAdapter
         Hive.registerAdapter(UToUChatModelAdapter());
       }
       await Hive.openBox<UserModel>(authBoxName);
@@ -109,5 +117,11 @@ class HiveService {
   /// check are they initialized or not
   static void _checkInitialized() {
     if (!_initialized) throw Exception('HiveService not initialized');
+  }
+
+  /// Clear all boxes
+  static Future<void> clear() async {
+    await aiChatBoxInit.clear();
+    await uTouChatBoxInit.clear();
   }
 }
