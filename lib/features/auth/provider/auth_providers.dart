@@ -5,14 +5,14 @@ import '../application/auth_state.dart';
 import '../infrastructure/auth_repository.dart';
 
 /// its carry all functionality of AuthRepository model functions.
-final authRepositoryProvider = Provider((ref) => AuthRepository());
+final authRepositoryProvider = Provider((ref) => AuthRepository(ref));
 
 /// authStateProvider will check users recent status and carries User information.
 /// AuthStateProvider will use for all kind of calling in controlller
 final authControllerProvider = StateNotifierProvider<AuthController, AuthState>(
   (ref) {
     final repo = ref.watch(authRepositoryProvider);
-    return AuthController(repo);
+    return AuthController(repo, ref);
   },
 );
 

@@ -12,11 +12,12 @@ import 'auth_state.dart';
 /// and put user data to hive box and changing state value
 class AuthController extends StateNotifier<AuthState> {
   final AuthRepository _authRepository;
+  final Ref _ref;
   String? _verificationId;
   String? _phoneNumber;
 
   /// AuthController Constructor for call outside
-  AuthController(this._authRepository) : super(const AuthInitial());
+  AuthController(this._authRepository, this._ref) : super(const AuthInitial());
 
   /// Check User is Authenticated need to call in main to check
   void checkInitialAuthState() async {
@@ -137,9 +138,12 @@ class AuthController extends StateNotifier<AuthState> {
     state = const AuthLoading();
     try {
       await _authRepository.signOut();
+      await HiveService.clear();
       await HiveService.authBox.delete('user');
+      // Assuming goRouterProvider exists
       state = const AuthInitial();
-    } catch (e) {
+    } catch (e, s) {
+      AppLogger.error('App logger from signout $e \n $s');
       throw AuthenticationException('Sign Out Failed');
     }
   }

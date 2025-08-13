@@ -1,4 +1,5 @@
 import 'package:ai_chat/core/services/voice_to_text_service.dart';
+import 'package:ai_chat/features/auth/application/auth_state.dart';
 import 'package:ai_chat/features/auth/domain/user_model.dart';
 import 'package:ai_chat/features/auth/infrastructure/auth_repository.dart';
 import 'package:ai_chat/features/auth/provider/auth_providers.dart';
@@ -14,13 +15,20 @@ final uToUChatRepositoryProvider = Provider<UToUChatRepository>(
 
 /// Get authentication provider functions
 final authRepositoryProvider = Provider<AuthRepository>(
-  (ref) => AuthRepository(),
+  (ref) => AuthRepository(ref),
 );
 
 /// Get User Provider infos
 final usersProvider = StreamProvider<List<UserModel>>((ref) {
-  final authRepo = ref.watch(authRepositoryProvider);
-  return authRepo.getUsers();
+  // final authRepo = ref.watch(authRepositoryProvider);
+  // return authRepo.getUsers();
+  final authState = ref.watch(authControllerProvider);
+  if (authState is Authenticated) {
+    final authRepo = ref.watch(authRepositoryProvider);
+    return authRepo.getUsers();
+  } else {
+    return Stream.value([]);
+  }
 });
 
 /// Voice input for adding uToUChat
@@ -50,14 +58,13 @@ final messagesProvider = StreamProvider.family<List<UToUChatModel>, String>((
   ref,
   otherUserId,
 ) {
-  final repo = ref.watch(uToUChatRepositoryProvider);
-  // final authState = ref.watch(authControllerProvider);
   final authState = ref.read(authControllerProvider);
-
-  final currentUserId = authState.uid;
-  // final currentUser = switch (authState) {
-  //       Authenticated(user: final user) => (user.),
-  //       _ => (UserRole.guest, false),
-  //     };
-  return repo.getMessages(currentUserId, otherUserId);
+  if (authState is Authenticated) {
+    final repo = ref.watch(uToUChatRepositoryProvider);
+    final currentUserId = authState.uid!;
+    return repo.getMessages(currentUserId, otherUserId);
+  } else {
+    return Stream.value([]);
+  }
+  // final authState = ref.watch(authControllerProvider);
 });
