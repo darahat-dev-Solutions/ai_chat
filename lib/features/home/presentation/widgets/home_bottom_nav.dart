@@ -22,7 +22,7 @@ class HomeBottomNav extends ConsumerWidget {
             context.go('/home');
             break;
           case 1:
-            context.go('/uToUChat');
+            context.go('/uToUUserListPage');
             break;
           case 2:
             context.go('/aiChat');
