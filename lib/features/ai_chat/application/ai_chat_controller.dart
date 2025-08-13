@@ -24,13 +24,15 @@ class AiChatController extends StateNotifier<AsyncValue<List<AiChatModel>>> {
 
   /// Load all aiChats from repository and update the state
   Future<void> loadAiChat() async {
+    if (!mounted) return;
     state = const AsyncValue.loading();
     try {
       final aiChats = await _repo.getAiChat();
-
+      if (!mounted) return;
       /// Filter for incomplete aiChats and set the data state
       state = AsyncValue.data(aiChats);
     } catch (e, s) {
+      if (!mounted) return;
       /// If loading fails, set the error state
       state = AsyncValue.error(e, s);
     }
@@ -59,6 +61,7 @@ class AiChatController extends StateNotifier<AsyncValue<List<AiChatModel>>> {
     final usersMessage = await _repo.addAiChat(usersText);
     if (usersMessage == null) return;
 
+    if (!mounted) return;
     state = AsyncValue.data([...currentAiChats, usersMessage]);
     try {
       /// Get AI Reply
@@ -80,6 +83,7 @@ class AiChatController extends StateNotifier<AsyncValue<List<AiChatModel>>> {
         /// mark as Seen by AI
       );
       await _repo.updateAiChat(usersMessage.id!, updatedMessage);
+      if (!mounted) return;
       state = AsyncValue.data(
         state.value!.updated(usersMessage.id!, updatedMessage),
       );
@@ -120,6 +124,7 @@ class AiChatController extends StateNotifier<AsyncValue<List<AiChatModel>>> {
         }).toList();
 
     /// Update the state with the new list
+    if (!mounted) return;
     state = AsyncValue.data(updatedList);
   }
 
@@ -134,6 +139,7 @@ class AiChatController extends StateNotifier<AsyncValue<List<AiChatModel>>> {
       id,
       chatToUpdate.copyWith(isReplied: !(chatToUpdate.isReplied ?? false)),
     );
+    if (!mounted) return;
     state = AsyncValue.data(updatedList);
   }
 
@@ -142,6 +148,7 @@ class AiChatController extends StateNotifier<AsyncValue<List<AiChatModel>>> {
     final currentAiChats = state.value ?? [];
 
     await _repo.removeChat(id);
+    if (!mounted) return;
     state = AsyncValue.data(
       currentAiChats.where((chat) => chat.id != id).toList(),
     );
@@ -162,6 +169,7 @@ class AiChatController extends StateNotifier<AsyncValue<List<AiChatModel>>> {
     );
 
     /// Update the state with the new list
+    if (!mounted) return;
     state = AsyncValue.data(updatedList);
   }
 }

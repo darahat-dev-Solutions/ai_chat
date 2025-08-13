@@ -1,4 +1,5 @@
 import 'package:ai_chat/core/services/hive_service.dart';
+import 'package:ai_chat/core/utils/logger.dart';
 import 'package:ai_chat/features/utou_chat/domain/utou_chat_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hive/hive.dart';
@@ -29,8 +30,14 @@ class UToUChatRepository {
         .doc(chatRoomId)
         .collection('messages')
         .doc(chat.id);
-    await messageRef.set(chat.toJson());
-    await _box.put(chat.id, chat);
+    try {
+      await messageRef.set(chat.toJson());
+      await _box.put(chat.id, chat);
+    } catch (e, s) {
+      AppLogger.debug(
+        'I am from uTou_chat_repository.dart. Error: $e and state is $s',
+      );
+    }
   }
 
   /// Get Online messages from firestore
@@ -39,22 +46,29 @@ class UToUChatRepository {
     String otherUserId,
   ) {
     final chatRoomId = getChatRoomId(currentUserId ?? '', otherUserId);
-
-    return _firestore
-        .collection('chats')
-        .doc(chatRoomId)
-        .collection('messages')
-        .orderBy('sentTime', descending: false)
-        .snapshots()
-        .map((snapshot) {
-          final messages =
-              snapshot.docs.map((doc) {
-                final message = UToUChatModel.fromJson(doc.data());
-                _box.put(message.id, message);
-                return message;
-              }).toList();
-          return messages;
-        });
+    try {
+      return _firestore
+          .collection('chats')
+          .doc(chatRoomId)
+          .collection('messages')
+          .orderBy('sentTime', descending: false)
+          .snapshots()
+          .map((snapshot) {
+            final messages =
+                snapshot.docs.map((doc) {
+                  final message = UToUChatModel.fromJson(doc.data());
+                  _box.put(message.id, message);
+                  return message;
+                }).toList();
+            return messages;
+          });
+    } catch (e, s) {
+      AppLogger.debug(
+        'I am from uTou_chat_repository.dart. getMessages Error: $e and state is $s',
+      );
+      // Throw to satisfy the non-nullable return type
+      throw Exception('Failed to get messages: $e');
+    }
   }
 
   /// get offline uToUChat from the local Hive storages.
