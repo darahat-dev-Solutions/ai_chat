@@ -13,6 +13,7 @@ import 'package:ai_chat/features/auth/provider/auth_providers.dart';
 import 'package:ai_chat/features/home/presentation/layout/home_layout.dart';
 import 'package:ai_chat/features/home/presentation/pages/home_page.dart';
 import 'package:ai_chat/features/utou_chat/presentation/pages/user_list_page.dart';
+import 'package:ai_chat/features/utou_chat/presentation/pages/utou_chat_view.dart';
 import 'package:ai_chat/splashscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -68,9 +69,22 @@ final routerProvider = Provider<GoRouter>((ref) {
             builder: (context, state) => const AiChatView(),
           ),
           GoRoute(
-            path: '/uToUChat',
-            name: 'uToUChat',
+            path: '/uToUUserListPage',
+            name: 'uToUUserListPage',
             builder: (context, state) => const UserListPage(),
+          ),
+          GoRoute(
+            path: '/uToUChat/:id',
+            name: 'uToUChat',
+            builder: (context, state) {
+              final receiverId = state.pathParameters['id']!;
+              final receiverName =
+                  state.uri.queryParameters['name'] ?? 'No Name';
+              return UToUChatView(
+                receiverId: receiverId,
+                receiverName: receiverName,
+              );
+            },
           ),
         ],
       ),
@@ -128,7 +142,6 @@ final routerProvider = Provider<GoRouter>((ref) {
         '/otp',
         '/forget_password',
       ].contains(state.matchedLocation);
-      print('********************************$isAuthenticated');
       if (state.matchedLocation == '/splash') {
         return isAuthenticated ? '/home' : '/login';
       }
