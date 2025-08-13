@@ -25,4 +25,21 @@ class UserModel {
   /// its construct of UserModel class . its for call UserModel to other dart file.  this.name is not required
   UserModel({required this.uid, required this.email, this.name, UserRole? role})
     : role = role ?? UserRole.guest;
+
+  /// its construct of UserModel class . its for call UserModel to other dart file.  this.name is not required
+  //  │        UserModel({required this.uid, required this.email, this.name, UserRole? role})
+  //  │          : role = role ?? UserRole.guest;
+
+  factory UserModel.fromFirestore(doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return UserModel(
+      uid: doc.id,
+      email: data['email'] ?? '',
+      name: data['displayName'] ?? 'No Name',
+      role: UserRole.values.firstWhere(
+        (e) => e.toString() == 'UserRole.' + (data['role'] ?? 'guest'),
+        orElse: () => UserRole.guest,
+      ),
+    );
+  }
 }
