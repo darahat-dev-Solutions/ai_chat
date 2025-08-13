@@ -19,8 +19,9 @@ class AuthController extends StateNotifier<AuthState> {
   AuthController(this._authRepository) : super(const AuthInitial());
 
   /// Check User is Authenticated need to call in main to check
-  void checkInitialAuthState() {
-    final user = HiveService.authBox.get('user');
+  void checkInitialAuthState() async {
+    final getOnlineUser = await _authRepository.getCurrentUser();
+    final user = getOnlineUser ?? HiveService.authBox.get('user');
     if (user != null) {
       state = Authenticated(user);
     } else {
