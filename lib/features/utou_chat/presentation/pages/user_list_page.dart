@@ -1,11 +1,12 @@
 import 'package:ai_chat/features/auth/provider/auth_providers.dart';
-import 'package:ai_chat/features/utou_chat/presentation/pages/utou_chat_view.dart';
 import 'package:ai_chat/features/utou_chat/provider/utou_chat_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 /// All User Account registered will show
 class UserListPage extends ConsumerWidget {
+  /// User List Constructor
   const UserListPage({super.key});
 
   @override
@@ -17,23 +18,16 @@ class UserListPage extends ConsumerWidget {
         final otherUsers =
             users.where((user) => user.uid != currentUser).toList();
         return ListView.builder(
-          itemCount: users.length,
+          itemCount: otherUsers.length,
           itemBuilder: (context, index) {
-            final user = users[index];
-            final userData = user as Map<String, dynamic>;
-            final displayName =
-                userData.containsKey('displayName')
-                    ? userData['displayName']
-                    : 'No Name';
+            final user = otherUsers[index];
+            final displayName = user.name ?? 'No Name';
             return ListTile(
               title: Text(displayName),
               onTap: () {
-                MaterialPageRoute(
-                  builder:
-                      (context) => UToUChatView(
-                        receiverId: user.uid,
-                        receiverName: user.name ?? 'No Name',
-                      ),
+                //  context.push('/uToUChat');
+                context.push(
+                  '/uToUChat/${user.uid}?name=${Uri.encodeComponent(displayName)}',
                 );
               },
             );
