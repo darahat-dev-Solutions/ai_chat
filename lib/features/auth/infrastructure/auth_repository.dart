@@ -1,9 +1,14 @@
 import 'package:ai_chat/core/errors/exceptions.dart';
+import 'package:ai_chat/core/services/hive_service.dart'; // Import HiveService
 import 'package:ai_chat/core/utils/logger.dart';
+import 'package:ai_chat/features/ai_chat/provider/ai_chat_providers.dart'; // Import aiChatControllerProvider
+import 'package:ai_chat/features/auth/domain/user_role.dart';
+import 'package:ai_chat/features/utou_chat/provider/utou_chat_providers.dart'; // Import uToUChatControllerProvider
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart'
     show kIsWeb; // Make sure to add this import
+import 'package:flutter_riverpod/flutter_riverpod.dart'; // Import Riverpod Ref
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../domain/user_model.dart';
@@ -13,6 +18,10 @@ class AuthRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   final _googleSignIn = GoogleSignIn();
+  final Ref _ref; // Add Ref object
+
+  AuthRepository(this._ref); // Constructor to receive Ref
+
   // final _box = Hive.box<UserModel>('authBox');
 
   /// this is SignUp model function which will call from controller
@@ -138,6 +147,12 @@ class AuthRepository {
   Future<void> signOut() async {
     await _auth.signOut();
     await _googleSignIn.signOut();
+    await HiveService.clear();
+    _ref.invalidate(aiChatControllerProvider);
+    _ref.invalidate(uToUChatControllerProvider);
+    _ref.invalidate(messagesProvider);
+
+    // Redirect to login screen after logout
   }
 
   /// OTP send Repository Function
@@ -219,12 +234,18 @@ class AuthRepository {
   Stream<List<UserModel>> getUsers() {
     return _firestore.collection('users').snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
-        final data = doc.data();
+        final data = doc.data() as Map<String, dynamic>;
 
         return UserModel(
           uid: doc.id,
           email: data['email'] ?? '',
           name: data['displayName'] ?? 'No Name',
+
+          /// Assuming 'role' is also field in your Firestore document
+          role: UserRole.values.firstWhere(
+            (e) => e.toString() == 'UserRole.' + (data['role'] ?? 'guest'),
+            orElse: () => UserRole.guest,
+          ),
         );
       }).toList();
     });

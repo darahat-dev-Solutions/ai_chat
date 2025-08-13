@@ -70,47 +70,9 @@ class UToUChatController
       isDelivered: true, // Message is sent to Firestore
     );
     final usersMessage = await _repo.addOfflineUtoUChat(message);
+    await _repo.sendMessage(message);
     if (usersMessage == null) return;
-
     state = AsyncValue.data([...currentUToUChats, usersMessage]);
-    // try {
-    //   /// Get AI Reply
-    //   final mistralService = ref.read(mistralServiceProvider);
-    //   final uToUReplyText = await mistralService.generateQuickReply(
-    //     usersText,
-    //     systemPrompt,
-    //     userPromptPrefix,
-    //     systemQuickReplyPrompt,
-    //     errorMistralRequest,
-    //   );
-
-    //   /// Update the message with AI's reply
-    //   final updatedMessage = usersMessage.copyWith(
-    //     replyText: uToUReplyText,
-    //     isDelivered: true,
-    //     isRead: true,
-
-    //     /// mark as Seen by AI
-    //   );
-    //   await _repo.updateUToUChat(usersMessage.id!, updatedMessage);
-    //   state = AsyncValue.data(
-    //     state.value!.updated(usersMessage.id!, updatedMessage),
-    //   );
-    // } catch (e, s) {
-    //   throw ServerException(
-    //     '🚀 ~Save on hive of mistral reply from (ai_chat_controller.dart) $e and this is $s',
-    //   );
-    // }
-    // finally {
-    //   final updatedMessage = usersMessage.copyWith(
-    //     replyText: "Sorry, I couldn't get a response",
-    //     isReplied: true,
-    //   );
-    //   await _repo.updateUToUChat(usersMessage.id!, updatedMessage);
-    //   state = AsyncValue.data(
-    //     state.value!.updated(usersMessage.id!, updatedMessage),
-    //   );
-    // }
   }
 
   /// Toggle a uToUChat and reload list
