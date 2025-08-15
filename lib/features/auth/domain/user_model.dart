@@ -22,8 +22,12 @@ class UserModel {
   @HiveField(3)
   final UserRole? role;
 
+  /// Field for user's photo URL
+  @HiveField(4)
+  final String? photoURL;
+
   /// its construct of UserModel class . its for call UserModel to other dart file.  this.name is not required
-  UserModel({required this.uid, required this.email, this.name, UserRole? role})
+  UserModel({required this.uid, required this.email, this.name, this.photoURL, UserRole? role})
     : role = role ?? UserRole.guest;
 
   /// its construct of UserModel class . its for call UserModel to other dart file.  this.name is not required
@@ -36,6 +40,7 @@ class UserModel {
       uid: doc.id,
       email: data['email'] ?? '',
       name: data['displayName'] ?? 'No Name',
+      photoURL: data['photoURL'],
       role: UserRole.values.firstWhere(
         (e) => e.toString() == 'UserRole.' + (data['role'] ?? 'guest'),
         orElse: () => UserRole.guest,
