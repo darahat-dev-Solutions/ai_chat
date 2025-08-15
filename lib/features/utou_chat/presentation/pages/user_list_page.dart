@@ -21,15 +21,24 @@ class UserListPage extends ConsumerWidget {
       data: (users) {
         final otherUsers =
             users.where((user) => user.uid != currentUser).toList();
+        AppLogger.info('Current Firebase User: ${users.length}');
 
         return ListView.builder(
           itemCount: otherUsers.length,
           itemBuilder: (context, index) {
             final user = otherUsers[index];
             final displayName = user.name ?? 'No Name';
-            AppLogger.info('Current Firebase User: ${user.uid}');
+            // AppLogger.info('Current Firebase User: ${otherUsers.length}');
             AppLogger.info('Is user authenticated: $user');
             return ListTile(
+              leading: CircleAvatar(
+                backgroundImage:
+                    user.photoURL != null ? NetworkImage(user.photoURL!) : null,
+                child:
+                    user.photoURL == null
+                        ? Text(displayName.isNotEmpty ? displayName[0] : '')
+                        : null,
+              ),
               title: Text(displayName),
               onTap: () {
                 //  context.push('/uToUChat');
