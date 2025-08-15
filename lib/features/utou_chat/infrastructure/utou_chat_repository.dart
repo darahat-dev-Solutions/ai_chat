@@ -99,12 +99,24 @@ class UToUChatRepository {
   /// Toggles the completion status of a isSeen identified by [id]
   ///
   /// if the uToUChat exists, it will be updated with the opposite 'isCompleted' value.
-  Future<void> toggleIsReadChat(String id) async {
+  Future<void> toggleIsReadChat(String id, String receiverId, String senderId) async {
     final uToUChat = _box.get(id);
     if (uToUChat != null) {
       final updated = uToUChat.copyWith(isRead: !(uToUChat.isRead ?? false));
       await _box.put(id, updated);
+      await updateMessageReadStatus(id, receiverId, senderId);
     }
+  }
+
+  /// Update message read status in Firestore
+  Future<void> updateMessageReadStatus(String messageId, String receiverId, String senderId) async {
+    final chatRoomId = getChatRoomId(receiverId, senderId);
+    final messageRef = _firestore
+        .collection('chats')
+        .doc(chatRoomId)
+        .collection('messages')
+        .doc(messageId);
+    await messageRef.update({'isRead': true});
   }
 
   /// Toggle/Update value of isReplied
