@@ -76,10 +76,10 @@ class UToUChatController
   }
 
   /// Toggle a uToUChat and reload list
-  Future<void> toggleIsReadChat(String id) async {
+  Future<void> toggleIsReadChat(String id, String receiverId, String senderId) async {
     final currentChats = state.value ?? [];
     if (currentChats.isEmpty) return;
-    await _repo.toggleIsReadChat(id);
+    await _repo.toggleIsReadChat(id, receiverId, senderId);
 
     // final chatToUpdate = currentChats.firstWhere((t) => t.id == id);
 
