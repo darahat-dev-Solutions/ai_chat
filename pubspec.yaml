@@ -98,6 +98,7 @@ dependencies:
   flutter_local_notifications: ^19.3.1
   flutter_localization: ^0.3.3
   freezed_annotation: ^2.4.4
+  audioplayers: ^6.5.0
 
 #---------------------------
 #Development Dependencies
@@ -137,6 +138,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/sounds/notification.mp3
     - assets/icon/icon.png
     - assets/icon/google_logo.png
     - assets/icon/github_logo.png

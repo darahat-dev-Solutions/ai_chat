@@ -86,6 +86,18 @@ class _UToUChatViewConsumerState extends ConsumerState<UToUChatView> {
                   );
                 }
               });
+              // Mark messages as read
+              for (var chat in chats) {
+                if (chat.receiverId == currentUser.uid) {
+                  ref
+                      .read(uToUChatControllerProvider.notifier)
+                      .toggleIsReadChat(
+                        chat.id,
+                        chat.receiverId!,
+                        chat.senderId!,
+                      );
+                }
+              }
               return ListView.builder(
                 controller: _scrollController,
                 itemCount: chats.length,

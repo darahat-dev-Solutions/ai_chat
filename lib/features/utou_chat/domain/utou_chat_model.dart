@@ -8,7 +8,7 @@ part 'utou_chat_model.g.dart';
 class UToUChatModel {
   /// first field for the hive/table is id
   @HiveField(0)
-  final String? id;
+  final String id;
 
   /// Chat Body
   @HiveField(1)
@@ -36,7 +36,7 @@ class UToUChatModel {
 
   /// its construct of UserModel class . its for call UserModel to other dart file.  this.name is not required
   UToUChatModel({
-    this.id,
+    required this.id,
     this.chatTextBody,
     required this.sentTime,
     this.isRead,
@@ -71,7 +71,7 @@ class UToUChatModel {
   /// Map firestore returned data and set them to modal variables
   factory UToUChatModel.fromJson(Map<String, dynamic> json) {
     return UToUChatModel(
-      id: json['id'] as String?,
+      id: json['id'] as String,
       chatTextBody: json['chatTextBody'] as String?,
       sentTime: (json['sentTime'] as Timestamp).toDate(),
       isRead: json['isRead'] as bool?,
