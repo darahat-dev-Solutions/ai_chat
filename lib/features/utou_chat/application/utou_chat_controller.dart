@@ -1,3 +1,4 @@
+import 'package:ai_chat/core/services/sound_service.dart';
 import 'package:ai_chat/features/utou_chat/domain/utou_chat_model.dart';
 import 'package:ai_chat/features/utou_chat/infrastructure/utou_chat_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,6 +10,7 @@ final uToUChatLoadingProvider = StateProvider<bool>((ref) => false);
 class UToUChatController
     extends StateNotifier<AsyncValue<List<UToUChatModel>>> {
   final UToUChatRepository _repo;
+  final SoundService _soundService = SoundService();
 
   /// ref is a riverpod object which used by providers to interact with other providers and life cycle
   /// of the application
@@ -38,16 +40,6 @@ class UToUChatController
     }
   }
 
-  /// Load all uToUChats from repository
-  // Future<void> getUToUChats() async {
-  //   ref.read(uToUChatLoadingProvider.notifier).state = true;
-
-  //   final uToUChats = await _repo.uToUChats();
-  //   state = uToUChats.where((uToUChat) => uToUChat.isCompleted == false).toList();
-
-  //   ref.read(uToUChatLoadingProvider.notifier).state = false;
-  // }
-
   /// Add a new uToUChat and reload list
   Future<void> addUToUChat(
     String usersText,
@@ -76,7 +68,11 @@ class UToUChatController
   }
 
   /// Toggle a uToUChat and reload list
-  Future<void> toggleIsReadChat(String id, String receiverId, String senderId) async {
+  Future<void> toggleIsReadChat(
+    String id,
+    String receiverId,
+    String senderId,
+  ) async {
     final currentChats = state.value ?? [];
     if (currentChats.isEmpty) return;
     await _repo.toggleIsReadChat(id, receiverId, senderId);
@@ -138,5 +134,10 @@ class UToUChatController
 
     /// Update the state with the new list
     state = AsyncValue.data(updatedList);
+  }
+
+  /// if New message detect it will be called
+  void onNewMessageReceived(message) {
+    _soundService.playNotificationSound();
   }
 }
