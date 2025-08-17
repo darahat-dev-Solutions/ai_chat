@@ -1,4 +1,6 @@
 import 'package:ai_chat/core/utils/logger.dart';
+import 'package:ai_chat/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -88,11 +90,6 @@ class FirebaseMessagingService {
       }
     });
   }
-
-  /// This method will be called by the top-level background handler
-  void handleBackgroundMessage(RemoteMessage message) {
-    AppLogger.debug('Handling a background message: ${message.messageId}');
-  }
 }
 
 /// Firebase Local Notification instance call
@@ -107,6 +104,37 @@ Future<void> _initializeLocalNotifications() async {
   );
 
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+}
+
+@pragma('vm:entry-point')
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  AppLogger.debug('Got a message in the background');
+  AppLogger.debug('Message data: ${message.data}');
+  if (message.notification != null) {
+    AppLogger.debug(
+      'Message also contained a notification: ${message.notification}',
+    );
+    RemoteNotification? notification = message.notification;
+    AndroidNotification? android = message.notification?.android;
+    if (notification != null && android != null) {
+      flutterLocalNotificationsPlugin.show(
+        notification.hashCode,
+        notification.title,
+        notification.body,
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            'high_importance_channel',
+            'High Importantce Notifications',
+            channelDescription: 'Used for important notifications',
+            importance: Importance.max,
+            priority: Priority.high,
+            icon: '@mipmap/ic_launcher',
+          ),
+        ),
+      );
+    }
+  }
 }
 
 /// RiverPod provider for FirebaseMessagingService
