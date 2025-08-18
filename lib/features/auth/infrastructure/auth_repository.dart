@@ -30,7 +30,11 @@ class AuthRepository {
       email: email,
       password: password,
     );
-    await _saveUserData(cred.user!, cred.user!.displayName, cred.user!.photoURL);
+    await _saveUserData(
+      cred.user!,
+      cred.user!.displayName,
+      cred.user!.photoURL,
+    );
     return UserModel(
       uid: cred.user!.uid,
       email: cred.user!.email!,
@@ -46,8 +50,16 @@ class AuthRepository {
         email: email,
         password: password,
       );
-      await _saveUserData(cred.user!, cred.user!.displayName, cred.user!.photoURL);
-      return UserModel(uid: cred.user!.uid, email: cred.user!.email!, photoURL: cred.user!.photoURL);
+      await _saveUserData(
+        cred.user!,
+        cred.user!.displayName,
+        cred.user!.photoURL,
+      );
+      return UserModel(
+        uid: cred.user!.uid,
+        email: cred.user!.email!,
+        photoURL: cred.user!.photoURL,
+      );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'account-exists-with-different-credential') {
         throw const AuthenticationException(
@@ -78,8 +90,16 @@ class AuthRepository {
         idToken: googleAuth.idToken,
       );
       final cred = await _auth.signInWithCredential(credential);
-      await _saveUserData(cred.user!, cred.user!.displayName, cred.user!.photoURL);
-      return UserModel(uid: cred.user!.uid, email: cred.user!.email!, photoURL: cred.user!.photoURL);
+      await _saveUserData(
+        cred.user!,
+        cred.user!.displayName,
+        cred.user!.photoURL,
+      );
+      return UserModel(
+        uid: cred.user!.uid,
+        email: cred.user!.email!,
+        photoURL: cred.user!.photoURL,
+      );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'account-exists-with-different-credential') {
         throw const AuthenticationException(
@@ -92,7 +112,7 @@ class AuthRepository {
         );
       }
     } catch (e) {
-      AppLogger.error('🚀 ~ Error during Google Sign-in');
+      AppLogger.error('🚀 ~ Error during Google Sign-in $e');
       throw AuthenticationException('🚀 ~ Google Sign in failed $e');
     }
   }
@@ -107,7 +127,11 @@ class AuthRepository {
       } else {
         cred = await _auth.signInWithProvider(githubAuthProvider);
       }
-      await _saveUserData(cred.user!, cred.user!.displayName, cred.user!.photoURL);
+      await _saveUserData(
+        cred.user!,
+        cred.user!.displayName,
+        cred.user!.photoURL,
+      );
       return UserModel(
         uid: cred.user!.uid,
         email: cred.user!.email!,
@@ -198,7 +222,11 @@ class AuthRepository {
         smsCode: smsCode,
       );
       final cred = await _auth.signInWithCredential(credential);
-      await _saveUserData(cred.user!, cred.user!.displayName, cred.user!.photoURL);
+      await _saveUserData(
+        cred.user!,
+        cred.user!.displayName,
+        cred.user!.photoURL,
+      );
       return UserModel(
         uid: cred.user!.uid,
         email: cred.user!.email!,
@@ -255,7 +283,11 @@ class AuthRepository {
     });
   }
 
-  Future<void> _saveUserData(User user, String? displayName, String? photoURL) async {
+  Future<void> _saveUserData(
+    User user,
+    String? displayName,
+    String? photoURL,
+  ) async {
     final userDoc = _firestore.collection('users').doc(user.uid);
     final snapshot = await userDoc.get();
 
