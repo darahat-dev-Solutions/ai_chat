@@ -19,6 +19,7 @@ Follow these steps to get started with the Flutter Starter Kit:
 
 flutter pub get
 flutter pub run build_runner build --delete-conflicting-outputs
+flutter create --platforms android --empty
 
 Run the app:
 
