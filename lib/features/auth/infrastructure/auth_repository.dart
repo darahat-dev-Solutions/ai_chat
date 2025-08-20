@@ -292,20 +292,22 @@ class AuthRepository {
   ) async {
     final userDoc = _firestore.collection('users').doc(user.uid);
     final snapshot = await userDoc.get();
-    final fcmToken = await FirebaseMessaging.instance.getToken();
+    final fcmTokens = await FirebaseMessaging.instance.getToken();
     if (!snapshot.exists) {
       await userDoc.set({
         'email': user.email,
         'displayName': displayName ?? user.email,
         'photoURL': photoURL,
         'createdAt': FieldValue.serverTimestamp(),
-        'fcmToken': fcmToken,
+        'fcmTokens': [fcmTokens],
       }, SetOptions(merge: true));
     } else {
-      await userDoc.update({'fcmToken': fcmToken});
+      await userDoc.update({
+        'fcmTokens': FieldValue.arrayUnion([fcmTokens]),
+      });
     }
     FirebaseMessaging.instance.onTokenRefresh.listen((newToken) async {
-      await userDoc.update({'fcmToken': newToken});
+      await userDoc.update({'fcmTokens': newToken});
     });
   }
 
