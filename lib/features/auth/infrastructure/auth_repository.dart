@@ -6,6 +6,7 @@ import 'package:ai_chat/features/auth/domain/user_role.dart';
 import 'package:ai_chat/features/utou_chat/provider/utou_chat_providers.dart'; // Import uToUChatControllerProvider
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart'
     show kIsWeb; // Make sure to add this import
 import 'package:flutter_riverpod/flutter_riverpod.dart'; // Import Riverpod Ref
@@ -19,6 +20,7 @@ class AuthRepository {
   final _auth = FirebaseAuth.instance;
   final _googleSignIn = GoogleSignIn();
   final Ref _ref; // Add Ref object
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
   AuthRepository(this._ref); // Constructor to receive Ref
 
@@ -290,15 +292,21 @@ class AuthRepository {
   ) async {
     final userDoc = _firestore.collection('users').doc(user.uid);
     final snapshot = await userDoc.get();
-
+    final fcmToken = await FirebaseMessaging.instance.getToken();
     if (!snapshot.exists) {
       await userDoc.set({
         'email': user.email,
         'displayName': displayName ?? user.email,
         'photoURL': photoURL,
         'createdAt': FieldValue.serverTimestamp(),
+        'fcmToken': fcmToken,
       }, SetOptions(merge: true));
+    } else {
+      await userDoc.update({'fcmToken': fcmToken});
     }
+    FirebaseMessaging.instance.onTokenRefresh.listen((newToken) async {
+      await userDoc.update({'fcmToken': newToken});
+    });
   }
 
   /// get Current uSer info so that can assre user is logged in
