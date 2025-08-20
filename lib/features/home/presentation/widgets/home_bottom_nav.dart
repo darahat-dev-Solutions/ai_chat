@@ -41,7 +41,7 @@ class HomeBottomNav extends ConsumerWidget {
         // ),
         BottomNavigationBarItem(
           icon: const Icon(Icons.chat_bubble),
-          label: AppLocalizations.of(context)!.aiChat,
+          label: 'Friends',
         ),
         BottomNavigationBarItem(
           icon: const Icon(Icons.chat),
