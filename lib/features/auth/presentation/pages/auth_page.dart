@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../pages/login_page.dart';
+import 'login_page.dart';
 
 /// AuthScreen Scaffold class
 class AuthScreen extends StatelessWidget {

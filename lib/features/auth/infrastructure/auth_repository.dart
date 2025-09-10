@@ -18,11 +18,19 @@ import '../domain/user_model.dart';
 class AuthRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
-  final _googleSignIn = GoogleSignIn();
   final Ref _ref; // Add Ref object
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-
-  AuthRepository(this._ref); // Constructor to receive Ref
+  final AppLogger _appLogger;
+  final HiveService _hiveService;
+  // final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  /// Check Auth State
+  AuthRepository(
+    this._hiveService,
+    this._ref,
+    this._appLogger,
+  ) {
+    // Constructor to receive Ref
+    GoogleSignIn.instance.initialize();
+  }
 
   // final _box = Hive.box<UserModel>('authBox');
 
@@ -81,14 +89,14 @@ class AuthRepository {
   /// This is Signin model function for google signin which will call from controller
   Future<UserModel?> signInWithGoogle() async {
     try {
-      final googleUser = await _googleSignIn.signIn();
+      final googleUser = await GoogleSignIn.instance.authenticate();
       if (googleUser == null) {
         /// User canceled the sign-in
         throw AuthenticationException('🚀 ~ User Canceled the Sign-in');
       }
       final googleAuth = await googleUser.authentication;
       final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
+        accessToken: googleAuth.idToken,
         idToken: googleAuth.idToken,
       );
       final cred = await _auth.signInWithCredential(credential);
@@ -114,7 +122,7 @@ class AuthRepository {
         );
       }
     } catch (e) {
-      AppLogger.error('🚀 ~ Error during Google Sign-in $e');
+      _appLogger.error('🚀 ~ Error during Google Sign-in $e');
       throw AuthenticationException('🚀 ~ Google Sign in failed $e');
     }
   }
@@ -152,7 +160,7 @@ class AuthRepository {
         );
       }
     } catch (e) {
-      AppLogger.error('🚀 ~ Error during Github Sign-in', e);
+      _appLogger.error('🚀 ~ Error during Github Sign-in', e);
       throw const AuthenticationException(
         '🚀 ~Failed to sign in with GitHub. Please try again.',
       );
@@ -164,7 +172,7 @@ class AuthRepository {
     try {
       await _auth.sendPasswordResetEmail(email: email);
     } catch (e) {
-      AppLogger.error('🚀 ~ sendPasswordResetEmail Error', e);
+      _appLogger.error('🚀 ~ sendPasswordResetEmail Error', e);
       throw const AuthenticationException(
         '🚀 ~Failed to send Password Reset Email',
       );
@@ -174,8 +182,8 @@ class AuthRepository {
   /// model function for logout which will call from controller
   Future<void> signOut() async {
     await _auth.signOut();
-    await _googleSignIn.signOut();
-    await HiveService.clear();
+    await GoogleSignIn.instance.signOut();
+    await _hiveService.clear();
     _ref.invalidate(aiChatControllerProvider);
     _ref.invalidate(uToUChatControllerProvider);
     _ref.invalidate(messagesProvider);
@@ -189,24 +197,24 @@ class AuthRepository {
     required Function(String, int?) codeSent,
     Function(String)? codeAutoRetrievalTimeoutCallback,
   }) async {
-    AppLogger.debug('🚀send otp called with this number $phoneNumber');
+    _appLogger.debug('🚀send otp called with this number $phoneNumber');
 
     try {
-      AppLogger.debug('🚀send otp called with this number2 $phoneNumber');
+      _appLogger.debug('🚀send otp called with this number2 $phoneNumber');
 
       await _auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         verificationCompleted: (PhoneAuthCredential credential) async {
           await _auth.signInWithCredential(credential);
-          AppLogger.debug('🚀 Verification completed $codeSent, $credential');
+          _appLogger.debug('🚀 Verification completed $codeSent, $credential');
         },
         verificationFailed: (FirebaseAuthException e) {
-          AppLogger.debug('🚀 ~Failed to send OTP $e');
+          _appLogger.debug('🚀 ~Failed to send OTP $e');
           throw AuthenticationException(e.message ?? '🚀 ~Failed to send OTP');
         },
         codeSent: codeSent,
         codeAutoRetrievalTimeout: (String verificationId) {
-          AppLogger.debug('🚀 ~Code getting timeout $verificationId');
+          _appLogger.debug('🚀 ~Code getting timeout $verificationId');
           codeAutoRetrievalTimeoutCallback?.call(verificationId);
         },
       );
@@ -267,7 +275,7 @@ class AuthRepository {
   Stream<List<UserModel>> getUsers() {
     return _firestore.collection('users').snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
-        final data = doc.data() as Map<String, dynamic>;
+        final data = doc.data();
 
         return UserModel(
           uid: doc.id,
@@ -276,13 +284,22 @@ class AuthRepository {
           photoURL: data['photoURL'],
 
           /// Assuming 'role' is also field in your Firestore document
-          role: UserRole.values.firstWhere(
-            (e) => e.toString() == 'UserRole.' + (data['role'] ?? 'guest'),
-            orElse: () => UserRole.guest,
-          ),
+          role: _parseUserRole(data['role'] as String?),
         );
       }).toList();
     });
+  }
+
+  UserRole _parseUserRole(String? roleString) {
+    switch (roleString) {
+      case 'authenticatedUser':
+        return UserRole.authenticatedUser;
+      case 'admin':
+        return UserRole.admin;
+      case 'guest':
+      default:
+        return UserRole.guest;
+    }
   }
 
   Future<void> _saveUserData(
