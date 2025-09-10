@@ -1,7 +1,7 @@
 name: Build Flutter App
 on:
   push:
-    branches: ["null"]
+    branches: [main]
   pull_request:
     branches: [main]
 
