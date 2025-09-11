@@ -79,7 +79,8 @@ class _ForgetPasswordConsumerState extends ConsumerState<ForgetPassword> {
               Text(
                 AppLocalizations.of(
                   context,
-                )!.enterTheEmailAssociatedWithYourAccount,
+                )!
+                    .enterTheEmailAssociatedWithYourAccount,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: theme.colorScheme.onSurface,
                 ),
@@ -121,19 +122,18 @@ class _ForgetPasswordConsumerState extends ConsumerState<ForgetPassword> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        child:
-                            authState is AuthLoading
-                                ? SizedBox(
-                                  height: 24,
-                                  width: 24,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    color: theme.colorScheme.onPrimary,
-                                  ),
-                                )
-                                : Text(
-                                  AppLocalizations.of(context)!.sendResetEmail,
+                        child: authState is AuthLoading
+                            ? SizedBox(
+                                height: 24,
+                                width: 24,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: theme.colorScheme.onPrimary,
                                 ),
+                              )
+                            : Text(
+                                AppLocalizations.of(context)!.sendResetEmail,
+                              ),
                       ),
                     ),
                   ],

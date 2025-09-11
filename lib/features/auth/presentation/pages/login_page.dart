@@ -44,7 +44,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       }
       if (next is Authenticated) {
         _currentAuthMethod = AuthMethod.none;
-        context.go('/home');
+        context.go('/home', extra: {'title': 'Home'});
       }
     });
 
@@ -62,15 +62,15 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   Text(
                     '${AppLocalizations.of(context)!.welcome} Back',
                     style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     AppLocalizations.of(context)!.signInToContinue,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
                   ),
                   const SizedBox(height: 40),
                   Form(
@@ -90,12 +90,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             if (value == null || value.isEmpty) {
                               return AppLocalizations.of(
                                 context,
-                              )!.pleaseEnterYourEmail;
+                              )!
+                                  .pleaseEnterYourEmail;
                             }
                             if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
                               return AppLocalizations.of(
                                 context,
-                              )!.pleaseEnterAValidEmailAddress;
+                              )!
+                                  .pleaseEnterAValidEmailAddress;
                             }
                             return null;
                           },
@@ -131,12 +133,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             if (value == null || value.isEmpty) {
                               return AppLocalizations.of(
                                 context,
-                              )!.pleaseEnterYourPassword;
+                              )!
+                                  .pleaseEnterYourPassword;
                             }
                             if (value.length < 6) {
                               return AppLocalizations.of(
                                 context,
-                              )!.passwordMustBeAtLeast6Characters;
+                              )!
+                                  .passwordMustBeAtLeast6Characters;
                             }
                             return null;
                           },
@@ -145,19 +149,19 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         Align(
                           alignment: Alignment.centerRight,
                           child: TextButton(
-                            onPressed:
-                                isLoading
-                                    ? null
-                                    : () {
-                                      context.go('/forget_password');
-                                    },
+                            onPressed: isLoading
+                                ? null
+                                : () {
+                                    context.go('/forget_password');
+                                  },
                             child: Text(
                               AppLocalizations.of(context)!.forgotPassword,
                               style: Theme.of(
                                 context,
                               ).textTheme.bodyMedium?.copyWith(
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                  ),
                             ),
                           ),
                         ),
@@ -165,38 +169,35 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
-                            onPressed:
-                                isLoading &&
-                                        _currentAuthMethod != AuthMethod.email
-                                    ? null
-                                    : () {
-                                      if (_formKey.currentState!.validate()) {
-                                        setState(() {
-                                          _currentAuthMethod = AuthMethod.email;
-                                        });
-                                        controller.signIn(
-                                          emailController.text.trim(),
-                                          passwordController.text.trim(),
-                                        );
-                                      }
-                                    },
-                            child:
-                                _currentAuthMethod == AuthMethod.email &&
-                                        isLoading
-                                    ? SizedBox(
-                                      height: 24,
-                                      width: 24,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        color:
-                                            Theme.of(
-                                              context,
-                                            ).colorScheme.onPrimary,
-                                      ),
-                                    )
-                                    : Text(
-                                      AppLocalizations.of(context)!.signIn,
+                            onPressed: isLoading &&
+                                    _currentAuthMethod != AuthMethod.email
+                                ? null
+                                : () {
+                                    if (_formKey.currentState!.validate()) {
+                                      setState(() {
+                                        _currentAuthMethod = AuthMethod.email;
+                                      });
+                                      controller.signIn(
+                                        emailController.text.trim(),
+                                        passwordController.text.trim(),
+                                      );
+                                    }
+                                  },
+                            child: _currentAuthMethod == AuthMethod.email &&
+                                    isLoading
+                                ? SizedBox(
+                                    height: 24,
+                                    width: 24,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onPrimary,
                                     ),
+                                  )
+                                : Text(
+                                    AppLocalizations.of(context)!.signIn,
+                                  ),
                           ),
                         ),
                       ],
@@ -217,8 +218,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           style: Theme.of(
                             context,
                           ).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface,
-                          ),
+                                color: Theme.of(context).colorScheme.onSurface,
+                              ),
                         ),
                       ),
                       Expanded(
@@ -234,50 +235,49 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         isLoading && _currentAuthMethod != AuthMethod.google
                             ? null
                             : () async {
-                              setState(() {
-                                _currentAuthMethod = AuthMethod.google;
-                              });
-                              await controller.signInWithGoogle();
-                            },
+                                setState(() {
+                                  _currentAuthMethod = AuthMethod.google;
+                                });
+                                await controller.signInWithGoogle();
+                              },
                     style: OutlinedButton.styleFrom(
                       side: BorderSide(
                         color: Theme.of(context).colorScheme.onSurface,
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 12),
                     ),
-                    child:
-                        _currentAuthMethod == AuthMethod.google && isLoading
-                            ? const SizedBox(
-                              height: 24,
-                              width: 24,
-                              child: CircularProgressIndicator(),
-                            )
-                            : Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  'assets/icon/google_logo.png',
-                                  height: 24,
-                                  width: 24,
-                                ),
-                                const SizedBox(width: 12),
-                                Text(
-                                  AppLocalizations.of(
-                                    context,
-                                  )!.continueWithGoogle,
-                                  style: Theme.of(context).textTheme.bodyLarge,
-                                ),
-                              ],
-                            ),
+                    child: _currentAuthMethod == AuthMethod.google && isLoading
+                        ? const SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: CircularProgressIndicator(),
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                'assets/icon/google_logo.png',
+                                height: 24,
+                                width: 24,
+                              ),
+                              const SizedBox(width: 12),
+                              Text(
+                                AppLocalizations.of(
+                                  context,
+                                )!
+                                    .continueWithGoogle,
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                            ],
+                          ),
                   ),
                   const SizedBox(height: 16),
                   OutlinedButton(
-                    onPressed:
-                        isLoading
-                            ? null
-                            : () {
-                              context.go('/phone-number');
-                            },
+                    onPressed: isLoading
+                        ? null
+                        : () {
+                            context.go('/phone-number');
+                          },
                     style: OutlinedButton.styleFrom(
                       side: BorderSide(
                         color: Theme.of(context).colorScheme.onSurface,
@@ -305,41 +305,41 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         isLoading && _currentAuthMethod != AuthMethod.github
                             ? null
                             : () async {
-                              setState(() {
-                                _currentAuthMethod = AuthMethod.github;
-                              });
-                              await controller.signInWithGithub();
-                            },
+                                setState(() {
+                                  _currentAuthMethod = AuthMethod.github;
+                                });
+                                await controller.signInWithGithub();
+                              },
                     style: OutlinedButton.styleFrom(
                       side: BorderSide(
                         color: Theme.of(context).colorScheme.onSurface,
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 12),
                     ),
-                    child:
-                        _currentAuthMethod == AuthMethod.github && isLoading
-                            ? const SizedBox(
-                              height: 24,
-                              width: 24,
-                              child: CircularProgressIndicator(),
-                            )
-                            : Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  'assets/icon/github_logo.png',
-                                  height: 24,
-                                  width: 24,
-                                ),
-                                const SizedBox(width: 12),
-                                Text(
-                                  AppLocalizations.of(
-                                    context,
-                                  )!.continueWithGithub,
-                                  style: Theme.of(context).textTheme.bodyLarge,
-                                ),
-                              ],
-                            ),
+                    child: _currentAuthMethod == AuthMethod.github && isLoading
+                        ? const SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: CircularProgressIndicator(),
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                'assets/icon/github_logo.png',
+                                height: 24,
+                                width: 24,
+                              ),
+                              const SizedBox(width: 12),
+                              Text(
+                                AppLocalizations.of(
+                                  context,
+                                )!
+                                    .continueWithGithub,
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                            ],
+                          ),
                   ),
                   const SizedBox(height: 32),
                   Center(
@@ -356,9 +356,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               style: Theme.of(
                                 context,
                               ).textTheme.bodyMedium?.copyWith(
-                                color: Theme.of(context).colorScheme.primary,
-                                fontWeight: FontWeight.w600,
-                              ),
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                             ),
                           ],
                         ),

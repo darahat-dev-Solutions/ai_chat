@@ -31,10 +31,9 @@ class ChatBubble extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Column(
-                crossAxisAlignment:
-                    isCurrentUser
-                        ? CrossAxisAlignment.end
-                        : CrossAxisAlignment.start,
+                crossAxisAlignment: isCurrentUser
+                    ? CrossAxisAlignment.end
+                    : CrossAxisAlignment.start,
                 children: [
                   Text(chat.chatTextBody ?? ''),
                   const SizedBox(height: 4),

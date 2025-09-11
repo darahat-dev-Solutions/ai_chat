@@ -64,7 +64,7 @@ class _OTPPageState extends ConsumerState<OTPPage> {
         scaffoldMessenger(context, next);
       }
       if (next is Authenticated) {
-        context.go('/home');
+        context.go('/home', extra: {'title': 'Home'});
       }
     });
 
@@ -80,8 +80,8 @@ class _OTPPageState extends ConsumerState<OTPPage> {
               Text(
                 AppLocalizations.of(context)!.enterTheOTPSentToYourPhone,
                 style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
               const SizedBox(height: 40),
               Pinput(
@@ -95,16 +95,14 @@ class _OTPPageState extends ConsumerState<OTPPage> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed:
-                      isLoading
-                          ? null
-                          : () {
-                            controller.verifyOTP(pinController.text);
-                          },
-                  child:
-                      isLoading
-                          ? const CircularProgressIndicator()
-                          : Text(AppLocalizations.of(context)!.verifyOTP),
+                  onPressed: isLoading
+                      ? null
+                      : () {
+                          controller.verifyOTP(pinController.text);
+                        },
+                  child: isLoading
+                      ? const CircularProgressIndicator()
+                      : Text(AppLocalizations.of(context)!.verifyOTP),
                 ),
               ),
               const SizedBox(height: 24),

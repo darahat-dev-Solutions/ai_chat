@@ -4,37 +4,22 @@ import 'package:hive/hive.dart';
 part 'utou_chat_model.g.dart';
 
 @HiveType(typeId: 5)
-/// Model for peer-to-peer chat messages.
 class UToUChatModel {
-  /// first field for the hive/table is id
   @HiveField(0)
   final String id;
-
-  /// Chat Body
   @HiveField(1)
   final String? chatTextBody;
-
-  /// when the message sent
   @HiveField(2)
   final DateTime sentTime;
-
-  /// is user/Ai isDelivered
   @HiveField(3)
   final bool? isDelivered;
-
-  /// is user/ai is read/seen
   @HiveField(4)
   final bool? isRead;
-
-  ///  user sender ID
   @HiveField(5)
   final String? senderId;
-
-  /// User receiver ID
   @HiveField(6)
   final String? receiverId;
 
-  /// its construct of UserModel class . its for call UserModel to other dart file.  this.name is not required
   UToUChatModel({
     required this.id,
     this.chatTextBody,
@@ -45,9 +30,30 @@ class UToUChatModel {
     this.receiverId,
   });
 
-  ///creating a copy of an existing object with some updated fields and the actual object remain unchanged
-  ///its used when need to update any field .
-  ///used riverpod to state management.
+  factory UToUChatModel.fromMap(Map<String, dynamic> map) {
+    return UToUChatModel(
+      id: map['id'],
+      chatTextBody: map['chatTextBody'],
+      sentTime: DateTime.parse(map['sentTime']),
+      isRead: map['isRead'] == 1,
+      isDelivered: map['isDelivered'] == 1,
+      senderId: map['senderId'],
+      receiverId: map['receiverId'],
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'chatTextBody': chatTextBody,
+      'sentTime': sentTime.toIso8601String(),
+      'isRead': isRead == true ? 1 : 0,
+      'isDelivered': isDelivered == true ? 1 : 0,
+      'senderId': senderId,
+      'receiverId': receiverId,
+    };
+  }
+
   UToUChatModel copyWith({
     String? id,
     String? chatTextBody,
@@ -68,7 +74,6 @@ class UToUChatModel {
     );
   }
 
-  /// Map firestore returned data and set them to modal variables
   factory UToUChatModel.fromJson(Map<String, dynamic> json) {
     return UToUChatModel(
       id: json['id'] as String,
@@ -81,7 +86,6 @@ class UToUChatModel {
     );
   }
 
-  /// make modal object to json to use in firestore
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -102,9 +106,11 @@ extension UToUChatListUtils on List<UToUChatModel> {
     return [
       for (final chat in this)
         if (chat.id == id)
+
           /// When we find the aiChat, create a new one with the updated title
           updatedChat
         else
+
           /// Otherwise, keep the existing aiChat
           chat,
     ];

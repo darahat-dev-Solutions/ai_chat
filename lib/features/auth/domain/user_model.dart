@@ -4,47 +4,66 @@ import 'package:hive/hive.dart';
 part 'user_model.g.dart';
 
 @HiveType(typeId: 2)
-/// its User model for authentication
 class UserModel {
-  /// first field for the hive/table is uid
   @HiveField(0)
   final String uid;
-
-  /// second non required field
   @HiveField(1)
   final String? name;
-
-  /// third required field for login
   @HiveField(2)
   final String email;
-
-  /// Field for what is role of user
   @HiveField(3)
   final UserRole? role;
-
-  /// Field for user's photo URL
   @HiveField(4)
   final String? photoURL;
 
-  /// its construct of UserModel class . its for call UserModel to other dart file.  this.name is not required
-  UserModel({required this.uid, required this.email, this.name, this.photoURL, UserRole? role})
-    : role = role ?? UserRole.guest;
+  UserModel({
+    required this.uid,
+    required this.email,
+    this.name,
+    this.photoURL,
+    UserRole? role,
+  }) : role = role ?? UserRole.guest;
 
-  /// its construct of UserModel class . its for call UserModel to other dart file.  this.name is not required
-  //  │        UserModel({required this.uid, required this.email, this.name, UserRole? role})
-  //  │          : role = role ?? UserRole.guest;
+  factory UserModel.fromMap(Map<String, dynamic> map) {
+    return UserModel(
+      uid: map['uid'],
+      email: map['email'],
+      name: map['name'],
+      photoURL: map['photoURL'],
+      role: _parseUserRole(map['role'] as String?),
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'uid': uid,
+      'name': name,
+      'email': email,
+      'role': role.toString().split('.').last,
+      'photoURL': photoURL,
+    };
+  }
 
   factory UserModel.fromFirestore(doc) {
-    final data = doc.data() as Map<String, dynamic>;
+    final data = doc.data();
     return UserModel(
       uid: doc.id,
       email: data['email'] ?? '',
       name: data['displayName'] ?? 'No Name',
       photoURL: data['photoURL'],
-      role: UserRole.values.firstWhere(
-        (e) => e.toString() == 'UserRole.' + (data['role'] ?? 'guest'),
-        orElse: () => UserRole.guest,
-      ),
+      role: _parseUserRole(data['role'] as String?),
     );
+  }
+
+  static UserRole _parseUserRole(String? roleString) {
+    switch (roleString) {
+      case 'authenticatedUser':
+        return UserRole.authenticatedUser;
+      case 'admin':
+        return UserRole.admin;
+      case 'guest':
+      default:
+        return UserRole.guest;
+    }
   }
 }

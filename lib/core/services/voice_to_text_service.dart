@@ -41,6 +41,8 @@ class VoiceToTextService {
 
   /// its speech listener lisen to text
   Future<String?> listenForText() async {
+    final logger = ref.watch(appLoggerProvider);
+
     ref.read(isListeningProvider.notifier).state = true;
     final available = await _speech.initialize();
     if (!available) {
@@ -58,7 +60,7 @@ class VoiceToTextService {
       pauseFor: const Duration(seconds: 6),
       onSoundLevelChange: (level) {
         // use for visual waveform feedback, optional
-        AppLogger.error('🚀 ~ Check Sound level', level);
+        logger.error('🚀 ~ Check Sound level', level);
       },
     );
 
