@@ -1,4 +1,5 @@
 import 'package:ai_chat/core/services/hive_service.dart';
+import 'package:ai_chat/core/utils/logger.dart';
 import 'package:hive/hive.dart';
 
 import '../domain/task_model.dart';
@@ -6,8 +7,8 @@ import '../domain/task_model.dart';
 /// A repository class for managing task-related operation using hive
 class TaskRepository {
   /// The hive box containing [TaskModel] instances.
-
-  Box<TaskModel> get _box => HiveService.taskBox;
+  AppLogger appLogger = AppLogger();
+  Box<TaskModel> get _box => HiveService(appLogger).taskBox;
 
   /// Retrives all tasks from the local Hive storages.
   ///

@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ai_chat/features/tasks/provider/task_providers.dart';
 import 'package:ai_chat/l10n/app_localizations.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// AISummaryWidget is for showing AI provided summary
 class AISummaryWidget extends ConsumerWidget {
@@ -36,15 +36,13 @@ class AISummaryWidget extends ConsumerWidget {
             summaryAsync.when(
               data: (summary) {
                 final showToggle = summary.length > 200;
-                final displayText =
-                    isExpandedAiSummary
-                        ? summary
-                        : '${summary.substring(0, 200)}...';
+                final displayText = isExpandedAiSummary
+                    ? summary
+                    : '${summary.substring(0, 200)}...';
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(displayText),
-
                     if (showToggle)
                       TextButton(
                         onPressed: () {
@@ -60,17 +58,15 @@ class AISummaryWidget extends ConsumerWidget {
                   ],
                 );
               },
-              loading:
-                  () => Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Text(
-                      AppLocalizations.of(context)!.generatingSummary,
-                    ),
-                  ),
-              error:
-                  (e, _) => Text(
-                    AppLocalizations.of(context)!.unableToGenerateSummary,
-                  ),
+              loading: () => Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text(
+                  AppLocalizations.of(context)!.generatingSummary,
+                ),
+              ),
+              error: (e, _) => Text(
+                AppLocalizations.of(context)!.unableToGenerateSummary,
+              ),
             ),
         ],
       ),

@@ -20,14 +20,12 @@ class FloatingButtonWidget extends ConsumerWidget {
         if (isFabExpanded)
           Positioned.fill(
             child: GestureDetector(
-              onTap:
-                  () =>
-                      ref.read(isExpandedFabProvider.notifier).state =
-                          !isFabExpanded,
+              onTap: () => ref.read(isExpandedFabProvider.notifier).state =
+                  !isFabExpanded,
               child: Container(
                 color: Theme.of(context).colorScheme.scrim.withAlpha(
-                  100,
-                ), // semi-transparent background
+                      100,
+                    ), // semi-transparent background
               ),
             ),
           ),
@@ -72,10 +70,8 @@ class FloatingButtonWidget extends ConsumerWidget {
           right: 20,
           child: FloatingActionButton(
             heroTag: 'mainFab',
-            onPressed:
-                () =>
-                    ref.read(isExpandedFabProvider.notifier).state =
-                        !isFabExpanded,
+            onPressed: () =>
+                ref.read(isExpandedFabProvider.notifier).state = !isFabExpanded,
             backgroundColor: Theme.of(context).colorScheme.primary,
             child: AnimatedRotation(
               turns: isFabExpanded ? 0.125 : 0,

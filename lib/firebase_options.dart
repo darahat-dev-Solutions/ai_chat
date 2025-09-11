@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBWPF6fjoi6ZD7wnwRIjyWLXMMZXyS7s8Q',
-    appId: '1:25940150454:android:93feb76864dc9c0f9ebe17',
+    appId: '1:25940150454:android:c30a65898d4a0e0c9ebe17',
     messagingSenderId: '25940150454',
     projectId: 'flutter-starter-kit-3bd18',
     storageBucket: 'flutter-starter-kit-3bd18.firebasestorage.app',
@@ -59,13 +59,13 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBbpMRIGhOr4jVywCjd7Njba_bSg_18yhU',
-    appId: '1:25940150454:ios:424ad79feecbf6dc9ebe17',
+    appId: '1:25940150454:ios:69704a7232cbae3e9ebe17',
     messagingSenderId: '25940150454',
     projectId: 'flutter-starter-kit-3bd18',
     storageBucket: 'flutter-starter-kit-3bd18.firebasestorage.app',
     androidClientId: '25940150454-4qklgv283cfevtpjpk39u68dqibjl4nm.apps.googleusercontent.com',
-    iosClientId: '25940150454-4tb4hqrefifuj33n916ctsbpijs421dd.apps.googleusercontent.com',
-    iosBundleId: 'com.example.opsmate',
+    iosClientId: '25940150454-cbgj1laemo9bjv6t4irmje9sad4vcb3n.apps.googleusercontent.com',
+    iosBundleId: 'com.example.aiChat',
   );
 
 }

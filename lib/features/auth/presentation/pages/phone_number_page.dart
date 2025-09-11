@@ -58,15 +58,15 @@ class _PhoneNumberPageState extends ConsumerState<PhoneNumberPage> {
                 Text(
                   AppLocalizations.of(context)!.enterYourPhoneNumber,
                   style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   AppLocalizations.of(context)!.weWillSendYouAVerificationCode,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
                 ),
                 const SizedBox(height: 40),
                 Row(
@@ -109,7 +109,8 @@ class _PhoneNumberPageState extends ConsumerState<PhoneNumberPage> {
                           if (value == null || value.isEmpty) {
                             return AppLocalizations.of(
                               context,
-                            )!.pleaseEnterYourPhoneNumber;
+                            )!
+                                .pleaseEnterYourPhoneNumber;
                           }
                           return null;
                         },
@@ -118,25 +119,22 @@ class _PhoneNumberPageState extends ConsumerState<PhoneNumberPage> {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 24),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed:
-                        isLoading
-                            ? null
-                            : () {
-                              if (_formKey.currentState!.validate()) {
-                                final phoneNumber =
-                                    '$_selectedCountryCode${phoneNumberController.text.trim()}';
-                                controller.sendOTP(phoneNumber);
-                              }
-                            },
-                    child:
-                        isLoading
-                            ? const CircularProgressIndicator()
-                            : Text(AppLocalizations.of(context)!.sendOTP),
+                    onPressed: isLoading
+                        ? null
+                        : () {
+                            if (_formKey.currentState!.validate()) {
+                              final phoneNumber =
+                                  '$_selectedCountryCode${phoneNumberController.text.trim()}';
+                              controller.sendOTP(phoneNumber);
+                            }
+                          },
+                    child: isLoading
+                        ? const CircularProgressIndicator()
+                        : Text(AppLocalizations.of(context)!.sendOTP),
                   ),
                 ),
               ],

@@ -43,7 +43,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
         ).showSnackBar(SnackBar(content: Text(next.message)));
       }
       if (next is Authenticated) {
-        context.go('/home');
+        context.go('/home', extra: {'title': 'Home'});
       }
     });
 
@@ -61,17 +61,17 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                 Text(
                   AppLocalizations.of(context)!.createAccount,
                   style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 8),
                 Text(
                   AppLocalizations.of(context)!.letsGetYouStarted,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 48),
@@ -108,7 +108,8 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                     if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
                       return AppLocalizations.of(
                         context,
-                      )!.pleaseEnterAValidEmail;
+                      )!
+                          .pleaseEnterAValidEmail;
                     }
                     return null;
                   },
@@ -137,12 +138,14 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                     if (value == null || value.isEmpty) {
                       return AppLocalizations.of(
                         context,
-                      )!.pleaseEnterYourPassword;
+                      )!
+                          .pleaseEnterYourPassword;
                     }
                     if (value.length < 6) {
                       return AppLocalizations.of(
                         context,
-                      )!.passwordMustBeAtLeast6Characters;
+                      )!
+                          .passwordMustBeAtLeast6Characters;
                     }
                     return null;
                   },
@@ -155,29 +158,27 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  onPressed:
-                      authState is AuthLoading
-                          ? null
-                          : () async {
-                            if (_formKey.currentState!.validate()) {
-                              await controller.signUp(
-                                emailController.text.trim(),
-                                passwordController.text.trim(),
-                                nameController.text.trim(),
-                              );
-                            }
-                          },
-                  child:
-                      authState is AuthLoading
-                          ? SizedBox(
-                            height: 24,
-                            width: 24,
-                            child: CircularProgressIndicator(
-                              color: Theme.of(context).colorScheme.onPrimary,
-                              strokeWidth: 2,
-                            ),
-                          )
-                          : Text(AppLocalizations.of(context)!.signUp),
+                  onPressed: authState is AuthLoading
+                      ? null
+                      : () async {
+                          if (_formKey.currentState!.validate()) {
+                            await controller.signUp(
+                              emailController.text.trim(),
+                              passwordController.text.trim(),
+                              nameController.text.trim(),
+                            );
+                          }
+                        },
+                  child: authState is AuthLoading
+                      ? SizedBox(
+                          height: 24,
+                          width: 24,
+                          child: CircularProgressIndicator(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : Text(AppLocalizations.of(context)!.signUp),
                 ),
                 const SizedBox(height: 20),
                 TextButton(

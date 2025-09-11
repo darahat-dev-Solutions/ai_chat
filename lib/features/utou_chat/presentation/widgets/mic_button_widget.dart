@@ -29,7 +29,6 @@ class MicButtonWidget extends ConsumerWidget {
           ),
         ],
       ),
-
       child: Material(
         type: MaterialType.transparency,
         child: InkWell(
@@ -58,10 +57,9 @@ class MicButtonWidget extends ConsumerWidget {
                 child: Icon(
                   Icons.mic,
                   size: 30,
-                  color:
-                      isRecording
-                          ? Theme.of(context).colorScheme.error
-                          : AppColor.buttonText,
+                  color: isRecording
+                      ? Theme.of(context).colorScheme.error
+                      : AppColor.buttonText,
                 ),
               ),
             ),
