@@ -92,7 +92,8 @@ class AuthRepository {
       final googleUser = await GoogleSignIn.instance.authenticate();
       if (googleUser == null) {
         /// User canceled the sign-in
-        throw AuthenticationException('🚀 ~ User Canceled the Sign-in');
+        throw AuthenticationException(
+            '🚀 ~ User Canceled the Sign-in.............. $googleUser');
       }
       final googleAuth = await googleUser.authentication;
       final credential = GoogleAuthProvider.credential(
@@ -121,8 +122,8 @@ class AuthRepository {
           'Google sign in failed. Please try again',
         );
       }
-    } catch (e) {
-      _appLogger.error('🚀 ~ Error during Google Sign-in $e');
+    } catch (e, s) {
+      _appLogger.error('🚀 ~ Error during Google Sign-in $e and status is $s');
       throw AuthenticationException('🚀 ~ Google Sign in failed $e');
     }
   }
