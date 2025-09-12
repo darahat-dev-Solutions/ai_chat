@@ -1,18 +1,3 @@
-run `firebase deploy --only firestore:rules --project ****(Firebase APP Id)`
-this is for deploy firebase rules to firestore
-here is how to get Sha-1 and SHA-256 for firebase setup . run this command below
-`keytool -list -v -keystore "C:\Users\***\.android\debug.keystore" -alias androiddebugkey -storepass android -keypass android`
-
-after that download google-service.json and insert it to android folder
-
-cd functions
-npm install
-firebase deploy
-
-fix lint run this command
-npx eslint . --fix
-run firebase use _Firebase project ID_
-
 # Firebase Setup and Deployment Guide
 
 This guide provides a comprehensive walkthrough of setting up and deploying a Flutter application with Firebase, including Firestore rules, Cloud Functions, and Android app configuration.
@@ -37,11 +22,19 @@ To connect your Flutter app to Firebase, you need to provide some information ab
 
 1.  **Get Your SHA-1 and SHA-256 Keys:**
 
-    - Open a terminal and run the following command:
-      ```bash
-      keytool -list -v -keystore "%USERPROFILE%\.android\debug.keystore" -alias androiddebugkey -storepass android -keypass android
-      ```
-    - This command will print the SHA-1 and SHA-256 fingerprints for your debug key.
+    *   **For Windows:**
+        Open your terminal and run this command:
+        ```bash
+        keytool -list -v -keystore "%USERPROFILE%\.android\debug.keystore" -alias androiddebugkey -storepass android -keypass android
+        ```
+
+    *   **For macOS and Linux:**
+        Open your terminal and run this command:
+        ```bash
+        keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android
+        ```
+
+    *   After running the command, copy both the `SHA1` and `SHA256` fingerprints from the output.
 
 2.  **Add Your SHA Keys to Firebase:**
 

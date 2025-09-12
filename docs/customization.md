@@ -41,11 +41,24 @@ Reference in UI through Image.asset('assets/images/logo.png')
 
 📁 Change Package Name
 
-Android: Update in android/app/build.gradle
+To change the package name of your app, it is highly recommended to use the `change_app_package_name` package. This will ensure all necessary files are updated correctly.
 
-iOS: Update in ios/Runner.xcodeproj
+1.  **Run the command:**
 
-Or use CLI: flutter pub run change_app_package_name:main com.example.app
+    ```bash
+    flutter pub run change_app_package_name:main com.new.package.name
+    ```
+
+    Replace `com.new.package.name` with your desired package name.
+
+2.  **Manual Changes (if needed):**
+
+    If you prefer to change the package name manually, you will need to update the following files:
+
+    *   **Android:** `android/app/build.gradle` (look for `applicationId`)
+    *   **iOS:** `ios/Runner.xcodeproj` (look for `PRODUCT_BUNDLE_IDENTIFIER`)
+
+    **Note:** Manual changes are not recommended as it's easy to miss a required change, which can cause build issues.
 
 🧭 Best Practices
 
