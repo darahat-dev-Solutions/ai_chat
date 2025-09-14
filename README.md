@@ -38,13 +38,25 @@ This project uses Firebase for authentication, database, and other services. You
 This is crucial for features like Google Sign-In and push notifications.
 
 1.  **Add an Android App:** In your Firebase project, click the Android icon to add a new Android app.
-    *   **Package Name:** Enter your app's package name. You can find this in `android/app/build.gradle.kts` (look for `applicationId`).
+    - **Package Name:** Enter your app's package name. You can find this in `android/app/build.gradle.kts` (look for `applicationId`).
 2.  **Get Your SHA-1 and SHA-256 Keys:** These keys are essential for Google Sign-In and other Firebase services to verify your app's authenticity.
-    *   Open your terminal and run this command:
-        ```bash
-        keytool -list -v -keystore "%USERPROFILE%\.android\debug.keystore" -alias androiddebugkey -storepass android -keypass android
-        ```
-    *   Copy both the `SHA1` and `SHA256` fingerprints from the output.
+
+    - **For Windows:**
+      Open your terminal and run this command:
+
+      ```bash
+      keytool -list -v -keystore "%USERPROFILE%\.android\debug.keystore" -alias androiddebugkey -storepass android -keypass android
+      ```
+
+    - **For macOS and Linux:**
+      Open your terminal and run this command:
+
+      ```bash
+      keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android
+      ```
+
+    - After running the command, copy both the `SHA1` and `SHA256` fingerprints from the output.
+
 3.  **Add SHA Keys to Firebase:** In your Firebase project settings, select your Android app, then click "Add fingerprint" and paste your copied SHA-1 and SHA256 keys.
 4.  **Download `google-services.json`:** Download the `google-services.json` file from the Firebase console.
 5.  **Place `google-services.json`:** Move this downloaded file into the `android/app` directory of your Flutter project.
@@ -62,7 +74,8 @@ If you make changes to your Firestore security rules (`firestore.rules`), you'll
 ```bash
 firebase deploy --only firestore:rules --project <your-firebase-project-id>
 ```
-*Replace `<your-firebase-project-id>` with your actual Firebase project ID.*
+
+_Replace `<your-firebase-project-id>` with your actual Firebase project ID._
 
 ### 4. Add AI Provider API Key
 
@@ -72,7 +85,7 @@ The application uses Mistral AI via OpenRouter for its AI chat features. For det
 2.  Add your OpenRouter API key to the `.env` file as follows:
 
     ```
-    OPENROUTER_AI_API_KEY='your_api_key_here'
+    AI_API_KEY='your_api_key_here'
     ```
 
 ### 5. Generate Code (Build Runner)

@@ -27,8 +27,9 @@ OpenRouter is a platform that provides access to various large language models (
     Now that you have your API key, you can add it to your project's `.env` file as instructed in the `README.md`.
 
     Example:
+
     ```
-    OPENROUTER_AI_API_KEY='your_copied_api_key_here'
+    AI_API_KEY='your_copied_api_key_here'
     ```
 
 **Important:** Keep your API key secure and do not share it publicly.

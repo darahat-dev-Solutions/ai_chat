@@ -6,9 +6,17 @@ import 'package:http/http.dart' as http;
 
 /// Mistral LLM Service implementation
 class MistralService {
-  ///OPENROUTER_AI_API_KEY you may find in .env
-  static final _apiKey = dotenv.env['OPENROUTER_AI_API_KEY']!;
-  static const _endpoint = 'https://openrouter.ai/api/v1/chat/completions';
+  ///AI_API_KEY you may find in .env
+  static final _apiKey = dotenv.env['AI_API_KEY'];
+  static final _endpoint = dotenv.env['CUSTOM_LLM_ENDPOINT'] ??
+      'https://openrouter.ai/api/v1/chat/completions';
+
+  /// Mistral Service constructor
+  MistralService() {
+    if (_apiKey == null) {
+      throw Exception('AI_API_KEY is not set in the .env file');
+    }
+  }
 
   /// Mistral LLM API calling procedure as like as regular jquery
   Future<String> generateSummary(String taskList) async {
