@@ -94,8 +94,8 @@ class _AiChatViewConsumerState extends ConsumerState<AiChatView> {
     final userPromptPrefix = AppLocalizations.of(context)!.userSummaryPrompt;
     final systemQuickReplyPrompt =
         AppLocalizations.of(context)!.systemQuickReplyPrompt;
-    final errorMistralRequest =
-        AppLocalizations.of(context)!.errorMistralRequest;
+    final errorCustomLlmRequest =
+        AppLocalizations.of(context)!.errorCustomLlmRequest;
     final typeMessage = AppLocalizations.of(context)!.typeMessage;
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -111,14 +111,12 @@ class _AiChatViewConsumerState extends ConsumerState<AiChatView> {
               onSubmitted: (text) {
                 /// Allow submitting with keyboard
                 if (text.isNotEmpty) {
-                  ref
-                      .read(aiChatControllerProvider.notifier)
-                      .addAiChat(
+                  ref.read(aiChatControllerProvider.notifier).addAiChat(
                         text,
                         systemPrompt,
                         userPromptPrefix,
                         systemQuickReplyPrompt,
-                        errorMistralRequest,
+                        errorCustomLlmRequest,
                       );
                   textController.clear();
                 }
@@ -130,14 +128,12 @@ class _AiChatViewConsumerState extends ConsumerState<AiChatView> {
             onPressed: () {
               final text = textController.text;
               if (text.isNotEmpty) {
-                ref
-                    .read(aiChatControllerProvider.notifier)
-                    .addAiChat(
+                ref.read(aiChatControllerProvider.notifier).addAiChat(
                       text,
                       systemPrompt,
                       userPromptPrefix,
                       systemQuickReplyPrompt,
-                      errorMistralRequest,
+                      errorCustomLlmRequest,
                     );
                 textController.clear();
               }

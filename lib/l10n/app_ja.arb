@@ -13,7 +13,7 @@
     "systemSummaryPrompt": "あなたは、タスクの要約と計画を作成する有能なアシスタントです。",
     "userSummaryPrompt": "次のタスクリストに基づいて、要約を作成し、賢い日次計画を提案してください:\n",
     "systemQuickReplyPrompt": "あなたは人間らしく、プロフェッショナルな会話パートナーです。100文字以内で返答してください。温かみがあり簡潔に、自然な会話のように応答してください。",
-    "errorMistralRequest": "Mistralからの応答を取得できませんでした: ",
+    "errorCustomLlmRequest": LLMからの応答を取得できませんでした: ",
     "logout": "ログアウト",
     "flutterStarterKit": "Flutterスターターキット",
     "signInToContinue": "続行するにはサインインしてください",

@@ -1,4 +1,4 @@
-import 'package:ai_chat/core/services/mistral_service.dart';
+import 'package:ai_chat/core/services/custom_llm_service.dart';
 import 'package:ai_chat/core/services/voice_to_text_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,20 +28,20 @@ final isExpandedFabProvider = StateProvider<bool>((ref) => false);
 /// Controller for task logic and Hive access
 final taskControllerProvider =
     StateNotifierProvider<TaskController, AsyncValue<List<TaskModel>>>((ref) {
-      final repo = ref.watch(taskRepositoryProvider);
-      return TaskController(repo, ref);
-    });
+  final repo = ref.watch(taskRepositoryProvider);
+  return TaskController(repo, ref);
+});
 
 /// taking only those tasks which are incomplete
 final incompleteTasksProvider = Provider<AsyncValue<List<TaskModel>>>((ref) {
   return ref.watch(taskControllerProvider);
 });
 
-/// Mistral AI summary service
-final mistralServiceProvider = Provider((ref) => MistralService());
+/// Custom LLM AI summary service
+final customLlmServiceProvider = Provider((ref) => CustomLlmService());
 
-/// Async summary from Mistral for task list
-/// Async summary from Mistral for incomplete tasks
+/// Async summary from LLM for task list
+/// Async summary from LLM for incomplete tasks
 final aiSummaryProvider = FutureProvider<String>((ref) async {
   final taskAsync = ref.watch(taskControllerProvider);
   return taskAsync.when(
@@ -50,7 +50,7 @@ final aiSummaryProvider = FutureProvider<String>((ref) async {
         return "No Tasks to summarize";
       }
       final taskTitles = tasks.map((t) => '- ${t.title}').join('\n');
-      final service = ref.read(mistralServiceProvider);
+      final service = ref.read(customLlmServiceProvider);
       return service.generateSummary(taskTitles);
     },
     error: (_, __) => "Could not generate summary due to an error",

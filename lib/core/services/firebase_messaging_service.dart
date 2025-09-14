@@ -1,5 +1,4 @@
 import 'package:ai_chat/app/router.dart';
-import 'package:ai_chat/firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -140,7 +139,7 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
   // const settings = InitializationSettings(android: androidSettings);
   // await localNotificationsPlugin.initialize(settings);
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp();
   //  final notification = message.notification;
   // if (notification != null) {
   //   localNotificationsPlugin.show(
