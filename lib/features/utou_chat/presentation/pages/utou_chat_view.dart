@@ -133,8 +133,8 @@ class _UToUChatViewConsumerState extends ConsumerState<UToUChatView> {
     final userPromptPrefix = AppLocalizations.of(context)!.userSummaryPrompt;
     final systemQuickReplyPrompt =
         AppLocalizations.of(context)!.systemQuickReplyPrompt;
-    final errorMistralRequest =
-        AppLocalizations.of(context)!.errorMistralRequest;
+    final errorCustomLlmRequest =
+        AppLocalizations.of(context)!.errorCustomLlmRequest;
     final typeMessage = AppLocalizations.of(context)!.typeMessage;
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -155,7 +155,7 @@ class _UToUChatViewConsumerState extends ConsumerState<UToUChatView> {
                         systemPrompt,
                         userPromptPrefix,
                         systemQuickReplyPrompt,
-                        errorMistralRequest,
+                        errorCustomLlmRequest,
                         currentUserId,
                         widget.receiverId,
                       );
@@ -174,7 +174,7 @@ class _UToUChatViewConsumerState extends ConsumerState<UToUChatView> {
                       systemPrompt,
                       userPromptPrefix,
                       systemQuickReplyPrompt,
-                      errorMistralRequest,
+                      errorCustomLlmRequest,
                       currentUserId,
                       widget.receiverId,
                     );

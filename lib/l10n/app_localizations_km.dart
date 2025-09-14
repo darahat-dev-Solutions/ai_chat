@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -42,16 +43,19 @@ class AppLocalizationsKm extends AppLocalizations {
   String get typeMessage => 'វាយសារ...';
 
   @override
-  String get systemSummaryPrompt => 'អ្នកគឺជាជំនួយការដែលមានប្រយោជន៍ក្នុងការបង្កើតសង្ខេបភារកិច្ច និងផែនការ។';
+  String get systemSummaryPrompt =>
+      'អ្នកគឺជាជំនួយការដែលមានប្រយោជន៍ក្នុងការបង្កើតសង្ខេបភារកិច្ច និងផែនការ។';
 
   @override
-  String get userSummaryPrompt => 'ផ្អែកលើបញ្ជីភារកិច្ចខាងក្រោម សូមបង្កើតសង្ខេប និងផ្តល់ផែនការប្រចាំថ្ងៃឆ្លាតវៃ:\n';
+  String get userSummaryPrompt =>
+      'ផ្អែកលើបញ្ជីភារកិច្ចខាងក្រោម សូមបង្កើតសង្ខេប និងផ្តល់ផែនការប្រចាំថ្ងៃឆ្លាតវៃ:\n';
 
   @override
-  String get systemQuickReplyPrompt => 'អ្នកគឺជាដៃគូសន្ទនាជាមនុស្ស និងមានវិជ្ជាជីវៈ។ សូមឆ្លើយក្នុងចំណោមតួអក្សរតិចជាង 100។ សូមឆ្លើយឱ្យក្តៅស្នេហ៍ តែសង្ខេប និងធម្មជាតិដូចជាការសន្ទនាជាក់ស្តែង។';
+  String get systemQuickReplyPrompt =>
+      'អ្នកគឺជាដៃគូសន្ទនាជាមនុស្ស និងមានវិជ្ជាជីវៈ។ សូមឆ្លើយក្នុងចំណោមតួអក្សរតិចជាង 100។ សូមឆ្លើយឱ្យក្តៅស្នេហ៍ តែសង្ខេប និងធម្មជាតិដូចជាការសន្ទនាជាក់ស្តែង។';
 
   @override
-  String get errorMistralRequest => 'មិនអាចទទួលបានការឆ្លើយតបពី Mistral: ';
+  String get errorCustomLlmRequest => 'មិនអាចទទួលបានការឆ្លើយតបពី LLM: ';
 
   @override
   String get logout => 'ចេញពីប្រព័ន្ធ';
@@ -66,7 +70,8 @@ class AppLocalizationsKm extends AppLocalizations {
   String get pleaseEnterYourEmail => 'សូមបញ្ចូលអ៊ីមែលរបស់អ្នក';
 
   @override
-  String get pleaseEnterAValidEmailAddress => 'សូមបញ្ចូលអាសយដ្ឋានអ៊ីមែលត្រឹមត្រូវ';
+  String get pleaseEnterAValidEmailAddress =>
+      'សូមបញ្ចូលអាសយដ្ឋានអ៊ីមែលត្រឹមត្រូវ';
 
   @override
   String get password => 'ពាក្យសម្ងាត់';
@@ -75,7 +80,8 @@ class AppLocalizationsKm extends AppLocalizations {
   String get pleaseEnterYourPassword => 'សូមបញ្ចូលពាក្យសម្ងាត់របស់អ្នក';
 
   @override
-  String get passwordMustBeAtLeast6Characters => 'ពាក្យសម្ងាត់ត្រូវមានយ៉ាងហោចណាស់ 6 តួអក្សរ';
+  String get passwordMustBeAtLeast6Characters =>
+      'ពាក្យសម្ងាត់ត្រូវមានយ៉ាងហោចណាស់ 6 តួអក្សរ';
 
   @override
   String get forgotPassword => 'ភ្លេចពាក្យសម្ងាត់?';
@@ -120,7 +126,8 @@ class AppLocalizationsKm extends AppLocalizations {
   String get alreadyHaveAnAccount => 'មានគណនីរួចហើយ?';
 
   @override
-  String get resetEmailSent => 'អ៊ីមែលសម្រាប់កំណត់ពាក្យសម្ងាត់ឡើងវិញត្រូវបានផ្ញើ (ប្រសិនបើមានគណនី)';
+  String get resetEmailSent =>
+      'អ៊ីមែលសម្រាប់កំណត់ពាក្យសម្ងាត់ឡើងវិញត្រូវបានផ្ញើ (ប្រសិនបើមានគណនី)';
 
   @override
   String get error => 'កំហុស៖ ';
@@ -132,7 +139,8 @@ class AppLocalizationsKm extends AppLocalizations {
   String get resetYourPassword => 'កំណត់ពាក្យសម្ងាត់របស់អ្នកឡើងវិញ';
 
   @override
-  String get enterTheEmailAssociatedWithYourAccount => 'សូមបញ្ចូលអ៊ីមែលដែលភ្ជាប់ជាមួយគណនីរបស់អ្នក ហើយយើងនឹងផ្ញើតំណភ្ជាប់សម្រាប់កំណត់ពាក្យសម្ងាត់ឡើងវិញ។';
+  String get enterTheEmailAssociatedWithYourAccount =>
+      'សូមបញ្ចូលអ៊ីមែលដែលភ្ជាប់ជាមួយគណនីរបស់អ្នក ហើយយើងនឹងផ្ញើតំណភ្ជាប់សម្រាប់កំណត់ពាក្យសម្ងាត់ឡើងវិញ។';
 
   @override
   String get emailAddress => 'អាសយដ្ឋានអ៊ីមែល';
@@ -153,7 +161,8 @@ class AppLocalizationsKm extends AppLocalizations {
   String get enterOTP => 'បញ្ចូល OTP';
 
   @override
-  String get enterTheOTPSentToYourPhone => 'សូមបញ្ចូល OTP ដែលបានផ្ញើទៅទូរស័ព្ទរបស់អ្នក';
+  String get enterTheOTPSentToYourPhone =>
+      'សូមបញ្ចូល OTP ដែលបានផ្ញើទៅទូរស័ព្ទរបស់អ្នក';
 
   @override
   String get verifyOTP => 'ផ្ទៀងផ្ទាត់ OTP';
@@ -222,7 +231,8 @@ class AppLocalizationsKm extends AppLocalizations {
   String get generatingSummary => 'កំពុងបង្កើតសេចក្ដីសង្ខេប...';
 
   @override
-  String get unableToGenerateSummary => 'មិនអាចបង្កើតសេចក្ដីសង្ខេបបានទេ។ សូមសាកល្បងម្តងទៀត។';
+  String get unableToGenerateSummary =>
+      'មិនអាចបង្កើតសេចក្ដីសង្ខេបបានទេ។ សូមសាកល្បងម្តងទៀត។';
 
   @override
   String get noTasksYet => 'មិនទាន់មានភារកិច្ចទេ';

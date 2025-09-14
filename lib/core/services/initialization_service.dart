@@ -1,5 +1,4 @@
 import 'package:ai_chat/core/services/hive_service.dart';
-import 'package:ai_chat/firebase_options.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -21,9 +20,7 @@ class InitializationService {
 
     /// Register background message handler
     await dotenv.load(fileName: ".env");
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+    await Firebase.initializeApp();
 
     await FirebaseAppCheck.instance.activate(
       androidProvider: AndroidProvider.debug,

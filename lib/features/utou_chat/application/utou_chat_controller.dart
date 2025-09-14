@@ -47,7 +47,7 @@ class UToUChatController
     String systemPrompt,
     String userPromptPrefix,
     String systemQuickReplyPrompt,
-    String errorMistralRequest,
+    String errorCustomLlmRequest,
     String senderId,
     String receiverId,
   ) async {

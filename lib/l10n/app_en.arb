@@ -14,7 +14,7 @@
         "systemSummaryPrompt": "You are a helpful assistant that generates task summaries and plans.",
         "userSummaryPrompt": "Based on the following task list, generate a summary and suggest smart daily plan:\n",
         "systemQuickReplyPrompt": "You are a human-like, professional conversational partner. Reply in under 100 characters. Be warm yet concise, and respond naturally like in real human chats.",
-        "errorMistralRequest": "Failed to get response from Mistral: ",  
+        "errorCustomLlmRequest": "Failed to get response from LLM: ",  
         "logout": "Logout",
         "flutterStarterKit": "Flutter Starter Kit",
         "email": "Email",

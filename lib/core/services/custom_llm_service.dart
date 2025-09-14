@@ -4,22 +4,33 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
-/// Mistral LLM Service implementation
-class MistralService {
-  ///OPENROUTER_AI_API_KEY you may find in .env
-  static final _apiKey = dotenv.env['OPENROUTER_AI_API_KEY']!;
-  static const _endpoint = 'https://openrouter.ai/api/v1/chat/completions';
+/// CustomLlmService LLM Service implementation
+class CustomLlmService {
+  ///AI_API_KEY you may find in .env
+  static final _apiKey = dotenv.env['AI_API_KEY'];
+  static final _endpoint = dotenv.env['CUSTOM_LLM_ENDPOINT'] ??
+      'https://openrouter.ai/api/v1/chat/completions';
+  static final _model =
+      dotenv.env['CUSTOM_LLM_model'] ?? "mistralai/mistral-7b-instruct:free";
 
-  /// Mistral LLM API calling procedure as like as regular jquery
+  /// CustomLlmService Service constructor
+  CustomLlmService() {
+    if (_apiKey == null) {
+      throw Exception('AI_API_KEY is not set in the .env file');
+    } else {}
+  }
+
+  /// CustomLlmService LLM API calling procedure as like as regular jquery
   Future<String> generateSummary(String taskList) async {
     final response = await http.post(
       Uri.parse(_endpoint),
       headers: {
         'Authorization': 'Bearer $_apiKey',
         'Content-Type': 'application/json',
+        'HTTP-Referer': dotenv.env['FIREBASE_PROJECT_ID']!,
       },
       body: jsonEncode({
-        "model": "mistralai/mistral-7b-instruct:free",
+        "model": _model,
         "messages": [
           {
             "role": "system",
@@ -41,7 +52,7 @@ class MistralService {
       return data['choices'][0]['message']['content'];
     } else {
       throw Exception(
-        'Failed to get response from Mistral: ${response.statusCode} ${response.body}',
+        'Failed to get response from LLM: ${response.statusCode} ${response.body}',
       );
     }
   }
@@ -52,16 +63,19 @@ class MistralService {
     String systemPrompt,
     String userPromptPrefix,
     String systemQuickReplyPrompt,
-    String errorMistralRequest,
+    String errorCustomLlmRequest,
   ) async {
+    print('$_apiKey,*************$_endpoint,**************$_model');
+
     final response = await http.post(
       Uri.parse(_endpoint),
       headers: {
         'Authorization': 'Bearer $_apiKey',
         'Content-Type': 'application/json',
+        'HTTP-Referer': dotenv.env['FIREBASE_PROJECT_ID']!,
       },
       body: jsonEncode({
-        "model": "mistralai/mistral-7b-instruct:free",
+        "model": _model,
         "messages": [
           {"role": "system", "content": systemQuickReplyPrompt},
           {"role": "user", "content": userMessage},
@@ -75,7 +89,7 @@ class MistralService {
       return data['choices'][0]['message']['content'].trim();
     } else {
       throw Exception(
-        'Failed to get response from Mistral: ${response.statusCode} ${response.body}',
+        'Failed to get response from LLM: ${response.statusCode} ${response.body}',
       );
     }
   }
