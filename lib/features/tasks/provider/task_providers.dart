@@ -1,4 +1,4 @@
-import 'package:ai_chat/core/services/custom_LLM_service.dart';
+import 'package:ai_chat/core/services/custom_llm_service.dart';
 import 'package:ai_chat/core/services/voice_to_text_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
