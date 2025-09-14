@@ -4,21 +4,23 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
-/// Mistral LLM Service implementation
-class MistralService {
+/// CustomLlmService LLM Service implementation
+class CustomLlmService {
   ///AI_API_KEY you may find in .env
   static final _apiKey = dotenv.env['AI_API_KEY'];
   static final _endpoint = dotenv.env['CUSTOM_LLM_ENDPOINT'] ??
       'https://openrouter.ai/api/v1/chat/completions';
+  static final _model =
+      dotenv.env['CUSTOM_LLM_model'] ?? "mistralai/mistral-7b-instruct:free";
 
-  /// Mistral Service constructor
-  MistralService() {
+  /// CustomLlmService Service constructor
+  CustomLlmService() {
     if (_apiKey == null) {
       throw Exception('AI_API_KEY is not set in the .env file');
     }
   }
 
-  /// Mistral LLM API calling procedure as like as regular jquery
+  /// CustomLlmService LLM API calling procedure as like as regular jquery
   Future<String> generateSummary(String taskList) async {
     final response = await http.post(
       Uri.parse(_endpoint),
@@ -27,7 +29,7 @@ class MistralService {
         'Content-Type': 'application/json',
       },
       body: jsonEncode({
-        "model": "mistralai/mistral-7b-instruct:free",
+        "model": _model,
         "messages": [
           {
             "role": "system",
@@ -60,7 +62,7 @@ class MistralService {
     String systemPrompt,
     String userPromptPrefix,
     String systemQuickReplyPrompt,
-    String errorMistralRequest,
+    String errorCustomLlmServiceRequest,
   ) async {
     final response = await http.post(
       Uri.parse(_endpoint),
@@ -69,7 +71,7 @@ class MistralService {
         'Content-Type': 'application/json',
       },
       body: jsonEncode({
-        "model": "mistralai/mistral-7b-instruct:free",
+        "model": _model,
         "messages": [
           {"role": "system", "content": systemQuickReplyPrompt},
           {"role": "user", "content": userMessage},
@@ -83,7 +85,7 @@ class MistralService {
       return data['choices'][0]['message']['content'].trim();
     } else {
       throw Exception(
-        'Failed to get response from Mistral: ${response.statusCode} ${response.body}',
+        'Failed to get response from LLM: ${response.statusCode} ${response.body}',
       );
     }
   }
