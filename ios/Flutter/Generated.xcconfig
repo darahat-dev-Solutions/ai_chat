@@ -2,7 +2,11 @@
 FLUTTER_ROOT=/Users/didarulalamrahat/Development/flutter
 FLUTTER_APPLICATION_PATH=/Users/didarulalamrahat/Dream/Gemini CLI/Flutter/ai_chat
 COCOAPODS_PARALLEL_CODE_SIGN=true
+<<<<<<< HEAD
 FLUTTER_TARGET=/Users/didarulalamrahat/Dream/Gemini CLI/Flutter/ai_chat/lib/main.dart
+=======
+FLUTTER_TARGET=lib/main.dart
+>>>>>>> 30efd2ccc9f942554f3b51916e9420628b92a1ae
 FLUTTER_BUILD_DIR=build
 FLUTTER_BUILD_NAME=1.0.0
 FLUTTER_BUILD_NUMBER=1
