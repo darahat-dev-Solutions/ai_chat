@@ -56,7 +56,7 @@ class AiChatController extends StateNotifier<AsyncValue<List<AiChatModel>>> {
     String systemPrompt,
     String userPromptPrefix,
     String systemQuickReplyPrompt,
-    String errorCustomLlmServiceRequest,
+    String errorCustomLlmRequest,
   ) async {
     /// Get The current list of aiChats from the state's value
     final currentAiChats = state.value ?? [];
@@ -73,7 +73,7 @@ class AiChatController extends StateNotifier<AsyncValue<List<AiChatModel>>> {
         systemPrompt,
         userPromptPrefix,
         systemQuickReplyPrompt,
-        errorCustomLlmServiceRequest,
+        errorCustomLlmRequest,
       );
 
       /// Update the message with AI's reply
@@ -91,7 +91,7 @@ class AiChatController extends StateNotifier<AsyncValue<List<AiChatModel>>> {
       );
     } catch (e, s) {
       throw ServerException(
-        '🚀 ~Save on hive of mistral reply from (ai_chat_controller.dart) $e and this is $s',
+        '🚀 ~Save on hive of LLM reply from (ai_chat_controller.dart) $e and this is $s',
       );
     }
     // finally {

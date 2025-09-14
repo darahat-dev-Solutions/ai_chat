@@ -40,8 +40,8 @@ final incompleteTasksProvider = Provider<AsyncValue<List<TaskModel>>>((ref) {
 /// Custom LLM AI summary service
 final customLlmServiceProvider = Provider((ref) => CustomLlmService());
 
-/// Async summary from Mistral for task list
-/// Async summary from Mistral for incomplete tasks
+/// Async summary from LLM for task list
+/// Async summary from LLM for incomplete tasks
 final aiSummaryProvider = FutureProvider<String>((ref) async {
   final taskAsync = ref.watch(taskControllerProvider);
   return taskAsync.when(

@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -48,10 +49,11 @@ class AppLocalizationsJa extends AppLocalizations {
   String get userSummaryPrompt => '次のタスクリストに基づいて、要約を作成し、賢い日次計画を提案してください:\n';
 
   @override
-  String get systemQuickReplyPrompt => 'あなたは人間らしく、プロフェッショナルな会話パートナーです。100文字以内で返答してください。温かみがあり簡潔に、自然な会話のように応答してください。';
+  String get systemQuickReplyPrompt =>
+      'あなたは人間らしく、プロフェッショナルな会話パートナーです。100文字以内で返答してください。温かみがあり簡潔に、自然な会話のように応答してください。';
 
   @override
-  String get errorMistralRequest => 'Mistralからの応答を取得できませんでした: ';
+  String get errorCustomLlmRequest => 'LLMからの応答を取得できませんでした: ';
 
   @override
   String get logout => 'ログアウト';
@@ -132,7 +134,8 @@ class AppLocalizationsJa extends AppLocalizations {
   String get resetYourPassword => 'パスワードをリセットする';
 
   @override
-  String get enterTheEmailAssociatedWithYourAccount => 'アカウントに関連付けられているメールアドレスを入力すると、パスワードをリセットするためのリンクが送信されます。';
+  String get enterTheEmailAssociatedWithYourAccount =>
+      'アカウントに関連付けられているメールアドレスを入力すると、パスワードをリセットするためのリンクが送信されます。';
 
   @override
   String get emailAddress => 'メールアドレス';

@@ -79,7 +79,7 @@ _Replace `<your-firebase-project-id>` with your actual Firebase project ID._
 
 ### 4. Add AI Provider API Key
 
-The application uses Mistral AI via OpenRouter for its AI chat features. For detailed steps on how to obtain your API key, refer to [How to Get Your OpenRouter AI API Key](docs/openrouter_api_key.md).
+The application uses Custom LLM via OpenRouter for its AI chat features. For detailed steps on how to obtain your API key, refer to [How to Get Your OpenRouter AI API Key](docs/openrouter_api_key.md).
 
 1.  Create a file named `.env` in the root of the project.
 2.  Add your OpenRouter API key to the `.env` file as follows:

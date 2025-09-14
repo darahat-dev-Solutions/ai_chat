@@ -17,7 +17,7 @@ class CustomLlmService {
   CustomLlmService() {
     if (_apiKey == null) {
       throw Exception('AI_API_KEY is not set in the .env file');
-    }
+    } else {}
   }
 
   /// CustomLlmService LLM API calling procedure as like as regular jquery
@@ -27,6 +27,7 @@ class CustomLlmService {
       headers: {
         'Authorization': 'Bearer $_apiKey',
         'Content-Type': 'application/json',
+        'HTTP-Referer': dotenv.env['FIREBASE_PROJECT_ID']!,
       },
       body: jsonEncode({
         "model": _model,
@@ -51,7 +52,7 @@ class CustomLlmService {
       return data['choices'][0]['message']['content'];
     } else {
       throw Exception(
-        'Failed to get response from Mistral: ${response.statusCode} ${response.body}',
+        'Failed to get response from LLM: ${response.statusCode} ${response.body}',
       );
     }
   }
@@ -62,13 +63,16 @@ class CustomLlmService {
     String systemPrompt,
     String userPromptPrefix,
     String systemQuickReplyPrompt,
-    String errorCustomLlmServiceRequest,
+    String errorCustomLlmRequest,
   ) async {
+    print('$_apiKey,*************$_endpoint,**************$_model');
+
     final response = await http.post(
       Uri.parse(_endpoint),
       headers: {
         'Authorization': 'Bearer $_apiKey',
         'Content-Type': 'application/json',
+        'HTTP-Referer': dotenv.env['FIREBASE_PROJECT_ID']!,
       },
       body: jsonEncode({
         "model": _model,

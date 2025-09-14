@@ -39,11 +39,11 @@ final aiChatControllerProvider =
 //   return ref.watch(aiChatControllerProvider);
 // });
 
-/// Mistral AI summary service
+/// Custom LLM summary service
 final customLlmServiceProvider = Provider((ref) => CustomLlmService());
 
-/// Async summary from Mistral for aiChat list
-/// Async summary from Mistral for incomplete aiChats
+/// Async summary from LLM for aiChat list
+/// Async summary from LLM for incomplete aiChats
 final aiSummaryProvider = FutureProvider<String>((ref) async {
   final aiChatAsync = ref.watch(aiChatControllerProvider);
   return aiChatAsync.when(
