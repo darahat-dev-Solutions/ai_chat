@@ -27,7 +27,9 @@ class CustomLlmService {
       headers: {
         'Authorization': 'Bearer $_apiKey',
         'Content-Type': 'application/json',
-        'HTTP-Referer': dotenv.env['FIREBASE_PROJECT_ID']!,
+        'HTTP-Referer':
+            dotenv.env['OPENROUTER_HTTP_REFERER'] ?? 'http://localhost',
+        'X-Title': dotenv.env['OPENROUTER_APP_TITLE'] ?? 'ai_chat',
       },
       body: jsonEncode({
         "model": _model,
@@ -65,14 +67,21 @@ class CustomLlmService {
     String systemQuickReplyPrompt,
     String errorCustomLlmRequest,
   ) async {
-    print('$_apiKey,*************$_endpoint,**************$_model');
+    print({
+      'Authorization': 'Bearer $_apiKey',
+      'Content-Type': 'application/json',
+      'HTTP-Referer': dotenv.env['OPENROUTER_HTTP_REFERER'],
+      'X-Title': dotenv.env['OPENROUTER_APP_TITLE'],
+    });
 
     final response = await http.post(
       Uri.parse(_endpoint),
       headers: {
         'Authorization': 'Bearer $_apiKey',
         'Content-Type': 'application/json',
-        'HTTP-Referer': dotenv.env['FIREBASE_PROJECT_ID']!,
+        'HTTP-Referer':
+            dotenv.env['OPENROUTER_HTTP_REFERER'] ?? 'http://localhost',
+        'X-Title': dotenv.env['OPENROUTER_APP_TITLE'] ?? 'ai_chat',
       },
       body: jsonEncode({
         "model": _model,
