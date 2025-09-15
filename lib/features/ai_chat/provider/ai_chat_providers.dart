@@ -1,4 +1,4 @@
-import 'package:ai_chat/core/services/mistral_service.dart';
+import 'package:ai_chat/core/services/custom_llm_service.dart';
 import 'package:ai_chat/core/services/voice_to_text_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,22 +28,22 @@ final isExpandedFabProvider = StateProvider<bool>((ref) => false);
 /// Controller for aiChat logic and Hive access
 final aiChatControllerProvider =
     StateNotifierProvider<AiChatController, AsyncValue<List<AiChatModel>>>((
-      ref,
-    ) {
-      final repo = ref.watch(aiChatRepositoryProvider);
-      return AiChatController(repo, ref);
-    });
+  ref,
+) {
+  final repo = ref.watch(aiChatRepositoryProvider);
+  return AiChatController(repo, ref);
+});
 
 /// taking only those aiChats which are incomplete
 // final incompleteTasksProvider = Provider<AsyncValue<List<AiChatModel>>>((ref) {
 //   return ref.watch(aiChatControllerProvider);
 // });
 
-/// Mistral AI summary service
-final mistralServiceProvider = Provider((ref) => MistralService());
+/// Custom LLM summary service
+final customLlmServiceProvider = Provider((ref) => CustomLlmService());
 
-/// Async summary from Mistral for aiChat list
-/// Async summary from Mistral for incomplete aiChats
+/// Async summary from LLM for aiChat list
+/// Async summary from LLM for incomplete aiChats
 final aiSummaryProvider = FutureProvider<String>((ref) async {
   final aiChatAsync = ref.watch(aiChatControllerProvider);
   return aiChatAsync.when(
@@ -57,7 +57,7 @@ final aiSummaryProvider = FutureProvider<String>((ref) async {
                 'just give answer very shortly.Like as human chat. the text is- ${t.chatTextBody}',
           )
           .join('\n');
-      final service = ref.read(mistralServiceProvider);
+      final service = ref.read(customLlmServiceProvider);
       return service.generateSummary(aiFeed);
     },
     error: (_, __) => "Could not generate answer due to an error",

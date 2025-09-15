@@ -29,10 +29,12 @@ class AiChatController extends StateNotifier<AsyncValue<List<AiChatModel>>> {
     try {
       final aiChats = await _repo.getAiChat();
       if (!mounted) return;
+
       /// Filter for incomplete aiChats and set the data state
       state = AsyncValue.data(aiChats);
     } catch (e, s) {
       if (!mounted) return;
+
       /// If loading fails, set the error state
       state = AsyncValue.error(e, s);
     }
@@ -54,7 +56,7 @@ class AiChatController extends StateNotifier<AsyncValue<List<AiChatModel>>> {
     String systemPrompt,
     String userPromptPrefix,
     String systemQuickReplyPrompt,
-    String errorMistralRequest,
+    String errorCustomLlmRequest,
   ) async {
     /// Get The current list of aiChats from the state's value
     final currentAiChats = state.value ?? [];
@@ -65,13 +67,13 @@ class AiChatController extends StateNotifier<AsyncValue<List<AiChatModel>>> {
     state = AsyncValue.data([...currentAiChats, usersMessage]);
     try {
       /// Get AI Reply
-      final mistralService = ref.read(mistralServiceProvider);
-      final aiReplyText = await mistralService.generateQuickReply(
+      final customLlmService = ref.read(customLlmServiceProvider);
+      final aiReplyText = await customLlmService.generateQuickReply(
         usersText,
         systemPrompt,
         userPromptPrefix,
         systemQuickReplyPrompt,
-        errorMistralRequest,
+        errorCustomLlmRequest,
       );
 
       /// Update the message with AI's reply
@@ -89,7 +91,7 @@ class AiChatController extends StateNotifier<AsyncValue<List<AiChatModel>>> {
       );
     } catch (e, s) {
       throw ServerException(
-        '🚀 ~Save on hive of mistral reply from (ai_chat_controller.dart) $e and this is $s',
+        '🚀 ~Save on hive of LLM reply from (ai_chat_controller.dart) $e and this is $s',
       );
     }
     // finally {
@@ -115,13 +117,12 @@ class AiChatController extends StateNotifier<AsyncValue<List<AiChatModel>>> {
     /// changing aiChat according to which tid is toggled check and updated using copy with
     /// which generates copy of that exact object which is toggled
     ///
-    final updatedList =
-        currentChats.map((chat) {
-          if (chat.id == id) {
-            return chat.copyWith(isSeen: !(chat.isSeen ?? false));
-          }
-          return chat;
-        }).toList();
+    final updatedList = currentChats.map((chat) {
+      if (chat.id == id) {
+        return chat.copyWith(isSeen: !(chat.isSeen ?? false));
+      }
+      return chat;
+    }).toList();
 
     /// Update the state with the new list
     if (!mounted) return;
