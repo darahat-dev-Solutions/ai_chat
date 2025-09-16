@@ -1,23 +1,33 @@
-/// AI Modules for switching ai answer type
-enum AiModule {
-  /// AI will act like math expert
-  mathExpert,
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  /// AI will act like Senior FlutterDeveloper
-  seniorFlutterDeveloper,
+part 'ai_chat_module.freezed.dart';
+part 'ai_chat_module.g.dart';
 
-  /// AI will act like SQLQueryGenerator
-  sqlQueryGenerator,
+/// Represents a single AI Chat Module from the list
+@freezed
+class AiChatModule with _$AiChatModule {
+  const factory AiChatModule({
+    required int id,
+    required String name,
+  }) = _AiChatModule;
 
-  /// AI will act like APITester
-  apiTester,
+  factory AiChatModule.fromJson(Map<String, dynamic> json) =>
+      _$AiChatModuleFromJson(json);
+}
 
-  /// AI will act as a code translator
-  codeTranslator,
+/// Represents the detailed information for a specific AI chat module
 
-  /// AI will act as a prompt engineer
-  promptEngineer,
+class AiChatModuleDetails with _$AiChatModuleDetails {
+  @JsonSerializable(fieldRename: FieldRename.snake)
+  const factory AiChatModuleDetails({
+    required int id,
+    required String name,
+    required String description,
+    required String prompt,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) = _AiChatModuleDetails;
 
-  /// AI will act as a career counselor
-  careerCounselor,
+  factory AiChatModuleDetails.fromJson(Map<String, dynamic> json) =>
+      _$AiChatModuleDetailsFromJson(json);
 }
