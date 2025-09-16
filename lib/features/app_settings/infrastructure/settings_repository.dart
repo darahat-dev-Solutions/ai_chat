@@ -7,22 +7,32 @@ import 'package:hive_flutter/hive_flutter.dart';
 class SettingsRepository {
   static final SettingDefinitionModel _themeModeSettingDefinition =
       SettingDefinitionModel(
-        id: 1,
-        name: 'ThemeMode',
-        description: 'Application theme mode(light, dark, system)',
-        defaultValue: ThemeMode.system.name,
-        dataType: 'STRING',
-        isUserSpecific: false,
-      );
+    id: 1,
+    name: 'ThemeMode',
+    description: 'Application theme mode(light, dark, system)',
+    defaultValue: ThemeMode.system.name,
+    dataType: 'STRING',
+    isUserSpecific: false,
+  );
   static final SettingDefinitionModel _localeSettingDefinition =
       SettingDefinitionModel(
-        id: 2,
-        name: 'Locale',
-        description: "Application language",
-        defaultValue: 'en',
-        dataType: 'STRING',
-        isUserSpecific: false,
-      );
+    id: 2,
+    name: 'Locale',
+    description: "Application language",
+    defaultValue: 'en',
+    dataType: 'STRING',
+    isUserSpecific: false,
+  );
+  static final SettingDefinitionModel _aiChatModuleSettingDefinition =
+      SettingDefinitionModel(
+    id: 3,
+    name: 'AiChatModule',
+    description:
+        "AIChat Module like (Math Solver, SQL Query Generator, API Tester)",
+    defaultValue: 'GeneralAIAssistant',
+    dataType: 'STRING',
+    isUserSpecific: false,
+  );
 
   /// Theme Mode get request will hit here and
   Future<String?> getThemeMode() async {
@@ -104,5 +114,50 @@ class SettingsRepository {
     /// Store the actual theme mode string
     final Box<String> localeBox = await Hive.openBox<String>('localeSettings');
     await localeBox.put(_localeSettingDefinition.name, locale);
+  }
+
+  //TODO:
+  ///AI Chat Module(Act like Math Solver, SQL query Generator, api Tester)
+
+  Future<String?> getAiChatModule() async {
+    final Box<SettingDefinitionModel> settingsBox =
+        Hive.box<SettingDefinitionModel>(HiveConstants.settingsBoxName);
+
+    /// getting data from app Shared Preferences data
+    SettingDefinitionModel? storedDefinition = settingsBox.get(
+      _aiChatModuleSettingDefinition.id,
+    );
+    // If not found, store the default definition
+    if (storedDefinition == null) {
+      await settingsBox.put(
+        _aiChatModuleSettingDefinition.id,
+        _aiChatModuleSettingDefinition,
+      );
+      storedDefinition = _aiChatModuleSettingDefinition;
+    } else {
+      final Box<String> localeBox = await Hive.openBox<String>(
+        'aiChatModuleSettings',
+      );
+      return localeBox.get(_aiChatModuleSettingDefinition.name);
+    }
+    return null;
+  }
+
+  /// Save on changed data from app to Shared Preferences data
+
+  Future<void> saveAiChatModule(String locale) async {
+    final Box<SettingDefinitionModel> settingsBox =
+        Hive.box<SettingDefinitionModel>(HiveConstants.settingsBoxName);
+
+    /// Ensure the definition exists in the box
+    await settingsBox.put(
+      _aiChatModuleSettingDefinition.id,
+      _aiChatModuleSettingDefinition,
+    );
+
+    /// Store the actual theme mode string
+    final Box<String> localeBox =
+        await Hive.openBox<String>('aiChatModuleSettings');
+    await localeBox.put(_aiChatModuleSettingDefinition.name, locale);
   }
 }
