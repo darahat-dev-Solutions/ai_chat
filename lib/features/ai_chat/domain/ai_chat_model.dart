@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 part 'ai_chat_model.g.dart';
 
 @HiveType(typeId: 4)
+
 /// its User model for authentication
 class AiChatModel {
   /// first field for the hive/table is id
@@ -68,11 +69,43 @@ extension AiChatListUtils on List<AiChatModel> {
     return [
       for (final chat in this)
         if (chat.id == tid)
+
           /// When we find the aiChat, create a new one with the updated title
           updatedChat
         else
+
           /// Otherwise, keep the existing aiChat
           chat,
     ];
   }
+}
+
+/// AI Modules for switching ai answer type
+enum AiModule {
+  /// AI will act like math expert
+  mathExpert,
+
+  /// AI will act like Senior FlutterDeveloper
+  seniorFlutterDeveloper,
+
+  /// AI will act like SQLQueryGenerator
+  sqlQueryGenerator,
+
+  /// AI will act like APITester
+  apiTester,
+
+  /// AI will act as a code translator
+  codeTranslator,
+
+  /// AI will act as a prompt engineer
+  promptEngineer,
+
+  /// AI will act as a career counselor
+  careerCounselor,
+
+  /// AI will act as a Senior Smart Contract Developer
+  smartContractEngineer,
+
+  /// AI will act as a front End Expert
+  frontEndExpert,
 }

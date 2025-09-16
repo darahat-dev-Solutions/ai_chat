@@ -1,3 +1,4 @@
+import 'package:ai_chat/features/ai_chat/domain/ai_chat_model.dart';
 import 'package:ai_chat/features/app_settings/application/settings_state.dart';
 import 'package:ai_chat/features/app_settings/infrastructure/settings_repository.dart';
 import 'package:ai_chat/features/app_settings/provider/settings_provider.dart';
@@ -21,6 +22,7 @@ class SettingsController extends AsyncNotifier<SettingState> {
     ///Load initial theme mode and locale concurrently
     final themeModeString = await _settingsRepository.getThemeMode();
     final localeString = await _settingsRepository.getLocale();
+    final aiChatModuleString = await _settingsRepository.getAiChatModule();
 
     ThemeMode themeMode;
     switch (themeModeString) {
@@ -41,6 +43,31 @@ class SettingsController extends AsyncNotifier<SettingState> {
     } else {
       /// Fallback to a default locale if none is saved
       locale = const Locale('en');
+    }
+
+    AiModule? aiModule;
+    switch (aiModule) {
+      case 'mathExpert':
+        aiModule =  ;
+        break;
+      case 'seniorFlutterDeveloper':
+        aiModule =  ;
+      case 'sqlQueryGenerator':
+        aiModule =  ;
+      case 'apiTester':
+        aiModule =  ;
+      case 'codeTranslator':
+        aiModule = ;
+      case 'promptEngineer':
+        aiModule = ;
+      case 'careerCounselor':
+        aiModule = ;
+      case 'smartContractEngineer':
+        aiModule = ;
+      case 'frontEndExpert':
+        aiModule = ;
+      default:
+        aiModule = ;
     }
     return SettingState(themeMode: themeMode, locale: locale);
   }
