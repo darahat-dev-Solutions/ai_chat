@@ -1,3 +1,4 @@
+import 'package:ai_chat/features/ai_chat/domain/ai_module.dart';
 import 'package:flutter/material.dart';
 
 /// Setting State class
@@ -8,17 +9,30 @@ class SettingState {
   /// locale describes which language will used
   final Locale locale;
 
+  final List<AiChatModule> aiChatModules;
+  final int selectedAiChatModuleId;
+
   /// SettingState class constructor
   const SettingState({
     this.themeMode = ThemeMode.light,
     this.locale = const Locale('en'),
+    this.aiChatModules = const [],
+    this.selectedAiChatModuleId = 1,
   });
 
   /// copyWith make an copy of the themeMode instance and help to update an object
-  SettingState copyWith({ThemeMode? themeMode, Locale? locale}) {
+  SettingState copyWith({
+    ThemeMode? themeMode,
+    Locale? locale,
+    List<AiChatModule>? aiChatModules,
+    int? selectedAiChatModuleId,
+  }) {
     return SettingState(
       themeMode: themeMode ?? this.themeMode,
       locale: locale ?? this.locale,
+      aiChatModules: aiChatModules ?? this.aiChatModules,
+      selectedAiChatModuleId:
+          selectedAiChatModuleId ?? this.selectedAiChatModuleId,
     );
   }
 
@@ -38,7 +52,9 @@ class SettingState {
     }
     return other is SettingState && // Ensure other is of the same type
         other.themeMode == themeMode && // Compare themeMode values
-        other.locale == locale;
+        other.locale == locale &&
+        other.aiChatModules == aiChatModules &&
+        other.selectedAiChatModuleId == selectedAiChatModuleId;
 
     /// Compare locale values
   }
@@ -52,5 +68,9 @@ class SettingState {
   /// The hash code is computed by combining the hash codes of thememode
   /// and locale
   @override
-  int get hashCode => themeMode.hashCode ^ locale.hashCode;
+  int get hashCode =>
+      themeMode.hashCode ^
+      locale.hashCode ^
+      aiChatModules.hashCode ^
+      selectedAiChatModuleId.hashCode;
 }

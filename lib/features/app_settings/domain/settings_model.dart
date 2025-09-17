@@ -5,6 +5,7 @@ import 'package:hive/hive.dart';
 part 'settings_model.g.dart';
 
 @HiveType(typeId: 3)
+
 /// Represents the metadata and definition of a setting
 class SettingDefinitionModel {
   /// setting definition id

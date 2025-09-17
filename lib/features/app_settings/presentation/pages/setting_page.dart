@@ -71,6 +71,28 @@ class SettingsPage extends ConsumerWidget {
                   );
                 }).toList(),
               ),
+              const SizedBox(height: 20),
+              Text(
+                'AI Chat Module',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              DropdownButton<int>(
+                value: settings.selectedAiChatModuleId,
+                onChanged: (int? newModuleId) {
+                  ref
+                      .read(settingsControllerProvider.notifier)
+                      .updateAiChatModule(newModuleId);
+                },
+                items: settings.aiChatModules
+                    .map((module) => DropdownMenuItem<int>(
+                          value: module.id,
+                          child: Text(module.name),
+                        ))
+                    .toList(),
+              ),
             ],
           );
         },
