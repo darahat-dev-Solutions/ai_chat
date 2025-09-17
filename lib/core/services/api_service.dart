@@ -20,21 +20,26 @@ class ApiServiceImpl implements ApiService {
   @override
   Future<List<AiChatModule>> getAiChatModules() async {
     try {
-      final response = await _dio.get('/ai-module');
+      final response = await _dio.get('/ai-modules');
       final modules = (response.data as List)
           .map((item) => AiChatModule.fromJson(item))
           .toList();
       return modules;
-    } catch (e) {
-      throw Exception('Failed to load AI Chat Modules');
+    } on DioException catch (e, s) {
+      throw Exception(
+          'Failed to load AI chat modules: ${e.message} and status is $s');
+    } catch (e, s) {
+      throw Exception('Failed to load AI Chat Modules and status is $s');
     }
   }
 
   @override
   Future<AiChatModuleDetails> getAiChatModuleDetails(int id) async {
     try {
-      final response = await _dio.get('/ai-module/$id');
+      final response = await _dio.get('/ai-modules/$id');
       return AiChatModuleDetails.fromJson(response.data);
+    } on DioException catch (e) {
+      throw Exception('Failed to load module details for $id: ${e.message}');
     } catch (e) {
       throw Exception('Failed to load module details for id: $id');
     }

@@ -1,11 +1,12 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'ai_chat_module.freezed.dart';
-part 'ai_chat_module.g.dart';
+part 'ai_module.freezed.dart';
+part 'ai_module.g.dart';
 
 /// Represents a single AI Chat Module from the list
 @freezed
 class AiChatModule with _$AiChatModule {
+  @JsonSerializable(fieldRename: FieldRename.snake)
   const factory AiChatModule({
     required int id,
     required String name,
@@ -16,7 +17,7 @@ class AiChatModule with _$AiChatModule {
 }
 
 /// Represents the detailed information for a specific AI chat module
-
+@freezed
 class AiChatModuleDetails with _$AiChatModuleDetails {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory AiChatModuleDetails({

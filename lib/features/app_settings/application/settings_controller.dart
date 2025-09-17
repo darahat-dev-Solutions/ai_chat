@@ -22,7 +22,7 @@ class SettingsController extends AsyncNotifier<SettingState> {
     ///Load initial theme mode and locale concurrently
     final themeModeString = await _settingsRepository.getThemeMode();
     final localeString = await _settingsRepository.getLocale();
-    final aiChatModuleString = await _settingsRepository.getAiChatModule();
+    // final aiChatModuleString = await _settingsRepository.getAiChatModule();
 
     ThemeMode themeMode;
     switch (themeModeString) {
@@ -46,29 +46,29 @@ class SettingsController extends AsyncNotifier<SettingState> {
     }
 
     AiModule? aiModule;
-    switch (aiModule) {
-      case 'mathExpert':
-        aiModule =  ;
-        break;
-      case 'seniorFlutterDeveloper':
-        aiModule =  ;
-      case 'sqlQueryGenerator':
-        aiModule =  ;
-      case 'apiTester':
-        aiModule =  ;
-      case 'codeTranslator':
-        aiModule = ;
-      case 'promptEngineer':
-        aiModule = ;
-      case 'careerCounselor':
-        aiModule = ;
-      case 'smartContractEngineer':
-        aiModule = ;
-      case 'frontEndExpert':
-        aiModule = ;
-      default:
-        aiModule = ;
-    }
+    // switch (aiModule) {
+    //   case 'mathExpert':
+    //     aiModule =  ;
+    //     break;
+    //   case 'seniorFlutterDeveloper':
+    //     aiModule =  ;
+    //   case 'sqlQueryGenerator':
+    //     aiModule =  ;
+    //   case 'apiTester':
+    //     aiModule =  ;
+    //   case 'codeTranslator':
+    //     aiModule = ;
+    //   case 'promptEngineer':
+    //     aiModule = ;
+    //   case 'careerCounselor':
+    //     aiModule = ;
+    //   case 'smartContractEngineer':
+    //     aiModule = ;
+    //   case 'frontEndExpert':
+    //     aiModule = ;
+    //   default:
+    //     aiModule = ;
+    // }
     return SettingState(themeMode: themeMode, locale: locale);
   }
 
