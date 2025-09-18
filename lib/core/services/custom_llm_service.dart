@@ -64,33 +64,40 @@ class CustomLlmService {
     String userMessage,
     String systemPrompt,
     String userPromptPrefix,
-    String systemQuickReplyPrompt,
     String errorCustomLlmRequest,
   ) async {
-    print({
+    final headers = {
       'Authorization': 'Bearer $_apiKey',
       'Content-Type': 'application/json',
-      'HTTP-Referer': dotenv.env['OPENROUTER_HTTP_REFERER'],
-      'X-Title': dotenv.env['OPENROUTER_APP_TITLE'],
-    });
+      'Referer': dotenv.env['OPENROUTER_HTTP_REFERER'] ?? 'http://localhost',
+      'Origin': dotenv.env['OPENROUTER_HTTP_REFERER'] ?? 'http://localhost',
+      'X-Title': dotenv.env['OPENROUTER_APP_TITLE'] ?? 'ai_chat',
+    };
+
+    final bodyMap = {
+      "model": _model,
+      "messages": [
+        {"role": "system", "content": systemPrompt},
+        {"role": "user", "content": userMessage},
+      ],
+      "temperature": 0.2, // Lower for stricter adherence to systemPrompt
+      "max_tokens": 800,
+    };
+
+    // Mask API key for safe debugging
+    final maskedKey = _apiKey == null
+        ? 'null'
+        : (_apiKey!.length > 12 ? '${_apiKey!.substring(0, 8)}****' : '****');
+
+    print(
+        'Request headers (no Authorization): ${Map.from(headers)..remove('Authorization')}');
+    print('Authorization: Bearer $maskedKey');
+    print('Request body: ${jsonEncode(bodyMap)}');
 
     final response = await http.post(
       Uri.parse(_endpoint),
-      headers: {
-        'Authorization': 'Bearer $_apiKey',
-        'Content-Type': 'application/json',
-        'HTTP-Referer':
-            dotenv.env['OPENROUTER_HTTP_REFERER'] ?? 'http://localhost',
-        'X-Title': dotenv.env['OPENROUTER_APP_TITLE'] ?? 'ai_chat',
-      },
-      body: jsonEncode({
-        "model": _model,
-        "messages": [
-          {"role": "system", "content": systemQuickReplyPrompt},
-          {"role": "user", "content": userMessage},
-        ],
-        "temperature": 0.8,
-      }),
+      headers: headers,
+      body: jsonEncode(bodyMap),
     );
 
     if (response.statusCode == 200) {
@@ -98,7 +105,7 @@ class CustomLlmService {
       return data['choices'][0]['message']['content'].trim();
     } else {
       throw Exception(
-        'Failed to get response from LLM: ${response.statusCode} ${response.body}',
+        'Failed to get response: ${response.statusCode} ${response.body}',
       );
     }
   }

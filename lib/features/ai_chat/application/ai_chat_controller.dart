@@ -1,5 +1,6 @@
 import 'package:ai_chat/core/errors/exceptions.dart';
 import 'package:ai_chat/features/ai_chat/provider/ai_chat_providers.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../domain/ai_chat_model.dart';
@@ -55,7 +56,7 @@ class AiChatController extends StateNotifier<AsyncValue<List<AiChatModel>>> {
     String usersText,
     String systemPrompt,
     String userPromptPrefix,
-    String systemQuickReplyPrompt,
+    // String systemQuickReplyPrompt,
     String errorCustomLlmRequest,
   ) async {
     /// Get The current list of aiChats from the state's value
@@ -65,6 +66,9 @@ class AiChatController extends StateNotifier<AsyncValue<List<AiChatModel>>> {
 
     if (!mounted) return;
     state = AsyncValue.data([...currentAiChats, usersMessage]);
+    if (dotenv.env['USE_FIREBASE_EMULATOR'] == 'true') {
+      ///In emulator mode, dont call the AI
+    }
     try {
       /// Get AI Reply
       final customLlmService = ref.read(customLlmServiceProvider);
@@ -72,7 +76,7 @@ class AiChatController extends StateNotifier<AsyncValue<List<AiChatModel>>> {
         usersText,
         systemPrompt,
         userPromptPrefix,
-        systemQuickReplyPrompt,
+        // systemQuickReplyPrompt,
         errorCustomLlmRequest,
       );
 
