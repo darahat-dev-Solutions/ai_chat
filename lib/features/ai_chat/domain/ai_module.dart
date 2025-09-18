@@ -10,6 +10,8 @@ class AiChatModule with _$AiChatModule {
   const factory AiChatModule({
     required int id,
     required String name,
+    required String prompt,
+    required String description,
   }) = _AiChatModule;
 
   factory AiChatModule.fromJson(Map<String, dynamic> json) =>
