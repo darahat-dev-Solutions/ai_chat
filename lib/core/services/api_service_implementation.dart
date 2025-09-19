@@ -1,16 +1,25 @@
 import 'package:ai_chat/core/api/api_service.dart';
 import 'package:ai_chat/core/utils/logger.dart';
-import 'package:ai_chat/features/ai_chat/domain/ai_module.dart';
+import 'package:ai_chat/features/ai_chat/domain/ai_chat_module.dart';
 import 'package:dio/dio.dart';
-// import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: ApiService)
+
+/// Providing API Functions
 class ApiServiceImpl implements ApiService {
+  /// To get HTTP Access
   final Dio _dio;
+
+  /// count getAiChatModules call amount(Only For Debug)
   int _modulesCallCount = 0;
+
+  /// count getAiChatModuleDetails call amount(Only For Debug)
   int _moduleDetailsCallCount = 0;
+
+  /// To Get Logger Functions
   AppLogger appLogger = AppLogger();
+
   // Base URL is now configured here
   // ApiServiceImpl(this._dio) {
   //   _dio.options.baseUrl = dotenv.env['BASE_API_URL']!;

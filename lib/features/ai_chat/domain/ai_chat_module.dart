@@ -1,9 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'ai_module.freezed.dart';
-part 'ai_module.g.dart';
+part 'ai_chat_module.freezed.dart';
+part 'ai_chat_module.g.dart';
 
-/// Represents a single AI Chat Module from the list
+/// Represents metadata and definition of AI Chat Module List
 @freezed
 class AiChatModule with _$AiChatModule {
   @JsonSerializable(fieldRename: FieldRename.snake)
