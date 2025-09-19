@@ -1,5 +1,5 @@
 import 'package:ai_chat/core/api/api_service.dart';
-import 'package:ai_chat/core/services/api_service.dart';
+import 'package:ai_chat/core/services/api_service_implementation.dart';
 import 'package:ai_chat/features/ai_chat/domain/ai_module.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';

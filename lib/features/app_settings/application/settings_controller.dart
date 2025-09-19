@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Setting Controller class
 ///
-/// Manages the application settings (theme and locale) asynchronously
+/// Manages the application settings
 class SettingsController extends AsyncNotifier<SettingState> {
   /// Setting Controller constructor
   late final SettingsRepository _settingsRepository;
