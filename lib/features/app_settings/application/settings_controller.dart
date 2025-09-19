@@ -1,5 +1,5 @@
 import 'package:ai_chat/core/api/api_service.dart';
-import 'package:ai_chat/core/api/dio_provider.dart';
+import 'package:ai_chat/core/api/api_service_provider.dart';
 import 'package:ai_chat/features/app_settings/application/settings_state.dart';
 import 'package:ai_chat/features/app_settings/infrastructure/settings_repository.dart';
 import 'package:ai_chat/features/app_settings/provider/settings_provider.dart';
