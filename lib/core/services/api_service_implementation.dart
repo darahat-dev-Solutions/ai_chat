@@ -1,6 +1,6 @@
 import 'package:ai_chat/core/api/api_service.dart';
 import 'package:ai_chat/core/utils/logger.dart';
-import 'package:ai_chat/features/ai_chat/domain/ai_module.dart';
+import 'package:ai_chat/features/ai_chat/domain/ai_chat_module.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
