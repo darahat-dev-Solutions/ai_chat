@@ -54,7 +54,7 @@ class SettingsController extends AsyncNotifier<SettingState> {
       themeMode: themeMode,
       locale: locale,
       aiChatModules: aiChatModules,
-      selectedAiChatModuleId: int.parse(selectedAiChatModuleId),
+      selectedAiChatModuleId: selectedAiChatModuleId,
     );
   }
 
