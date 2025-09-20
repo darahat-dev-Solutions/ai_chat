@@ -6,9 +6,6 @@ import 'package:ai_chat/features/app_settings/provider/settings_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-/// Setting Controller class
-///
-/// Manages the application settings
 class SettingsController extends AsyncNotifier<SettingState> {
   /// Setting Controller constructor
   late final SettingsRepository _settingsRepository;

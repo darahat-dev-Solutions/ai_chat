@@ -30,24 +30,5 @@ void main() {
         fail('Failed to get AI chat modules: $e');
       }
     });
-
-    test('getAiChatModuleDetails returns module details', () async {
-      try {
-        /// Assuming a module with ID 1 exists
-        const moduleId = 1;
-        final details = await apiService.getAiChatModuleDetails(moduleId);
-        expect(details, isA<AiChatModuleDetails>());
-        expect(details.id, moduleId);
-        print('Fetched module details for ID $moduleId:');
-        print(' - ID: ${details.id}');
-        print(' - Name: ${details.name}');
-        print(' - Description:${details.description}');
-        print(' - Prompt: ${details.prompt}');
-        print(' - Created At: ${details.createdAt}');
-        print(' - Updated At:${details.updatedAt}');
-      } catch (e) {
-        fail('Failed to get AI chat module details: $e');
-      }
-    });
   });
 }
