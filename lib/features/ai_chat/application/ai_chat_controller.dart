@@ -1,4 +1,5 @@
 import 'package:ai_chat/core/errors/exceptions.dart';
+import 'package:ai_chat/core/utils/ai_chat_list_utils.dart';
 import 'package:ai_chat/features/ai_chat/provider/ai_chat_providers.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -98,16 +99,6 @@ class AiChatController extends StateNotifier<AsyncValue<List<AiChatModel>>> {
         '🚀 ~Save on hive of LLM reply from (ai_chat_controller.dart) $e and this is $s',
       );
     }
-    // finally {
-    //   final updatedMessage = usersMessage.copyWith(
-    //     replyText: "Sorry, I couldn't get a response",
-    //     isReplied: true,
-    //   );
-    //   await _repo.updateAiChat(usersMessage.id!, updatedMessage);
-    //   state = AsyncValue.data(
-    //     state.value!.updated(usersMessage.id!, updatedMessage),
-    //   );
-    // }
   }
 
   /// Toggle a aiChat and reload list
