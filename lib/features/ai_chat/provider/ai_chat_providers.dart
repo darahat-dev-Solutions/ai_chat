@@ -27,17 +27,9 @@ final isExpandedFabProvider = StateProvider<bool>((ref) => false);
 
 /// Controller for aiChat logic and Hive access
 final aiChatControllerProvider =
-    StateNotifierProvider<AiChatController, AsyncValue<List<AiChatModel>>>((
-  ref,
-) {
-  final repo = ref.watch(aiChatRepositoryProvider);
-  return AiChatController(repo, ref);
-});
-
-/// taking only those aiChats which are incomplete
-// final incompleteTasksProvider = Provider<AsyncValue<List<AiChatModel>>>((ref) {
-//   return ref.watch(aiChatControllerProvider);
-// });
+    AsyncNotifierProvider<AiChatController, List<AiChatModel>>(
+  () => AiChatController(),
+);
 
 /// Custom LLM summary service
 final customLlmServiceProvider = Provider((ref) => CustomLlmService());

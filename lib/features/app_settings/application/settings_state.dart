@@ -1,18 +1,24 @@
 import 'package:ai_chat/features/ai_chat/domain/ai_chat_module.dart';
 import 'package:flutter/material.dart';
 
-/// Setting State class
+/// Represents the user's persisted application settings
+///
+/// The class is immutable. To update the state, create a new instance
+/// using the [copyWith] method.
 class SettingState {
-  ///ThemeMode Describes which theme will used
+  /// The Current Theme mode of the application(e.g., light, dark)
   final ThemeMode themeMode;
 
-  /// locale describes which language will used
+  /// The user's selected language
   final Locale locale;
 
+  /// The list of available Ai Chat Modules/Personalities
   final List<AiChatModule> aiChatModules;
+
+  /// The ID of the currently active AI model
   final int selectedAiChatModuleId;
 
-  /// SettingState class constructor
+  /// Creates an instance of the settings state, with optional default values.
   const SettingState({
     this.themeMode = ThemeMode.light,
     this.locale = const Locale('en'),
@@ -20,7 +26,10 @@ class SettingState {
     this.selectedAiChatModuleId = 1,
   });
 
-  /// copyWith make an copy of the themeMode instance and help to update an object
+  /// Creates a new [SettingState] instance with updated values
+  ///
+  /// This is useful for creating a modified copy of the state without
+  /// Mutating the original object, which is a best practice for state management.
   SettingState copyWith({
     ThemeMode? themeMode,
     Locale? locale,
@@ -36,37 +45,29 @@ class SettingState {
     );
   }
 
-  /// Overrides the equality operator to compare two settingstate instances by heir values
+  /// Compares this [SettingState] to another object for equality
   ///
-  /// This is essential for riverpod (and other state management solutions)
-  /// to correctly detect when the state has truly changed. Without this
-  /// Riverpod would only compare object references, leading to unnecessary
-  /// widget rebuilds or failing to rebuild when the content changes
-  ///
-  /// Two SettingState objects are considered equal if their 'themeMode'
-  /// and locale properties are identical
+  /// Returns true if the objects are the same instance or if all their
+  /// properties are equal
   @override
   bool operator ==(Object other) {
+    /// Optimization: check if the objects are the same instance
     if (identical(this, other)) {
-      return true; // Optimization for same object reference
+      return true;
     }
-    return other is SettingState && // Ensure other is of the same type
-        other.themeMode == themeMode && // Compare themeMode values
+
+    /// Check if the other object is a SettingState and if all properties match.
+    return other is SettingState &&
+        other.themeMode == themeMode &&
         other.locale == locale &&
         other.aiChatModules == aiChatModules &&
         other.selectedAiChatModuleId == selectedAiChatModuleId;
-
-    /// Compare locale values
   }
 
-  /// Overrides the hashcode getter to provide a hash code consistent with operator ==
-  /// when operator == is overridden hashcode must also be overritten
-  /// this ensures that if two objects are equal according to operator ==
-  /// the produce the same has code. this contract is vital for objects
-  /// used in has-based collections like set and map keys
+  /// Generates a has code for this [SettingState] object
   ///
-  /// The hash code is computed by combining the hash codes of thememode
-  /// and locale
+  /// This is used by hash-based collection like [HashSet] and [HashMap]
+  /// and should be consistent with the [==] operator
   @override
   int get hashCode =>
       themeMode.hashCode ^

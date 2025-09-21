@@ -4,33 +4,33 @@ part 'ai_chat_model.g.dart';
 
 @HiveType(typeId: 4)
 
-/// its User model for authentication
+/// Represents the AI Chat
 class AiChatModel {
-  /// first field for the hive/table is id
+  /// Chat ID
   @HiveField(0)
   final String? id;
 
-  /// Chat Body
+  /// Chat Text
   @HiveField(1)
   final String? chatTextBody;
 
-  /// when the message sent
+  /// Sent Time
   @HiveField(2)
   final String sentTime;
 
-  /// is user/Ai checked
+  /// Seen Time
   @HiveField(3)
   final bool? isSeen;
 
-  /// is user/ai replied
+  /// Reply Time
   @HiveField(4)
   final bool? isReplied;
 
-  /// is user/ai replied
+  /// Reply Text
   @HiveField(5)
   final String? replyText;
 
-  /// its construct of UserModel class . its for call UserModel to other dart file.  this.name is not required
+  /// Constructor of [AiChatModel]
   AiChatModel({
     this.id,
     this.chatTextBody,
@@ -40,9 +40,10 @@ class AiChatModel {
     this.replyText,
   });
 
-  ///creating a copy of an existing object with some updated fields and the actual object remain unchanged
-  ///its used when need to update any field .
-  ///used riverpod to state management.
+  /// Creates a new  [AiChatModel] instance
+  ///
+  /// This is useful for creating a modified copy of the state without
+  /// Mutating the Original object. Which is the best practice for State management
   AiChatModel copyWith({
     String? id,
     String? chatTextBody,
@@ -60,52 +61,4 @@ class AiChatModel {
       replyText: replyText ?? this.replyText,
     );
   }
-}
-
-///making an extension instead of calling getAiChat() everytime to load all aiChats
-extension AiChatListUtils on List<AiChatModel> {
-  /// Returns a aiChat by its ID and applies the update.
-  List<AiChatModel> updated(String tid, AiChatModel updatedChat) {
-    return [
-      for (final chat in this)
-        if (chat.id == tid)
-
-          /// When we find the aiChat, create a new one with the updated title
-          updatedChat
-        else
-
-          /// Otherwise, keep the existing aiChat
-          chat,
-    ];
-  }
-}
-
-/// AI Modules for switching ai answer type
-enum AiModule {
-  /// AI will act like math expert
-  mathExpert,
-
-  /// AI will act like Senior FlutterDeveloper
-  seniorFlutterDeveloper,
-
-  /// AI will act like SQLQueryGenerator
-  sqlQueryGenerator,
-
-  /// AI will act like APITester
-  apiTester,
-
-  /// AI will act as a code translator
-  codeTranslator,
-
-  /// AI will act as a prompt engineer
-  promptEngineer,
-
-  /// AI will act as a career counselor
-  careerCounselor,
-
-  /// AI will act as a Senior Smart Contract Developer
-  smartContractEngineer,
-
-  /// AI will act as a front End Expert
-  frontEndExpert,
 }
