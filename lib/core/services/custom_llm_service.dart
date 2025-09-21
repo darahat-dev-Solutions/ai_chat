@@ -11,7 +11,7 @@ class CustomLlmService {
   static final _endpoint = dotenv.env['CUSTOM_LLM_ENDPOINT'] ??
       'https://openrouter.ai/api/v1/chat/completions';
   static final _model =
-      dotenv.env['CUSTOM_LLM_model'] ?? "mistralai/mistral-7b-instruct:free";
+      dotenv.env['CUSTOM_LLM_MODEL'] ?? "mistralai/mistral-7b-instruct:free";
 
   /// CustomLlmService Service constructor
   CustomLlmService() {

@@ -1,38 +1,41 @@
 import 'package:ai_chat/core/services/hive_service.dart';
-import 'package:ai_chat/core/utils/logger.dart';
 import 'package:ai_chat/features/app_settings/domain/settings_model.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-/// Settings Repository class where all get and Save functions will exist
+/// A Repository that handles loading and saving user settings to local storage
 class SettingsRepository {
-  /// Using Names directly as keys in the settings box
+  /// Names of Keys to get specific row data
   static const String _themeModeKey = 'ThemeMode';
   static const String _localKey = 'Locale';
   static const String _aiChatModuleKey = 'AiChatModule';
 
-  /// Default Values
+  /// Setting Default Values for GET Functions
   static const String _defaultThemeMode = 'system';
   static const String _defaultLocale = 'en';
   static const int _defaultAiChatModuleId = 1;
-  final AppLogger appLogger = AppLogger();
 
+  /// The HiveService instance
   final HiveService hiveService;
+
+  /// The internal hive box for setting
   Box<SettingDefinitionModel> get _box => hiveService.settingsBox;
 
+  /// SettingsRepository Constructor
   SettingsRepository(this.hiveService);
 
-  /// Retrives the saved theme model
-  /// Returns the default theme ('system') if no value is found.
+  /// Retrieves the saved theme mode
+  ///
+  /// Returns the default theme (system) if no value is found
   Future<String> getThemeMode() async {
-    // final settingsBox = await Hive.openBox(HiveConstants.settingsBoxName);
     final SettingDefinitionModel? model = _box.get(_themeModeKey);
+
+    /// if the model exists, return its value; otherwise return the default
     return model?.defaultValue ?? _defaultThemeMode;
   }
 
-  /// Saves the selected theme mode.
+  /// Saves the selected theme mode to the box.
   Future<void> saveThemeMode(String themeMode) async {
-    // final settingsBox = await Hive.openBox(HiveConstants.settingsBoxName);
     final SettingDefinitionModel model = SettingDefinitionModel(
       id: 1,
       name: _themeModeKey,
@@ -41,18 +44,23 @@ class SettingsRepository {
       dataType: 'STRING',
       isUserSpecific: false,
     );
+
+    /// Save the new model to box, overwriting any existing one
     return _box.put(_themeModeKey, model);
   }
 
-  /// Retrives the saved Locale
-  /// Returns the default locale ('en') if no value is found
+  /// Retrieves the saved Language/Locale value(en,jp etc)
+  ///
+  /// Returns the default Language/Locale value if no value is found
   Future<String> getLocale() async {
     final SettingDefinitionModel? model = _box.get(_localKey);
+
+    /// if the model exists, return its value; otherwise return the default
     return model?.defaultValue ?? _defaultLocale;
   }
 
+  /// Save the selected Language/Locale value to the box
   Future<void> saveLocale(String locale) async {
-    // final settingsBox = await Hive.openBox(HiveConstants.settingsBoxName);
     final SettingDefinitionModel model = SettingDefinitionModel(
       id: 2,
       name: _localKey,
@@ -61,14 +69,20 @@ class SettingsRepository {
       dataType: 'STRING',
       isUserSpecific: false,
     );
+
+    /// Save the new model to box, overwriting any existing one
     return _box.put(_localKey, model);
   }
 
-  /// Retrives the saved AiChatModule
-  /// Returns the default chatModule id ('1') if no value is found
-  Future<String> getAiChatModuleId() async {
+  /// Retrieves the ID of selected AI Chat Module
+  ///
+  /// Returns the default AI Module ID if no value found
+  Future<int> getAiChatModuleId() async {
     final SettingDefinitionModel? model = _box.get(_aiChatModuleKey);
-    return model?.defaultValue?.toString() ?? _defaultAiChatModuleId.toString();
+
+    /// The default value stored as a string, so it must be parsed
+    /// If parse fails or value doesn't exist, fail back to default ID
+    return int.tryParse(model?.defaultValue ?? '') ?? _defaultAiChatModuleId;
   }
 
   /// Saves the selected AI Chat Module.
@@ -81,6 +95,8 @@ class SettingsRepository {
       dataType: 'INT',
       isUserSpecific: false,
     );
+
+    /// Save the new model to box, overwriting any existing one
     return _box.put(_aiChatModuleKey, model);
   }
 }

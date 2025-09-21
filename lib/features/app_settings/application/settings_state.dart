@@ -1,18 +1,21 @@
-import 'package:ai_chat/features/ai_chat/domain/ai_module.dart';
+import 'package:ai_chat/features/ai_chat/domain/ai_chat_module.dart';
 import 'package:flutter/material.dart';
 
-/// Setting State class
+/// Setting State class to persist User Preferences
 class SettingState {
-  ///ThemeMode Describes which theme will used
+  /// Instance of Theme mode
   final ThemeMode themeMode;
 
-  /// locale describes which language will used
+  /// Locale Instance
   final Locale locale;
 
+  /// Ai Chat Modules List Instance
   final List<AiChatModule> aiChatModules;
+
+  /// Selected AI Chat Module ID
   final int selectedAiChatModuleId;
 
-  /// SettingState class constructor
+  /// SettingState class constructor with initial
   const SettingState({
     this.themeMode = ThemeMode.light,
     this.locale = const Locale('en'),
@@ -20,7 +23,7 @@ class SettingState {
     this.selectedAiChatModuleId = 1,
   });
 
-  /// copyWith make an copy of the themeMode instance and help to update an object
+  /// CopyWith make an copy of the themeMode instance and help to update an object
   SettingState copyWith({
     ThemeMode? themeMode,
     Locale? locale,
