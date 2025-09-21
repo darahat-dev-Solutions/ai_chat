@@ -80,7 +80,7 @@ class CustomLlmService {
         {"role": "system", "content": systemPrompt},
         {"role": "user", "content": userMessage},
       ],
-      "temperature": 0.2, // Lower for stricter adherence to systemPrompt
+      "temperature": 0.7, // Lower for stricter adherence to systemPrompt
       "max_tokens": 800,
     };
 
