@@ -1,69 +1,76 @@
 import 'package:ai_chat/features/auth/domain/user_role.dart';
 import 'package:hive/hive.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'user_model.g.dart';
 
+/// Represents the metadata and the definitions of User
+@JsonSerializable()
 @HiveType(typeId: 2)
 class UserModel {
+  /// Id Definition
   @HiveField(0)
   final String uid;
+
+  /// User Name Definition
   @HiveField(1)
-  final String? name;
+  final String? displayName;
+
+  /// Email Definition
   @HiveField(2)
   final String email;
+
+  /// User Role Definition
   @HiveField(3)
+
+  /// _parseUserRole turn the String from the json map
+  /// and gives you back a UserRole object
+  /// From JSON String-> _parseUserRole -> UserRole Object
+  ///
+  /// _userRoleToString turn the UserRole object into a simple
+  /// String to build a Json Map
+  /// UserRole Object -> _userRoleToString -> To Json String
+  @JsonKey(fromJson: _parseUserRole, toJson: _userRoleToString)
   final UserRole? role;
+
+  /// User photoURL Definition
   @HiveField(4)
   final String? photoURL;
 
+  /// UserModel Constructor
   UserModel({
     required this.uid,
     required this.email,
-    this.name,
+    this.displayName,
     this.photoURL,
     UserRole? role,
   }) : role = role ?? UserRole.guest;
 
-  factory UserModel.fromMap(Map<String, dynamic> map) {
-    return UserModel(
-      uid: map['uid'],
-      email: map['email'],
-      name: map['name'],
-      photoURL: map['photoURL'],
-      role: _parseUserRole(map['role'] as String?),
-    );
-  }
+  /// JSON factory (required for Freezed + json_serializable integration)
+  ///
+  /// Calls the generated function to create [UserModel] instance
+  /// from a map
 
-  Map<String, dynamic> toMap() {
-    return {
-      'uid': uid,
-      'name': name,
-      'email': email,
-      'role': role.toString().split('.').last,
-      'photoURL': photoURL,
-    };
-  }
+  factory UserModel.fromJson(Map<String, dynamic> json) =>
+      _$UserModelFromJson(json);
 
-  factory UserModel.fromFirestore(doc) {
-    final data = doc.data();
-    return UserModel(
-      uid: doc.id,
-      email: data['email'] ?? '',
-      name: data['displayName'] ?? 'No Name',
-      photoURL: data['photoURL'],
-      role: _parseUserRole(data['role'] as String?),
-    );
-  }
+  /// Calls the generated function to convert the [UserModel] instance into a map
+  Map<String, dynamic> toJson() => _$UserModelToJson(this);
+}
 
-  static UserRole _parseUserRole(String? roleString) {
-    switch (roleString) {
-      case 'authenticatedUser':
-        return UserRole.authenticatedUser;
-      case 'admin':
-        return UserRole.admin;
-      case 'guest':
-      default:
-        return UserRole.guest;
-    }
+UserRole _parseUserRole(String? roleString) {
+  switch (roleString) {
+    case 'authenticatedUser':
+      return UserRole.authenticatedUser;
+    case 'admin':
+      return UserRole.admin;
+    case 'guest':
+    default:
+      return UserRole.guest;
   }
+}
+
+/// Convert User Role To String
+String? _userRoleToString(UserRole? role) {
+  return role?.roleName;
 }

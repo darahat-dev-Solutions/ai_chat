@@ -48,7 +48,7 @@ class AuthRepository {
     return UserModel(
       uid: cred.user!.uid,
       email: cred.user!.email!,
-      name: cred.user!.displayName,
+      displayName: cred.user!.displayName,
       photoURL: cred.user!.photoURL,
     );
   }
@@ -90,12 +90,7 @@ class AuthRepository {
   Future<UserModel?> signInWithGoogle() async {
     try {
       final googleUser = await GoogleSignIn.instance.authenticate();
-      if (googleUser == null) {
-        /// User canceled the sign-in
-        throw AuthenticationException(
-            '🚀 ~ User Canceled the Sign-in.............. $googleUser');
-      }
-      final googleAuth = await googleUser.authentication;
+      final googleAuth = googleUser.authentication;
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.idToken,
         idToken: googleAuth.idToken,
@@ -146,7 +141,7 @@ class AuthRepository {
       return UserModel(
         uid: cred.user!.uid,
         email: cred.user!.email!,
-        name: cred.user!.displayName,
+        displayName: cred.user!.displayName,
         photoURL: cred.user!.photoURL,
       );
     } on FirebaseAuthException catch (e) {
@@ -241,7 +236,7 @@ class AuthRepository {
       return UserModel(
         uid: cred.user!.uid,
         email: cred.user!.email!,
-        name: cred.user!.displayName,
+        displayName: cred.user!.displayName,
         photoURL: cred.user!.photoURL,
       );
     } catch (e) {
@@ -281,7 +276,7 @@ class AuthRepository {
         return UserModel(
           uid: doc.id,
           email: data['email'] ?? '',
-          name: data['displayName'] ?? 'No Name',
+          displayName: data['displayName'] ?? 'No Name',
           photoURL: data['photoURL'],
 
           /// Assuming 'role' is also field in your Firestore document
@@ -335,7 +330,7 @@ class AuthRepository {
     if (user != null) {
       final userDoc = await _firestore.collection('users').doc(user.uid).get();
       if (userDoc.exists) {
-        return UserModel.fromFirestore(userDoc);
+        return UserModel.fromJson(userDoc.data()!);
       }
     }
     return null;

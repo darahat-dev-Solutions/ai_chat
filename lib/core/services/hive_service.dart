@@ -3,7 +3,7 @@ import 'package:ai_chat/core/utils/logger.dart';
 import 'package:ai_chat/features/ai_chat/domain/ai_chat_model.dart';
 import 'package:ai_chat/features/app_settings/domain/settings_model.dart';
 import 'package:ai_chat/features/auth/domain/user_model.dart';
-import 'package:ai_chat/features/auth/domain/user_role.dart';
+import 'package:ai_chat/features/auth/domain/user_role.dart'; // Import where UserRoleAdapter is defined
 import 'package:ai_chat/features/tasks/domain/task_model.dart';
 import 'package:ai_chat/features/utou_chat/domain/utou_chat_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

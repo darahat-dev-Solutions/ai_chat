@@ -55,7 +55,7 @@ class HomeDrawer extends ConsumerWidget {
                           // User name
                           Expanded(
                             child: Text(
-                              user.name ?? 'No Name',
+                              user.displayName ?? 'No Name',
                               style: Theme.of(context)
                                   .textTheme
                                   .titleMedium
