@@ -143,23 +143,4 @@ class UToUChatRepository {
       await uTouBox.put(id, updated);
     }
   }
-
-  /// Removes the chat identified by [tid] from local storage
-  Future<void> removeChat(String id) async {
-    await uTouBox.delete(id);
-  }
-
-  /// Updates the title of the uToUChat identified by [id] with [chatTextBody]
-  Future<void> editUserChat(String id, String newChatTextBody) async {
-    final uToUChat = uTouBox.get(id);
-    if (uToUChat != null) {
-      final updated = uToUChat.copyWith(chatTextBody: newChatTextBody);
-      await uTouBox.put(id, updated);
-    }
-  }
-
-  /// Update an existing chat in the database
-  Future<void> updateUToUChat(String id, UToUChatModel chat) async {
-    await uTouBox.put(id, chat);
-  }
 }
