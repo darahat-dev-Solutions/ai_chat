@@ -47,21 +47,10 @@ class SettingsController extends AsyncNotifier<SettingState> {
         themeMode = ThemeMode.light;
     }
 
-    /// declare locale instance
-    Locale? locale;
-
-    /// Based on localeString value set the locale
-    if (localeString != null) {
-      locale = Locale(localeString);
-    } else {
-      /// Fallback to a default locale if none is saved
-      locale = const Locale('en');
-    }
-
     /// Store the data set of setting to state
     return SettingState(
       themeMode: themeMode,
-      locale: locale,
+      locale: Locale(localeString),
       aiChatModules: aiChatModules,
       selectedAiChatModuleId: selectedAiChatModuleId,
     );
