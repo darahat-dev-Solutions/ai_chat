@@ -23,16 +23,13 @@ class UserRole {
   ///Assign userRole Admin
   static const UserRole admin = UserRole('admin');
 
+  /// Checks roleName is changed(used equatable here)
+  List<Object?> get props => [roleName];
+
+  /// Provides Readable String for debugging
+  ///
+  /// It give facility at checking print(UserRole.admin)
+  /// show the actual string except show Instance of 'UserRole'
   @override
   String toString() => 'UserRole.$roleName';
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is UserRole &&
-          runtimeType == other.runtimeType &&
-          roleName == other.roleName);
-
-  @override
-  int get hashCode => roleName.hashCode;
 }

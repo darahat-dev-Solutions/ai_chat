@@ -2,7 +2,7 @@ import 'package:ai_chat/core/errors/exceptions.dart';
 import 'package:ai_chat/core/services/hive_service.dart'; // Import HiveService
 import 'package:ai_chat/core/utils/logger.dart';
 import 'package:ai_chat/features/ai_chat/provider/ai_chat_providers.dart'; // Import aiChatControllerProvider
-import 'package:ai_chat/features/auth/domain/user_role_not_used.dart';
+import 'package:ai_chat/features/auth/domain/user_role.dart';
 import 'package:ai_chat/features/utou_chat/provider/utou_chat_providers.dart'; // Import uToUChatControllerProvider
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
