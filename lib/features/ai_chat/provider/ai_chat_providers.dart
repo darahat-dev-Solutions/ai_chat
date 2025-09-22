@@ -6,12 +6,12 @@ import '../application/ai_chat_controller.dart';
 import '../domain/ai_chat_model.dart';
 import '../infrastructure/ai_chat_repository.dart';
 
-/// AiChat repository that interacts with Hive
+/// Provides the [AiChatRepository] that interacts with Hive
 final aiChatRepositoryProvider = Provider<AiChatRepository>(
   (ref) => AiChatRepository(),
 );
 
-/// Voice input for adding aiChat
+/// Provides the [VoiceToTextService] for speech-to-text conversion
 final voiceToTextProvider = Provider<VoiceToTextService>((ref) {
   return VoiceToTextService(ref);
 });
@@ -19,23 +19,22 @@ final voiceToTextProvider = Provider<VoiceToTextService>((ref) {
 /// Indicates whether voice is recording
 final isListeningProvider = StateProvider<bool>((ref) => false);
 
-/// to check The AISummary is expanded or not
+/// Whether The AISummary is expanded or not
 final isExpandedSummaryProvider = StateProvider<bool>((ref) => false);
 
-/// to check The Floating button is expanded or not
+/// Whether The Floating button is expanded or not
 final isExpandedFabProvider = StateProvider<bool>((ref) => false);
 
-/// Controller for aiChat logic and Hive access
+/// Provides the [AiChatController] which manages the state of the chat list
 final aiChatControllerProvider =
     AsyncNotifierProvider<AiChatController, List<AiChatModel>>(
   () => AiChatController(),
 );
 
-/// Custom LLM summary service
+/// Provides the [CustomLlmService] that interacts with LLM
 final customLlmServiceProvider = Provider((ref) => CustomLlmService());
 
 /// Async summary from LLM for aiChat list
-/// Async summary from LLM for incomplete aiChats
 final aiSummaryProvider = FutureProvider<String>((ref) async {
   final aiChatAsync = ref.watch(aiChatControllerProvider);
   return aiChatAsync.when(
