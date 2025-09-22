@@ -28,7 +28,7 @@ class UserListPage extends ConsumerWidget {
           itemCount: otherUsers.length,
           itemBuilder: (context, index) {
             final user = otherUsers[index];
-            final displayName = user.name ?? 'No Name';
+            final displayName = user.displayName ?? 'No Name';
             // logger.info('Current Firebase User: ${otherUsers.length}');
             logger.info('Is user authenticated: $user');
             return ListTile(

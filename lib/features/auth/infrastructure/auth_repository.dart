@@ -48,7 +48,7 @@ class AuthRepository {
     return UserModel(
       uid: cred.user!.uid,
       email: cred.user!.email!,
-      name: cred.user!.displayName,
+      displayName: cred.user!.displayName,
       photoURL: cred.user!.photoURL,
     );
   }
@@ -141,7 +141,7 @@ class AuthRepository {
       return UserModel(
         uid: cred.user!.uid,
         email: cred.user!.email!,
-        name: cred.user!.displayName,
+        displayName: cred.user!.displayName,
         photoURL: cred.user!.photoURL,
       );
     } on FirebaseAuthException catch (e) {
@@ -236,7 +236,7 @@ class AuthRepository {
       return UserModel(
         uid: cred.user!.uid,
         email: cred.user!.email!,
-        name: cred.user!.displayName,
+        displayName: cred.user!.displayName,
         photoURL: cred.user!.photoURL,
       );
     } catch (e) {
@@ -276,7 +276,7 @@ class AuthRepository {
         return UserModel(
           uid: doc.id,
           email: data['email'] ?? '',
-          name: data['displayName'] ?? 'No Name',
+          displayName: data['displayName'] ?? 'No Name',
           photoURL: data['photoURL'],
 
           /// Assuming 'role' is also field in your Firestore document
@@ -330,7 +330,7 @@ class AuthRepository {
     if (user != null) {
       final userDoc = await _firestore.collection('users').doc(user.uid).get();
       if (userDoc.exists) {
-        return UserModel.fromFirestore(userDoc);
+        return UserModel.fromJson(userDoc.data()!);
       }
     }
     return null;
