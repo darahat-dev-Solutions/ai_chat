@@ -7,20 +7,19 @@ import '../domain/user_model.dart';
 import '../infrastructure/auth_repository.dart';
 import 'auth_state.dart';
 
-/// this class is calling auth_repository model functions
-///
-/// and put user data to hive box and changing state value
+/// A controller class which manages user authentication
 class AuthController extends StateNotifier<AuthState> {
+  /// Required instances
   final AuthRepository _authRepository;
   final Box<UserModel> _authBox;
 
-  /// Ref use to connect another provider
+  /// Required references and variables
   final Ref ref;
   String? _verificationId;
   String? _phoneNumber;
   final AppLogger _appLogger;
 
-  /// AuthController Constructor for call outside
+  /// AuthController Constructor
   AuthController(this._authRepository, this._authBox, this.ref, this._appLogger)
       : super(const AuthInitial());
 
@@ -35,7 +34,7 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
-  /// Email & Password SignUp Controller function
+  /// Maintain Email & Password SignUp
   Future<void> signUp(String email, String password, String name) async {
     state = const AuthLoading();
     try {
@@ -54,7 +53,7 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
-  /// Email & Password SignIn Controller function
+  /// Maintain Email & Password SignIn
   Future<void> signIn(String email, String password) async {
     state = const AuthLoading();
     try {
@@ -73,7 +72,7 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
-  /// Google SignIn Controller function
+  /// Maintain Google SignIn
   Future<void> signInWithGoogle() async {
     state = const AuthLoading();
     try {
@@ -99,7 +98,7 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
-  /// Google SignIn Controller function
+  /// Maintain Google SignIn
   Future<void> signInWithGithub() async {
     state = const AuthLoading();
     try {
@@ -120,7 +119,7 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
-  /// Forget Password reset mail Controller function
+  /// Send Forget Password reset mail
   Future<void> sendPasswordResetEmail(String email) async {
     state = const AuthLoading();
     try {
@@ -138,7 +137,7 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
-  /// Sign out controller function
+  ///Maintain Sign out
   Future<void> signOut() async {
     state = const AuthLoading();
     try {
@@ -152,7 +151,7 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
-  /// Phone authentication Sending OTP
+  /// Maintain Phone authentication Sending OTP
   Future<void> sendOTP(String phoneNumber) async {
     // state = const AuthLoading();
     // state = const AuthLoading();
@@ -182,8 +181,7 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
-  /// Phone authentication verify OTP
-
+  /// Maintain Phone authentication verify OTP
   Future<void> verifyOTP(String smsCode) async {
     state = const AuthLoading();
     try {
@@ -202,7 +200,7 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
-  /// Phone authentication if send OTP failed
+  /// Maintain Resend Phone authentication if send OTP failed
 
   Future<void> resendOTP() async {
     state = const AuthLoading();

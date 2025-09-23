@@ -28,7 +28,7 @@ class ApiServiceImpl implements ApiService {
   @override
   Future<List<AiChatModule>> getAiChatModules() async {
     _modulesCallCount++; // increase counter
-    appLogger.error('getAiChatModules called $_modulesCallCount times');
+    // appLogger.error('getAiChatModules called $_modulesCallCount times');
     try {
       final response = await _dio.get('/ai-modules');
       final modules = (response.data as List)

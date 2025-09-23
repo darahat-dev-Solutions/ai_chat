@@ -48,14 +48,14 @@ class AuthRepository {
     );
     await _saveUserData(
       cred.user!,
-      cred.user!.displayName,
-      cred.user!.photoURL,
+      cred.user!.displayName ?? cred.user!.email ?? '',
+      cred.user!.photoURL ?? '',
     );
     return UserModel(
       uid: cred.user!.uid,
-      email: cred.user!.email!,
-      displayName: cred.user!.displayName,
-      photoURL: cred.user!.photoURL,
+      email: cred.user!.email ?? '',
+      displayName: cred.user!.displayName ?? cred.user!.email ?? '',
+      photoURL: cred.user!.photoURL ?? '',
     );
   }
 
@@ -68,13 +68,13 @@ class AuthRepository {
       );
       await _saveUserData(
         cred.user!,
-        cred.user!.displayName,
-        cred.user!.photoURL,
+        cred.user!.displayName ?? cred.user!.email ?? '',
+        cred.user!.photoURL ?? '',
       );
       return UserModel(
         uid: cred.user!.uid,
-        email: cred.user!.email!,
-        photoURL: cred.user!.photoURL,
+        email: cred.user!.email ?? '',
+        photoURL: cred.user!.photoURL ?? '',
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'account-exists-with-different-credential') {
@@ -104,13 +104,13 @@ class AuthRepository {
       final cred = await _auth.signInWithCredential(credential);
       await _saveUserData(
         cred.user!,
-        cred.user!.displayName,
-        cred.user!.photoURL,
+        cred.user!.displayName ?? cred.user!.email ?? '',
+        cred.user!.photoURL ?? '',
       );
       return UserModel(
         uid: cred.user!.uid,
-        email: cred.user!.email!,
-        photoURL: cred.user!.photoURL,
+        email: cred.user!.email ?? '',
+        photoURL: cred.user!.photoURL ?? '',
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'account-exists-with-different-credential') {
@@ -141,14 +141,14 @@ class AuthRepository {
       }
       await _saveUserData(
         cred.user!,
-        cred.user!.displayName,
-        cred.user!.photoURL,
+        cred.user!.displayName ?? cred.user!.email ?? '',
+        cred.user!.photoURL ?? '',
       );
       return UserModel(
         uid: cred.user!.uid,
-        email: cred.user!.email!,
-        displayName: cred.user!.displayName,
-        photoURL: cred.user!.photoURL,
+        email: cred.user!.email ?? '',
+        displayName: cred.user!.displayName ?? cred.user!.email ?? '',
+        photoURL: cred.user!.photoURL ?? '',
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'account-exists-with-different-credential') {
@@ -235,14 +235,14 @@ class AuthRepository {
       final cred = await _auth.signInWithCredential(credential);
       await _saveUserData(
         cred.user!,
-        cred.user!.displayName,
-        cred.user!.photoURL,
+        cred.user!.displayName ?? cred.user!.email ?? '',
+        cred.user!.photoURL ?? '',
       );
       return UserModel(
         uid: cred.user!.uid,
-        email: cred.user!.email!,
-        displayName: cred.user!.displayName,
-        photoURL: cred.user!.photoURL,
+        email: cred.user!.email ?? '',
+        displayName: cred.user!.displayName ?? cred.user!.email ?? '',
+        photoURL: cred.user!.photoURL ?? '',
       );
     } catch (e) {
       throw AuthenticationException('🚀 ~Failed to verify OTP');
@@ -280,8 +280,8 @@ class AuthRepository {
         return UserModel(
           uid: doc.id,
           email: data['email'] ?? '',
-          displayName: data['displayName'] ?? 'No Name',
-          photoURL: data['photoURL'],
+          displayName: data['displayName'] ?? data['email'] ?? '',
+          photoURL: data['photoURL'] ?? '',
 
           /// Assuming 'role' is also field in your Firestore document
           role: parseUserRole(data['role'] as String?),
@@ -290,7 +290,7 @@ class AuthRepository {
     });
   }
 
-  ///
+  /// Saves data to firebase and local hive DB
   Future<void> _saveUserData(
     User user,
     String? displayName,
@@ -301,15 +301,16 @@ class AuthRepository {
     final fcmTokens = await FirebaseMessaging.instance.getToken();
     final UserModel userModel = UserModel(
       uid: user.uid,
-      email: user.email!,
-      displayName: user.displayName,
-      photoURL: user.photoURL,
+      email: user.email ?? '',
+      displayName: user.displayName ?? user.email ?? '',
+      photoURL: user.photoURL ?? '',
     );
     if (!snapshot.exists) {
       await userDoc.set({
-        'email': user.email,
-        'displayName': displayName ?? user.email,
-        'photoURL': photoURL,
+        'uid': user.uid,
+        'email': user.email ?? '',
+        'displayName': displayName ?? user.email ?? '',
+        'photoURL': photoURL ?? '',
         'createdAt': FieldValue.serverTimestamp(),
         'fcmTokens': [fcmTokens],
       }, SetOptions(merge: true));
@@ -327,15 +328,28 @@ class AuthRepository {
     });
   }
 
-  /// get Current uSer info so that can assre user is logged in
+  /// Gets Current User.
   Future<UserModel?> getCurrentUser() async {
     final user = _auth.currentUser;
+
+    /// If firebase has data it checks local to get faster user data
     if (user != null) {
+      final localUser = _box.get(user.uid);
+      if (localUser != null) {
+        return localUser;
+      }
       final userDoc = await _firestore.collection('users').doc(user.uid).get();
       if (userDoc.exists) {
-        return UserModel.fromJson(userDoc.data()!);
+        final data = userDoc.data()!;
+
+        /// Ensure email is not null before passing from json
+        data['email'] = data['email'] ?? '';
+        final userModel = UserModel.fromJson(data);
+        _box.put(data['id'], userModel);
+        return userModel;
       }
     }
+    // else if (localUser != null) {}
     return null;
   }
 }

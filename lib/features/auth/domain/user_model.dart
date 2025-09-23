@@ -18,7 +18,7 @@ class UserModel {
 
   /// Email Definition
   @HiveField(2)
-  final String email;
+  final String? email;
 
   /// User Role Definition
   @HiveField(3)
