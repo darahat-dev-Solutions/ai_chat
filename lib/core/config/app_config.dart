@@ -1,7 +1,7 @@
 /// A configuration class for app-wide static values such as name, version, and timeouts.
 class AppConfig {
   /// The name of the application.
-  static const String appName = 'FlutterStarterKit';
+  static const String appName = 'Ai Chat';
 
   /// The current version of the application.
   static const String appVersion = '1.0.0';

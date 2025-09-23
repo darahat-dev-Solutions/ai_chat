@@ -42,7 +42,7 @@ class AppLogger {
   void debug(String message) {
     if (kDebugMode) {
       _logger.d(message);
-      developer.log(message, name: 'FlutterStarterKit');
+      developer.log(message, name: 'Chat AI ');
     }
   }
 
@@ -50,7 +50,7 @@ class AppLogger {
   void info(String message) {
     if (kDebugMode) {
       _logger.i(message);
-      developer.log(message, name: 'FlutterStarterKit', level: 800);
+      developer.log(message, name: 'Chat AI ', level: 800);
     }
   }
 
@@ -58,7 +58,7 @@ class AppLogger {
   void warning(String message) {
     if (kDebugMode) {
       _logger.w(message);
-      developer.log(message, name: 'FlutterStarterKit', level: 900);
+      developer.log(message, name: 'Chat AI ', level: 900);
     }
   }
 
@@ -68,7 +68,7 @@ class AppLogger {
       _logger.e(message, error: error, stackTrace: stackTrace);
       developer.log(
         message,
-        name: 'FlutterStarterKit',
+        name: 'Chat AI ',
         level: 1000,
         error: error,
         stackTrace: stackTrace,

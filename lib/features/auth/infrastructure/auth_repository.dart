@@ -2,39 +2,45 @@ import 'package:ai_chat/core/errors/exceptions.dart';
 import 'package:ai_chat/core/services/hive_service.dart'; // Import HiveService
 import 'package:ai_chat/core/utils/logger.dart';
 import 'package:ai_chat/features/ai_chat/provider/ai_chat_providers.dart'; // Import aiChatControllerProvider
-import 'package:ai_chat/features/auth/domain/user_role.dart';
 import 'package:ai_chat/features/utou_chat/provider/utou_chat_providers.dart'; // Import uToUChatControllerProvider
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart'
-    show kIsWeb; // Make sure to add this import
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart'; // Import Riverpod Ref
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:hive/hive.dart';
 
 import '../domain/user_model.dart';
 
-/// this is the file where auth_controller connect with repositories
+/// A Repository for managing auth-related operation with hive and firebase
 class AuthRepository {
+  /// [FirebaseFirestore] instance
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  /// [FirebaseAuth] instance
   final _auth = FirebaseAuth.instance;
-  final Ref _ref; // Add Ref object
+
+  /// Riverpod [Ref] instance
+  final Ref _ref;
+
+  /// [AppLogger] instance
   final AppLogger _appLogger;
+
+  /// [HiveService] Instance
   final HiveService _hiveService;
-  // final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-  /// Check Auth State
+
+  /// The internal hive box for setting
+  Box<UserModel> get _box => _hiveService.authBox;
+
+  /// [AuthRepository] constructor
   AuthRepository(
     this._hiveService,
     this._ref,
     this._appLogger,
-  ) {
-    // Constructor to receive Ref
-    GoogleSignIn.instance.initialize();
-  }
+  );
 
-  // final _box = Hive.box<UserModel>('authBox');
-
-  /// this is SignUp model function which will call from controller
+  /// Creates User With Email and Password
   Future<UserModel?> signUp(String email, String password, String name) async {
     final cred = await _auth.createUserWithEmailAndPassword(
       email: email,
@@ -53,7 +59,7 @@ class AuthRepository {
     );
   }
 
-  /// this is Signin model function which will call from controller
+  /// Sign in with Email and Password
   Future<UserModel?> signIn(String email, String password) async {
     try {
       final cred = await _auth.signInWithEmailAndPassword(
@@ -86,7 +92,7 @@ class AuthRepository {
     }
   }
 
-  /// This is Signin model function for google signin which will call from controller
+  /// Sign in with Google
   Future<UserModel?> signInWithGoogle() async {
     try {
       final googleUser = await GoogleSignIn.instance.authenticate();
@@ -123,7 +129,7 @@ class AuthRepository {
     }
   }
 
-  /// This is Signin model function for github signin which will call from controller
+  /// Sign in With GitHub
   Future<UserModel?> signInWithGithub() async {
     try {
       final githubAuthProvider = GithubAuthProvider();
@@ -163,7 +169,7 @@ class AuthRepository {
     }
   }
 
-  /// Sends a password reset email to the given email address
+  /// Send Password Reset Email
   Future<void> sendPasswordResetEmail(String email) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
@@ -175,7 +181,7 @@ class AuthRepository {
     }
   }
 
-  /// model function for logout which will call from controller
+  /// Sign Out Function
   Future<void> signOut() async {
     await _auth.signOut();
     await GoogleSignIn.instance.signOut();
@@ -187,7 +193,7 @@ class AuthRepository {
     // Redirect to login screen after logout
   }
 
-  /// OTP send Repository Function
+  /// Send OTP Function for Sign up/Sign In using mobile phone number
   Future<void> sendOTP(
     String phoneNumber, {
     required Function(String, int?) codeSent,
@@ -219,8 +225,7 @@ class AuthRepository {
     }
   }
 
-  /// Verify OTP auth_Repository Function
-
+  /// Verify OTP Function for Sign up/Sign In using mobile phone number
   Future<UserModel?> verifyOTP(String verificationId, String smsCode) async {
     try {
       final credential = PhoneAuthProvider.credential(
@@ -244,8 +249,7 @@ class AuthRepository {
     }
   }
 
-  /// Resent OTP auth_Repository Function
-
+  /// Resend OTP if time out
   Future<void> resendOTP(
     String phoneNumber, {
     required Function(String, int?) codeSent,
@@ -280,24 +284,13 @@ class AuthRepository {
           photoURL: data['photoURL'],
 
           /// Assuming 'role' is also field in your Firestore document
-          role: _parseUserRole(data['role'] as String?),
+          role: parseUserRole(data['role'] as String?),
         );
       }).toList();
     });
   }
 
-  UserRole _parseUserRole(String? roleString) {
-    switch (roleString) {
-      case 'authenticatedUser':
-        return UserRole.authenticatedUser;
-      case 'admin':
-        return UserRole.admin;
-      case 'guest':
-      default:
-        return UserRole.guest;
-    }
-  }
-
+  ///
   Future<void> _saveUserData(
     User user,
     String? displayName,
@@ -306,6 +299,12 @@ class AuthRepository {
     final userDoc = _firestore.collection('users').doc(user.uid);
     final snapshot = await userDoc.get();
     final fcmTokens = await FirebaseMessaging.instance.getToken();
+    final UserModel userModel = UserModel(
+      uid: user.uid,
+      email: user.email!,
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+    );
     if (!snapshot.exists) {
       await userDoc.set({
         'email': user.email,
@@ -314,10 +313,14 @@ class AuthRepository {
         'createdAt': FieldValue.serverTimestamp(),
         'fcmTokens': [fcmTokens],
       }, SetOptions(merge: true));
+
+      /// Save data to HIve DB
+      _box.put(user.uid, userModel);
     } else {
       await userDoc.update({
         'fcmTokens': FieldValue.arrayUnion([fcmTokens]),
       });
+      _box.put(user.uid, userModel);
     }
     FirebaseMessaging.instance.onTokenRefresh.listen((newToken) async {
       await userDoc.update({'fcmTokens': newToken});

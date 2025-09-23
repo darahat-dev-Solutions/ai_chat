@@ -30,7 +30,7 @@ class UserModel {
   /// _userRoleToString turn the UserRole object into a simple
   /// String to build a Json Map
   /// UserRole Object -> _userRoleToString -> To Json String
-  @JsonKey(fromJson: _parseUserRole, toJson: _userRoleToString)
+  @JsonKey(fromJson: parseUserRole, toJson: _userRoleToString)
   final UserRole? role;
 
   /// User photoURL Definition
@@ -58,7 +58,8 @@ class UserModel {
   Map<String, dynamic> toJson() => _$UserModelToJson(this);
 }
 
-UserRole _parseUserRole(String? roleString) {
+/// Set Role based on [roleString] value
+UserRole parseUserRole(String? roleString) {
   switch (roleString) {
     case 'authenticatedUser':
       return UserRole.authenticatedUser;

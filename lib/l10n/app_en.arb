@@ -16,7 +16,7 @@
         "systemQuickReplyPrompt": "You are a human-like, professional conversational partner. Reply in under 100 characters. Be warm yet concise, and respond naturally like in real human chats.",
         "errorCustomLlmRequest": "Failed to get response from LLM: ",  
         "logout": "Logout",
-        "flutterStarterKit": "Flutter Starter Kit",
+        "appName": "Flutter Starter Kit",
         "email": "Email",
         "pleaseEnterYourEmail": "Please enter your email",
         "pleaseEnterAValidEmailAddress": "Please enter a valid email address",
