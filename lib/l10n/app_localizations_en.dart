@@ -1,6 +1,5 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
-
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -43,16 +42,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get typeMessage => 'Type a message...';
 
   @override
-  String get systemSummaryPrompt =>
-      'You are a helpful assistant that generates task summaries and plans.';
+  String get systemSummaryPrompt => 'You are a helpful assistant that generates task summaries and plans.';
 
   @override
-  String get userSummaryPrompt =>
-      'Based on the following task list, generate a summary and suggest smart daily plan:\n';
+  String get userSummaryPrompt => 'Based on the following task list, generate a summary and suggest smart daily plan:\n';
 
   @override
-  String get systemQuickReplyPrompt =>
-      'You are a human-like, professional conversational partner. Reply in under 100 characters. Be warm yet concise, and respond naturally like in real human chats.';
+  String get systemQuickReplyPrompt => 'You are a human-like, professional conversational partner. Reply in under 100 characters. Be warm yet concise, and respond naturally like in real human chats.';
 
   @override
   String get errorCustomLlmRequest => 'Failed to get response from LLM: ';
@@ -61,7 +57,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get logout => 'Logout';
 
   @override
-  String get flutterStarterKit => 'Flutter Starter Kit';
+  String get appName => 'Flutter Starter Kit';
 
   @override
   String get email => 'Email';
@@ -70,8 +66,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseEnterYourEmail => 'Please enter your email';
 
   @override
-  String get pleaseEnterAValidEmailAddress =>
-      'Please enter a valid email address';
+  String get pleaseEnterAValidEmailAddress => 'Please enter a valid email address';
 
   @override
   String get password => 'Password';
@@ -80,8 +75,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseEnterYourPassword => 'Please enter your password';
 
   @override
-  String get passwordMustBeAtLeast6Characters =>
-      'Password must be at least 6 characters';
+  String get passwordMustBeAtLeast6Characters => 'Password must be at least 6 characters';
 
   @override
   String get forgotPassword => 'Forgot Password?';
@@ -138,8 +132,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resetYourPassword => 'Reset your password';
 
   @override
-  String get enterTheEmailAssociatedWithYourAccount =>
-      'Enter the email associated with your account and we’ll send you a link to reset your password.';
+  String get enterTheEmailAssociatedWithYourAccount => 'Enter the email associated with your account and we’ll send you a link to reset your password.';
 
   @override
   String get emailAddress => 'Email Address';
@@ -178,8 +171,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get enterYourPhoneNumber => 'Enter your phone number';
 
   @override
-  String get weWillSendYouAVerificationCode =>
-      'We will send you a verification code';
+  String get weWillSendYouAVerificationCode => 'We will send you a verification code';
 
   @override
   String get phoneNumber => 'Phone Number';
@@ -230,8 +222,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get generatingSummary => 'Generating summary...';
 
   @override
-  String get unableToGenerateSummary =>
-      'Unable to generate summary. Please try again.';
+  String get unableToGenerateSummary => 'Unable to generate summary. Please try again.';
 
   @override
   String get noTasksYet => 'No Tasks yet';

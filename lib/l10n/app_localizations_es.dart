@@ -1,6 +1,5 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
-
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -43,16 +42,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get typeMessage => 'Escribe un mensaje...';
 
   @override
-  String get systemSummaryPrompt =>
-      'Eres un asistente útil que genera resúmenes de tareas y planes.';
+  String get systemSummaryPrompt => 'Eres un asistente útil que genera resúmenes de tareas y planes.';
 
   @override
-  String get userSummaryPrompt =>
-      'Basado en la siguiente lista de tareas, genera un resumen y sugiere un plan diario inteligente:\n';
+  String get userSummaryPrompt => 'Basado en la siguiente lista de tareas, genera un resumen y sugiere un plan diario inteligente:\n';
 
   @override
-  String get systemQuickReplyPrompt =>
-      'Eres un compañero de conversación profesional y humano. Responde en menos de 100 caracteres. Sé cálido pero conciso, y responde de forma natural como en conversaciones reales.';
+  String get systemQuickReplyPrompt => 'Eres un compañero de conversación profesional y humano. Responde en menos de 100 caracteres. Sé cálido pero conciso, y responde de forma natural como en conversaciones reales.';
 
   @override
   String get errorCustomLlmRequest => 'No se pudo obtener respuesta de LLM: ';
@@ -61,18 +57,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get logout => 'Cerrar sesión';
 
   @override
-  String get flutterStarterKit => 'Kit de Inicio Flutter';
+  String get appName => 'Kit de Inicio Flutter';
 
   @override
   String get email => 'Correo electrónico';
 
   @override
-  String get pleaseEnterYourEmail =>
-      'Por favor, introduce tu correo electrónico';
+  String get pleaseEnterYourEmail => 'Por favor, introduce tu correo electrónico';
 
   @override
-  String get pleaseEnterAValidEmailAddress =>
-      'Por favor, introduce una dirección de correo electrónico válida';
+  String get pleaseEnterAValidEmailAddress => 'Por favor, introduce una dirección de correo electrónico válida';
 
   @override
   String get password => 'Contraseña';
@@ -81,8 +75,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get pleaseEnterYourPassword => 'Por favor, introduce tu contraseña';
 
   @override
-  String get passwordMustBeAtLeast6Characters =>
-      'La contraseña debe tener al menos 6 caracteres';
+  String get passwordMustBeAtLeast6Characters => 'La contraseña debe tener al menos 6 caracteres';
 
   @override
   String get forgotPassword => '¿Has olvidado tu contraseña?';
@@ -121,15 +114,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get pleaseEnterYourName => 'Por favor, introduce tu nombre';
 
   @override
-  String get pleaseEnterAValidEmail =>
-      'Por favor, introduce un correo electrónico válido';
+  String get pleaseEnterAValidEmail => 'Por favor, introduce un correo electrónico válido';
 
   @override
   String get alreadyHaveAnAccount => '¿Ya tienes una cuenta? ';
 
   @override
-  String get resetEmailSent =>
-      'Correo electrónico de restablecimiento enviado (si la cuenta existe).';
+  String get resetEmailSent => 'Correo electrónico de restablecimiento enviado (si la cuenta existe).';
 
   @override
   String get error => 'Error: ';
@@ -141,8 +132,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get resetYourPassword => 'Restablece tu contraseña';
 
   @override
-  String get enterTheEmailAssociatedWithYourAccount =>
-      'Introduce el correo electrónico asociado a tu cuenta y te enviaremos un enlace para restablecer tu contraseña.';
+  String get enterTheEmailAssociatedWithYourAccount => 'Introduce el correo electrónico asociado a tu cuenta y te enviaremos un enlace para restablecer tu contraseña.';
 
   @override
   String get emailAddress => 'Dirección de correo electrónico';
@@ -163,8 +153,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get enterOTP => 'Introducir OTP';
 
   @override
-  String get enterTheOTPSentToYourPhone =>
-      'Introduce la OTP enviada a tu teléfono';
+  String get enterTheOTPSentToYourPhone => 'Introduce la OTP enviada a tu teléfono';
 
   @override
   String get verifyOTP => 'Verificar OTP';
@@ -182,15 +171,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get enterYourPhoneNumber => 'Introduce tu número de teléfono';
 
   @override
-  String get weWillSendYouAVerificationCode =>
-      'Te enviaremos un código de verificación';
+  String get weWillSendYouAVerificationCode => 'Te enviaremos un código de verificación';
 
   @override
   String get phoneNumber => 'Número de teléfono';
 
   @override
-  String get pleaseEnterYourPhoneNumber =>
-      'Por favor, introduce tu número de teléfono';
+  String get pleaseEnterYourPhoneNumber => 'Por favor, introduce tu número de teléfono';
 
   @override
   String get sendOTP => 'Enviar OTP';
@@ -223,8 +210,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get aiGeneratedSummary => 'Resumen generado por IA';
 
   @override
-  String get noTasksAvailableToSummarize =>
-      'No hay tareas disponibles para resumir.';
+  String get noTasksAvailableToSummarize => 'No hay tareas disponibles para resumir.';
 
   @override
   String get seeLess => 'Ver menos';
@@ -236,8 +222,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get generatingSummary => 'Generando resumen...';
 
   @override
-  String get unableToGenerateSummary =>
-      'No se ha podido generar el resumen. Por favor, inténtelo de nuevo.';
+  String get unableToGenerateSummary => 'No se ha podido generar el resumen. Por favor, inténtelo de nuevo.';
 
   @override
   String get noTasksYet => 'Aún no hay tareas';

@@ -28,29 +28,27 @@ class HiveService {
   /// Constructor receives dependencies.
   HiveService(this._appLogger);
 
-  ///Assigned HiveConstants authBox table names to variable
+  /// [authBox] Instance
   static const String authBoxName = HiveConstants.authBox;
 
-  ///Assigned HiveConstants taskBox table names to variable
-
+  /// [taskBox] Instance
   static const String taskBoxName = HiveConstants.taskBox;
 
-  ///Assigned HiveConstants aiChatBox table names to variable
-
+  /// [aiChatBox] Instance
   static const String aiChatBoxName = HiveConstants.aiChatBox;
 
-  /// Assigned HiveConstants uTouChatBoxName table name to uTouBoxName variable
+  /// [uTouChatBox] Instance
   static const String uTouChatBoxName = HiveConstants.uTouChatBox;
 
-  /// Assigned HiveConstants settingsBox table name to settingsBoxName variable
+  /// [settingsBoxName] Instance
   static const String settingsBoxName = HiveConstants.settingsBoxName;
 
-  /// Initializing function of Hive flutter
+  /// Hive Service Initialization
   Future<void> init() async {
+    /// If all-ready initialized return nothing
     if (_initialized) return;
-
     try {
-      await Hive.initFlutter();
+      /// Teach Hive about [UToUChatModelAdapter] data model
       if (!Hive.isAdapterRegistered(2)) {
         Hive.registerAdapter(UserModelAdapter());
       }
@@ -62,33 +60,37 @@ class HiveService {
       if (!Hive.isAdapterRegistered(6)) {
         Hive.registerAdapter(UserRoleAdapter());
       }
+
       if (!Hive.isAdapterRegistered(3)) {
-        // This is for SettingDefinitionModelAdapter
         Hive.registerAdapter(SettingDefinitionModelAdapter());
       }
+
       if (!Hive.isAdapterRegistered(4)) {
-        // Assuming typeId 5 for AiChatModelAdapter
         Hive.registerAdapter(AiChatModelAdapter());
       }
+
       if (!Hive.isAdapterRegistered(5)) {
-        // Assuming typeId 6 for UToUChatModelAdapter
         Hive.registerAdapter(UToUChatModelAdapter());
       }
 
+      /// Open The Database drawers to read/write data
       await Hive.openBox<UserModel>(authBoxName);
       await Hive.openBox<TaskModel>(taskBoxName);
       await Hive.openBox<AiChatModel>(aiChatBoxName);
       await Hive.openBox<SettingDefinitionModel>(settingsBoxName);
       await Hive.openBox<UToUChatModel>(uTouChatBoxName);
 
+      /// Set _initialized value true
       _initialized = true;
+
       _appLogger.info(
-        '🚀 ~This is an info message from my HiveService init so that Hive service is called',
+        '🚀 ~This is an info message from my HiveService init so that Hive service is initialized',
       );
     } catch (e) {
+      /// Set  _initialized value false
       _initialized = false;
       throw ServerException(
-        '🚀 ~Server error occurrede (hive.service.dart) $e',
+        '🚀 ~Server error occurred (hive.service.dart) $e',
       );
     }
   }
@@ -100,21 +102,18 @@ class HiveService {
   }
 
   ///taskBox initialized
-
   Box<TaskModel> get taskBox {
     _checkInitialized();
     return Hive.box<TaskModel>(taskBoxName);
   }
 
   ///aiChatBox initialized
-
   Box<AiChatModel> get aiChatBoxInit {
     _checkInitialized();
     return Hive.box<AiChatModel>(aiChatBoxName);
   }
 
   ///uTouBox initialized
-
   Box<UToUChatModel> get uTouChatBoxInit {
     _checkInitialized();
     return Hive.box<UToUChatModel>(uTouChatBoxName);

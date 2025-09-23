@@ -204,7 +204,7 @@ class App extends ConsumerWidget {
     final settings = ref.watch(settingsControllerProvider);
 
     return MaterialApp.router(
-      title: 'FlutterStarterKit', // Static title for OS task switcher
+      title: Text(AppLocalizations.of(context)!.appName), // Static title for OS task switcher
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: settings.themeMode, // This will now be accessed via settings.value.themeMode if using AsyncValue

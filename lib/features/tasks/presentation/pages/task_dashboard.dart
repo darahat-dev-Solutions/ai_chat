@@ -34,7 +34,7 @@ class TaskDashboard extends ConsumerWidget {
           },
           icon: const Icon(Icons.logout),
         ),
-        title: Text(AppLocalizations.of(context)!.flutterStarterKit),
+        title: Text(AppLocalizations.of(context)!.appName),
       ),
       body: Column(
         children: [
@@ -61,7 +61,6 @@ class TaskDashboard extends ConsumerWidget {
                           color: Theme.of(context).colorScheme.onSurface,
                         ),
                         const SizedBox(width: 10),
-
                         Text(
                           DateFormat('MMMM d, yyyy').format(DateTime.now()),
                           style: TextStyle(
@@ -75,11 +74,8 @@ class TaskDashboard extends ConsumerWidget {
                   const AISummaryWidget(),
                   const SizedBox(height: 16),
                   RefreshIndicator(
-                    onRefresh:
-                        () =>
-                            ref
-                                .watch(taskControllerProvider.notifier)
-                                .loadTasks(),
+                    onRefresh: () =>
+                        ref.watch(taskControllerProvider.notifier).loadTasks(),
                     child: tasksAsync.when(
                       data: (tasks) {
                         if (tasks.isEmpty) {
@@ -114,15 +110,13 @@ class TaskDashboard extends ConsumerWidget {
                           },
                         );
                       },
-                      error:
-                          (err, stack) => Center(
-                            child: Text(
-                              '${AppLocalizations.of(context)!.error}$err',
-                            ),
-                          ),
-                      loading:
-                          () =>
-                              const Center(child: CircularProgressIndicator()),
+                      error: (err, stack) => Center(
+                        child: Text(
+                          '${AppLocalizations.of(context)!.error}$err',
+                        ),
+                      ),
+                      loading: () =>
+                          const Center(child: CircularProgressIndicator()),
                     ),
                   ),
 

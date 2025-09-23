@@ -17,7 +17,9 @@ class App extends ConsumerWidget {
     final settings = ref.watch(settingsControllerProvider);
 
     return MaterialApp.router(
-      title: 'FlutterStarterKit',
+      /// if you use only title and AppLocalizations it would get the value
+      onGenerateTitle: (BuildContext context) =>
+          AppLocalizations.of(context)!.appName,
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: settings.value?.themeMode ?? ThemeMode.light,
