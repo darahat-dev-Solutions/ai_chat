@@ -1,3 +1,4 @@
+import 'package:ai_chat/core/utils/logger.dart';
 import 'package:ai_chat/features/auth/application/auth_state.dart';
 import 'package:ai_chat/features/auth/provider/auth_providers.dart';
 import 'package:ai_chat/l10n/app_localizations.dart';
@@ -13,6 +14,7 @@ class HomeDrawer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final logger = ref.watch(appLoggerProvider);
 
     return Drawer(
       // Explicitly set the background color to ensure it's applied
@@ -37,6 +39,8 @@ class HomeDrawer extends ConsumerWidget {
                     final authState = ref.watch(authControllerProvider);
                     if (authState is Authenticated) {
                       final user = authState.user;
+                      // logger.error(user.displayName ?? '');
+
                       return Row(
                         children: [
                           // User avatar

@@ -79,7 +79,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             builder: (context, state) {
               final receiverId = state.pathParameters['id']!;
               final receiverName =
-                  state.uri.queryParameters['name'] ?? 'No Name';
+                  state.uri.queryParameters['displayName'] ?? 'No Name';
               return UToUChatView(
                 receiverId: receiverId,
                 receiverName: receiverName,

@@ -102,6 +102,7 @@ class AuthRepository {
         idToken: googleAuth.idToken,
       );
       final cred = await _auth.signInWithCredential(credential);
+
       await _saveUserData(
         cred.user!,
         cred.user!.displayName ?? cred.user!.email ?? '',
@@ -110,6 +111,7 @@ class AuthRepository {
       return UserModel(
         uid: cred.user!.uid,
         email: cred.user!.email ?? '',
+        displayName: cred.user!.displayName ?? cred.user!.email ?? '',
         photoURL: cred.user!.photoURL ?? '',
       );
     } on FirebaseAuthException catch (e) {
@@ -298,19 +300,25 @@ class AuthRepository {
   ) async {
     final userDoc = _firestore.collection('users').doc(user.uid);
     final snapshot = await userDoc.get();
+
     final fcmTokens = await FirebaseMessaging.instance.getToken();
+    final finalDisplayName =
+        displayName ?? user.displayName ?? user.email ?? '';
+    final finalPhotoURL = photoURL ?? user.photoURL ?? '';
+
     final UserModel userModel = UserModel(
       uid: user.uid,
       email: user.email ?? '',
-      displayName: user.displayName ?? user.email ?? '',
-      photoURL: user.photoURL ?? '',
+      displayName: finalDisplayName,
+      photoURL: finalPhotoURL,
     );
+
     if (!snapshot.exists) {
       await userDoc.set({
         'uid': user.uid,
         'email': user.email ?? '',
-        'displayName': displayName ?? user.email ?? '',
-        'photoURL': photoURL ?? '',
+        'displayName': finalDisplayName,
+        'photoURL': finalPhotoURL,
         'createdAt': FieldValue.serverTimestamp(),
         'fcmTokens': [fcmTokens],
       }, SetOptions(merge: true));
@@ -326,30 +334,42 @@ class AuthRepository {
     FirebaseMessaging.instance.onTokenRefresh.listen((newToken) async {
       await userDoc.update({'fcmTokens': newToken});
     });
+
+    /// ✅ Save to Hive
+    await _box.put(user.uid, userModel);
   }
 
   /// Gets Current User.
   Future<UserModel?> getCurrentUser() async {
     final user = _auth.currentUser;
-
-    /// If firebase has data it checks local to get faster user data
-    if (user != null) {
-      final localUser = _box.get(user.uid);
-      if (localUser != null) {
-        return localUser;
-      }
+    if (user == null) {
+      return null; // User is not logged in
+    }
+    try {
+      /// First try to get the fresh "Online" data
       final userDoc = await _firestore.collection('users').doc(user.uid).get();
+
       if (userDoc.exists) {
+        /// Online data found!
         final data = userDoc.data()!;
 
         /// Ensure email is not null before passing from json
         data['email'] = data['email'] ?? '';
+        // Update the local cache with the fresh data
         final userModel = UserModel.fromJson(data);
-        _box.put(data['id'], userModel);
+
+        /// Update the local cache with the fresh data
+        await _box.put(user.uid, userModel);
         return userModel;
+      } else {
+        /// User is authenticated, but not in Firestore? fallback to local
+        return _box.get(user.uid);
       }
+    } catch (e) {
+      /// An error occured(likely offline), so fallback to local cache
+      _appLogger.error(
+          "Could not fetch user online, falling back to local cache.", e);
+      return _box.get(user.uid);
     }
-    // else if (localUser != null) {}
-    return null;
   }
 }
