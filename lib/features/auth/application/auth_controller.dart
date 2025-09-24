@@ -26,12 +26,10 @@ class AuthController extends StateNotifier<AuthState> {
   /// Check User is Authenticated need to call in main to check
   void checkInitialAuthState() async {
     final getOnlineUser = await _authRepository.getCurrentUser();
-    final user = getOnlineUser ?? _authBox.get('user');
-    if (user != null) {
-      state = Authenticated(user);
-    } else {
-      state = const Unauthenticated();
-    }
+    // final user = getOnlineUser ?? _authBox.get('user');
+    _appLogger.debug(getOnlineUser!.displayName.toString());
+
+    state = Authenticated(getOnlineUser);
   }
 
   /// Maintain Email & Password SignUp
@@ -40,7 +38,6 @@ class AuthController extends StateNotifier<AuthState> {
     try {
       final user = await _authRepository.signUp(email, password, name);
       if (user != null) {
-        _authBox.put('user', user);
         state = Authenticated(user);
       } else {
         state = const AuthError(
@@ -59,7 +56,6 @@ class AuthController extends StateNotifier<AuthState> {
     try {
       final user = await _authRepository.signIn(email, password);
       if (user != null) {
-        await _authBox.put('user', user);
         state = Authenticated(user);
       } else {
         state = const AuthError(
@@ -78,8 +74,9 @@ class AuthController extends StateNotifier<AuthState> {
     try {
       final user = await _authRepository.signInWithGoogle();
       if (user != null) {
-        _authBox.put('user', user);
         state = Authenticated(user);
+        _appLogger.error('Check what the state status ${state.uid.toString()}');
+        _appLogger.error('Check the display name ${user.uid!}');
       } else {
         state = const AuthError(
           'Google Sign in failed. Please try again.',
@@ -104,7 +101,6 @@ class AuthController extends StateNotifier<AuthState> {
     try {
       final user = await _authRepository.signInWithGithub();
       if (user != null) {
-        _authBox.put('user', user);
         state = Authenticated(user);
       }
     } on FirebaseAuthException catch (e) {
@@ -190,7 +186,6 @@ class AuthController extends StateNotifier<AuthState> {
       }
       final user = await _authRepository.verifyOTP(_verificationId!, smsCode);
       if (user != null) {
-        _authBox.put('user', user);
         state = Authenticated(user);
       } else {
         state = const AuthError('OTP verification failed', AuthMethod.phone);
