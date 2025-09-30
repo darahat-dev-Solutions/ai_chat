@@ -1,5 +1,6 @@
 import 'package:ai_chat/core/api/api_service.dart';
 import 'package:ai_chat/core/api/api_service_provider.dart';
+import 'package:ai_chat/features/ai_chat/domain/ai_chat_module.dart';
 import 'package:ai_chat/features/app_settings/application/settings_state.dart';
 import 'package:ai_chat/features/app_settings/infrastructure/settings_repository.dart';
 import 'package:ai_chat/features/app_settings/provider/settings_provider.dart';
@@ -26,12 +27,25 @@ class SettingsController extends AsyncNotifier<SettingState> {
     /// locally Saved locale value
     final localeString = await _settingsRepository.getLocale();
 
-    /// Load Ai Chat Module from API
-    final aiChatModules = await _apiService.getAiChatModules();
+    /// Load Ai Chat Module from API with error handling
+    List<AiChatModule> aiChatModules;
+    try {
+      aiChatModules = await _apiService.getAiChatModules();
+    } catch (e) {
+      // If API fails, provide empty list or default modules
+      // This prevents the app from crashing when the server is unavailable
+      aiChatModules = [];
+      // Log the error for debugging
+      print('Failed to load AI chat modules: $e');
+    }
 
     /// locally Saved AI Chat Module ID
-    final selectedAiChatModuleId =
-        await _settingsRepository.getAiChatModuleId();
+    int selectedAiChatModuleId = await _settingsRepository.getAiChatModuleId();
+
+    /// If no modules loaded and selected ID is invalid, use default
+    if (aiChatModules.isEmpty && selectedAiChatModuleId > 0) {
+      selectedAiChatModuleId = 1; // Use default from SettingState
+    }
 
     /// Theme mode instance
     ThemeMode themeMode;
