@@ -1,6 +1,8 @@
 import 'package:ai_chat/core/errors/exceptions.dart';
 import 'package:ai_chat/core/utils/ai_chat_list_utils.dart';
+import 'package:ai_chat/features/ai_chat/domain/item.dart';
 import 'package:ai_chat/features/ai_chat/provider/ai_chat_providers.dart';
+import 'package:ai_chat/features/ai_chat/provider/popular_items_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../domain/ai_chat_model.dart';
@@ -41,13 +43,19 @@ class AiChatController extends AsyncNotifier<List<AiChatModel>> {
       /// Retrieves the [CustomLlmService] instance from its provider
       final customLlmService = ref.read(customLlmServiceProvider);
 
-      /// Passes Required parameters and Get AI Reply
-      final aiReplyText = await customLlmService.generateQuickReply(
-        usersText,
-        systemPrompt,
-        userPromptPrefix,
-        errorCustomLlmRequest,
-      );
+      /// Read the popular items provider to get the list of items
+      final popularItemsAsyncValue = ref.read(popularItemsProvider);
+
+      /// Safely extract the list of items from the AsyncValue.
+      /// If the items are loading or there's an error , default to an empty list
+      final popularItems = popularItemsAsyncValue.when(
+          data: (items) => items,
+          error: (error, stackTrace) => <Item>[],
+          loading: () => <Item>[]);
+
+      /// Passes Required parameters and Get AI Reply you
+      final aiReplyText = await customLlmService.generateQuickReply(usersText,
+          systemPrompt, userPromptPrefix, errorCustomLlmRequest, popularItems);
 
       /// Creates a new [usersMessage] instance with updated values
       ///
