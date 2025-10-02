@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:ai_chat/features/ai_chat/domain/item.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
@@ -11,13 +12,27 @@ class CustomLlmService {
   static final _endpoint = dotenv.env['CUSTOM_LLM_ENDPOINT'] ??
       'https://openrouter.ai/api/v1/chat/completions';
   static final _model =
-      dotenv.env['CUSTOM_LLM_MODEL'] ?? "mistralai/mistral-7b-instruct:free";
+      dotenv.env['CUSTOM_LLM_MODEL'] ?? "x-ai/grok-4-fast:free";
 
   /// CustomLlmService Service constructor
   CustomLlmService() {
     if (_apiKey == null) {
       throw Exception('AI_API_KEY is not set in the .env file');
     } else {}
+  }
+
+  /// Call 1 : Detect the user's intent
+  /// Takes a dynamic prompt from your backend to identify the user's goal
+  Future<Map<String, dynamic>> detectUserIntent(
+      {required String userMesssage,
+      required String intentDetectionPrompt}) async {
+    final response = await _makeLlmCall(intentDetectionPrompt, userMesssage);
+    try {
+      return jsonDecode(response);
+    } catch (e) {
+      // If the AI fails to return valid JSON, default to no too.
+      return {"tool": null};
+    }
   }
 
   /// CustomLlmService LLM API calling procedure as like as regular jquery
@@ -65,7 +80,23 @@ class CustomLlmService {
     String systemPrompt,
     String userPromptPrefix,
     String errorCustomLlmRequest,
+    List<Item> popularItems,
   ) async {
+    String finalSystemPrompt = systemPrompt;
+    if (popularItems.isNotEmpty) {
+      final popularItemsString = popularItems
+          .map((item) =>
+              '-${item.itemName} (Price ${item.price}): ${item.description}')
+          .join('\n');
+      finalSystemPrompt = "$systemPrompt Popular Items: $popularItemsString";
+    } else {
+      finalSystemPrompt = systemPrompt;
+    }
+    return _makeLlmCall(finalSystemPrompt, userMessage);
+  }
+
+  /// Private helper for making the actual HTTP request
+  Future<String> _makeLlmCall(String systemPrompt, String userMessage) async {
     final headers = {
       'Authorization': 'Bearer $_apiKey',
       'Content-Type': 'application/json',
@@ -73,8 +104,7 @@ class CustomLlmService {
       'Origin': dotenv.env['OPENROUTER_HTTP_REFERER'] ?? 'http://localhost',
       'X-Title': dotenv.env['OPENROUTER_APP_TITLE'] ?? 'ai_chat',
     };
-
-    final bodyMap = {
+    final body = {
       "model": _model,
       "messages": [
         {"role": "system", "content": systemPrompt},
@@ -84,25 +114,44 @@ class CustomLlmService {
       "max_tokens": 800,
     };
 
+    /// Note: When debug needs uncoment this start
     // Mask API key for safe debugging
     final maskedKey = _apiKey == null
         ? 'null'
         : (_apiKey!.length > 12 ? '${_apiKey!.substring(0, 8)}****' : '****');
 
+    print('----------LLM Request -----');
+    print('Endpoint $_endpoint');
+    print('Model: $_model');
     print(
         'Request headers (no Authorization): ${Map.from(headers)..remove('Authorization')}');
     print('Authorization: Bearer $maskedKey');
-    print('Request body: ${jsonEncode(bodyMap)}');
+    print('Request body: ${jsonEncode(body)}');
+    print('----------End LLM Request -----');
+    // Note: When debug needs uncoment this end
 
     final response = await http.post(
       Uri.parse(_endpoint),
       headers: headers,
-      body: jsonEncode(bodyMap),
+      body: jsonEncode(body),
     );
 
+    // Note: When debug needs uncoment this start
+
+    print('----------LLM Response -----');
+    print('Status Code ${response.statusCode}');
+    print('Response Body: ${response.body}');
+    print('---End LLM Response---');
+    // Note: When debug needs uncoment this end
     if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      return data['choices'][0]['message']['content'].trim();
+      try {
+        final data = jsonDecode(response.body);
+        return data['choices'][0]['message']['content'].trim();
+      } on FormatException catch (e) {
+        throw Exception(
+          'Failed to parse JSON response: $e, \nResponse body: ${response.body}',
+        );
+      }
     } else {
       throw Exception(
         'Failed to get response: ${response.statusCode} ${response.body}',

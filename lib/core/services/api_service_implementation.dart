@@ -1,6 +1,7 @@
 import 'package:ai_chat/core/api/api_service.dart';
 import 'package:ai_chat/core/utils/logger.dart';
 import 'package:ai_chat/features/ai_chat/domain/ai_chat_module.dart';
+import 'package:ai_chat/features/ai_chat/domain/item.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
@@ -44,20 +45,29 @@ class ApiServiceImpl implements ApiService {
     }
   }
 
-  // @override
-  // Future<AiChatModuleDetails> getAiChatModuleDetails(int id) async {
-  //   _moduleDetailsCallCount++; // increase counter
-  //   appLogger.error(
-  //       'getAiChatModuleDetails called $_moduleDetailsCallCount times for id=$id');
-  //   try {
-  //     final response = await _dio.get('/ai-modules/$id');
-  //     return AiChatModuleDetails.fromJson(response.data);
-  //   } on DioException catch (e, s) {
-  //     throw Exception(
-  //         'Failed to load module details for $id. DioException: type=${e.type}, message=${e.message}, error=${e.error}, stackTrace=$s');
-  //   } catch (e, s) {
-  //     throw Exception(
-  //         'Failed to load module details for id: $id. Error: $e, stackTrace: $s');
-  //   }
-  // }
+  Future<List<Item>> getPopularItems() async {
+    try {
+      final response = await _dio.get('/coffee-shop/popular-items');
+      if (response.statusCode == 200 && response.data != null) {
+        // If the API returns a list directly
+        final items = (response.data['data'] as List)
+            .map((item) => Item.fromJson(item))
+            .toList();
+        return items;
+      } else {
+        appLogger
+            .warning('Failed to load popular items: ${response.statusCode}');
+        throw Exception(
+            'Failed to load popular items: HTTP ${response.statusCode}');
+      }
+    } on DioException catch (e, s) {
+      appLogger.error('DioException in getPopularItems: $e');
+      throw Exception(
+          'Failed to load popular items. DioException: type=${e.type}, message=${e.message}, error=${e.error}, stackTrace=$s');
+    } catch (e, s) {
+      appLogger.error('Error in getPopularItems: $e');
+      throw Exception(
+          'Failed to load Popular items. Error: $e, stackTrace: $s');
+    }
+  }
 }
