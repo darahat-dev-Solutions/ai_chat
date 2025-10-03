@@ -45,9 +45,6 @@ class UToUChatController
   Future<void> addUToUChat(
     String usersText,
     String systemPrompt,
-    String userPromptPrefix,
-    String systemQuickReplyPrompt,
-    String errorCustomLlmRequest,
     String senderId,
     String receiverId,
   ) async {

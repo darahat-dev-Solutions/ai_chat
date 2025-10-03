@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:ai_chat/features/ai_chat/domain/item.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
@@ -19,20 +18,6 @@ class CustomLlmService {
     if (_apiKey == null) {
       throw Exception('AI_API_KEY is not set in the .env file');
     } else {}
-  }
-
-  /// Call 1 : Detect the user's intent
-  /// Takes a dynamic prompt from your backend to identify the user's goal
-  Future<Map<String, dynamic>> detectUserIntent(
-      {required String userMesssage,
-      required String intentDetectionPrompt}) async {
-    final response = await _makeLlmCall(intentDetectionPrompt, userMesssage);
-    try {
-      return jsonDecode(response);
-    } catch (e) {
-      // If the AI fails to return valid JSON, default to no too.
-      return {"tool": null};
-    }
   }
 
   /// CustomLlmService LLM API calling procedure as like as regular jquery
@@ -75,28 +60,16 @@ class CustomLlmService {
   }
 
   /// Generate quick reply like as chat for ai chat features
-  Future<String> generateQuickReply(
-    String userMessage,
+  Future<String> generateResponse(
     String systemPrompt,
-    String userPromptPrefix,
-    String errorCustomLlmRequest,
-    List<Item> popularItems,
   ) async {
-    String finalSystemPrompt = systemPrompt;
-    if (popularItems.isNotEmpty) {
-      final popularItemsString = popularItems
-          .map((item) =>
-              '-${item.itemName} (Price ${item.price}): ${item.description}')
-          .join('\n');
-      finalSystemPrompt = "$systemPrompt Popular Items: $popularItemsString";
-    } else {
-      finalSystemPrompt = systemPrompt;
-    }
-    return _makeLlmCall(finalSystemPrompt, userMessage);
+    return _makeLlmCall(systemPrompt);
   }
 
   /// Private helper for making the actual HTTP request
-  Future<String> _makeLlmCall(String systemPrompt, String userMessage) async {
+  Future<String> _makeLlmCall(
+    String systemPrompt,
+  ) async {
     final headers = {
       'Authorization': 'Bearer $_apiKey',
       'Content-Type': 'application/json',
@@ -108,7 +81,7 @@ class CustomLlmService {
       "model": _model,
       "messages": [
         {"role": "system", "content": systemPrompt},
-        {"role": "user", "content": userMessage},
+        {"role": "user", "content": "Proceed with the instructions above."},
       ],
       "temperature": 0.7, // Lower for stricter adherence to systemPrompt
       "max_tokens": 800,
@@ -116,18 +89,18 @@ class CustomLlmService {
 
     /// Note: When debug needs uncoment this start
     // Mask API key for safe debugging
-    final maskedKey = _apiKey == null
-        ? 'null'
-        : (_apiKey!.length > 12 ? '${_apiKey!.substring(0, 8)}****' : '****');
+    // final maskedKey = _apiKey == null
+    //     ? 'null'
+    //     : (_apiKey!.length > 12 ? '${_apiKey!.substring(0, 8)}****' : '****');
 
-    print('----------LLM Request -----');
-    print('Endpoint $_endpoint');
-    print('Model: $_model');
-    print(
-        'Request headers (no Authorization): ${Map.from(headers)..remove('Authorization')}');
-    print('Authorization: Bearer $maskedKey');
-    print('Request body: ${jsonEncode(body)}');
-    print('----------End LLM Request -----');
+    // print('----------LLM Request -----');
+    // print('Endpoint $_endpoint');
+    // print('Model: $_model');
+    // print(
+    //     'Request headers (no Authorization): ${Map.from(headers)..remove('Authorization')}');
+    // print('Authorization: Bearer $maskedKey');
+    // print('Request body: ${jsonEncode(body)}');
+    // print('----------End LLM Request -----');
     // Note: When debug needs uncoment this end
 
     final response = await http.post(
@@ -138,10 +111,10 @@ class CustomLlmService {
 
     // Note: When debug needs uncoment this start
 
-    print('----------LLM Response -----');
-    print('Status Code ${response.statusCode}');
-    print('Response Body: ${response.body}');
-    print('---End LLM Response---');
+    // print('----------LLM Response -----');
+    // print('Status Code ${response.statusCode}');
+    // print('Response Body: ${response.body}');
+    // print('---End LLM Response---');
     // Note: When debug needs uncoment this end
     if (response.statusCode == 200) {
       try {

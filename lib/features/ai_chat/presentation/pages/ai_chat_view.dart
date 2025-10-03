@@ -1,5 +1,4 @@
 import 'package:ai_chat/features/ai_chat/provider/ai_chat_providers.dart';
-import 'package:ai_chat/features/app_settings/provider/settings_provider.dart';
 import 'package:ai_chat/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -91,31 +90,9 @@ class _AiChatViewConsumerState extends ConsumerState<AiChatView> {
     TextEditingController textController,
     BuildContext context,
   ) {
-    final settings = ref.watch(settingsControllerProvider);
     // final getAiModulePrompt = asyncSettings.
     // final systemPrompt = AppLocalizations.of(context)!.systemSummaryPrompt;
-    // final userPromptPrefix = AppLocalizations.of(context)!.userSummaryPrompt;
-    final getAiModulePrompt = settings.when(
-        data: (data) {
-          final selectedModule = data.aiChatModules
-              .firstWhere((module) => module.id == data.selectedAiChatModuleId);
-          return selectedModule.prompt;
-        },
-        error: (err, stack) =>
-            AppLocalizations.of(context)!.systemSummaryPrompt,
-        loading: () => AppLocalizations.of(context)!.systemSummaryPrompt);
-    final getAiModuleDescription = settings.when(
-        data: (data) {
-          final selectedModule = data.aiChatModules
-              .firstWhere((module) => module.id == data.selectedAiChatModuleId);
-          return selectedModule.description;
-        },
-        error: (err, stack) => AppLocalizations.of(context)!.userSummaryPrompt,
-        loading: () => AppLocalizations.of(context)!.userSummaryPrompt);
-    // final systemQuickReplyPrompt =
-    //     AppLocalizations.of(context)!.systemQuickReplyPrompt;
-    final errorCustomLlmRequest =
-        AppLocalizations.of(context)!.errorCustomLlmRequest;
+
     final typeMessage = AppLocalizations.of(context)!.typeMessage;
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -133,10 +110,6 @@ class _AiChatViewConsumerState extends ConsumerState<AiChatView> {
                 if (text.isNotEmpty) {
                   ref.read(aiChatControllerProvider.notifier).addAiChat(
                         text,
-                        getAiModulePrompt,
-                        getAiModuleDescription,
-                        // systemQuickReplyPrompt,
-                        errorCustomLlmRequest,
                       );
                   textController.clear();
                 }
@@ -150,10 +123,6 @@ class _AiChatViewConsumerState extends ConsumerState<AiChatView> {
               if (text.isNotEmpty) {
                 ref.read(aiChatControllerProvider.notifier).addAiChat(
                       text,
-                      getAiModulePrompt,
-                      getAiModuleDescription,
-                      // systemQuickReplyPrompt,
-                      errorCustomLlmRequest,
                     );
                 textController.clear();
               }
