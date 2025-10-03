@@ -19,11 +19,11 @@ class ItemApiResponse with _$ItemApiResponse {
 @freezed
 class Item with _$Item {
   const factory Item({
-    @JsonKey(name: 'item_id') required int itemId,
-    @JsonKey(name: 'item_name') required String itemName,
-    required String description,
-    required String price,
-    @JsonKey(name: 'image_url') required String imageUrl,
+    @JsonKey(name: 'item_id') int? id,
+    @JsonKey(name: 'item_name') String? name,
+    String? description,
+    double? price,
+    @JsonKey(name: 'image_url') String? imageUrl,
   }) = _Item;
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);

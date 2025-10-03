@@ -46,8 +46,12 @@ class ApiServiceImpl implements ApiService {
   }
 
   Future<List<Item>> getPopularItems() async {
+    print('🚀 DEBUG: getPopularItems API called!');
+
     try {
       final response = await _dio.get('/coffee-shop/popular-items');
+      print('🚀 DEBUG: Response status: ${response.statusCode}');
+      print('🚀 DEBUG: Response data: ${response.data}');
       if (response.statusCode == 200 && response.data != null) {
         // If the API returns a list directly
         final items = (response.data['data'] as List)
