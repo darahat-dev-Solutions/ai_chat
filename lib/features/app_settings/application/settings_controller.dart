@@ -1,5 +1,6 @@
 import 'package:ai_chat/core/api/api_service.dart';
 import 'package:ai_chat/core/api/api_service_provider.dart';
+import 'package:ai_chat/features/ai_chat/provider/ai_chat_providers.dart';
 import 'package:ai_chat/features/app_settings/application/settings_state.dart';
 import 'package:ai_chat/features/app_settings/infrastructure/settings_repository.dart';
 import 'package:ai_chat/features/app_settings/provider/settings_provider.dart';
@@ -18,6 +19,7 @@ class SettingsController extends AsyncNotifier<SettingState> {
   Future<SettingState> build() async {
     /// Initialize repositories and service
     _settingsRepository = ref.watch(settingsRepositoryProvider);
+
     _apiService = ref.watch(apiServiceProvider);
 
     /// locally Saved theme mode value
@@ -26,12 +28,16 @@ class SettingsController extends AsyncNotifier<SettingState> {
     /// locally Saved locale value
     final localeString = await _settingsRepository.getLocale();
 
-    /// Load Ai Chat Module from API
-    final aiChatModules = await _apiService.getAiChatModules();
+    /// Load Ai Chat Module from API with error handling
+    final aiChatModules = await ref.watch(aiChatModulesProvider.future);
 
     /// locally Saved AI Chat Module ID
-    final selectedAiChatModuleId =
-        await _settingsRepository.getAiChatModuleId();
+    int selectedAiChatModuleId = await _settingsRepository.getAiChatModuleId();
+
+    /// If no modules loaded and selected ID is invalid, use default
+    if (aiChatModules.isEmpty && selectedAiChatModuleId > 0) {
+      selectedAiChatModuleId = 1; // Use default from SettingState
+    }
 
     /// Theme mode instance
     ThemeMode themeMode;

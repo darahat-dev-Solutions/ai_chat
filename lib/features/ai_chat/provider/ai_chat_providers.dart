@@ -1,10 +1,19 @@
+import 'package:ai_chat/core/api/api_service_provider.dart';
 import 'package:ai_chat/core/services/custom_llm_service.dart';
 import 'package:ai_chat/core/services/voice_to_text_service.dart';
+import 'package:ai_chat/features/ai_chat/domain/ai_chat_module.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../application/ai_chat_controller.dart';
 import '../domain/ai_chat_model.dart';
 import '../infrastructure/ai_chat_repository.dart';
+
+///----- START: New Provider ---
+/// Provides and caches the list of all AI Chat Modules (prompts) from the API
+final aiChatModulesProvider = FutureProvider<List<AiChatModule>>((ref) {
+  final apiService = ref.watch(apiServiceProvider);
+  return apiService.getAiChatModules();
+});
 
 /// Provides the [AiChatRepository] that interacts with Hive
 final aiChatRepositoryProvider = Provider<AiChatRepository>(

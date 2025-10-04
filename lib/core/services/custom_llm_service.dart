@@ -11,7 +11,7 @@ class CustomLlmService {
   static final _endpoint = dotenv.env['CUSTOM_LLM_ENDPOINT'] ??
       'https://openrouter.ai/api/v1/chat/completions';
   static final _model =
-      dotenv.env['CUSTOM_LLM_MODEL'] ?? "mistralai/mistral-7b-instruct:free";
+      dotenv.env['CUSTOM_LLM_MODEL'] ?? "x-ai/grok-4-fast:free";
 
   /// CustomLlmService Service constructor
   CustomLlmService() {
@@ -60,11 +60,15 @@ class CustomLlmService {
   }
 
   /// Generate quick reply like as chat for ai chat features
-  Future<String> generateQuickReply(
-    String userMessage,
+  Future<String> generateResponse(
     String systemPrompt,
-    String userPromptPrefix,
-    String errorCustomLlmRequest,
+  ) async {
+    return _makeLlmCall(systemPrompt);
+  }
+
+  /// Private helper for making the actual HTTP request
+  Future<String> _makeLlmCall(
+    String systemPrompt,
   ) async {
     final headers = {
       'Authorization': 'Bearer $_apiKey',
@@ -73,36 +77,54 @@ class CustomLlmService {
       'Origin': dotenv.env['OPENROUTER_HTTP_REFERER'] ?? 'http://localhost',
       'X-Title': dotenv.env['OPENROUTER_APP_TITLE'] ?? 'ai_chat',
     };
-
-    final bodyMap = {
+    final body = {
       "model": _model,
       "messages": [
         {"role": "system", "content": systemPrompt},
-        {"role": "user", "content": userMessage},
+        {"role": "user", "content": "Proceed with the instructions above."},
       ],
       "temperature": 0.7, // Lower for stricter adherence to systemPrompt
       "max_tokens": 800,
     };
 
+    /// Note: When debug needs uncoment this start
     // Mask API key for safe debugging
-    final maskedKey = _apiKey == null
-        ? 'null'
-        : (_apiKey!.length > 12 ? '${_apiKey!.substring(0, 8)}****' : '****');
+    // final maskedKey = _apiKey == null
+    //     ? 'null'
+    //     : (_apiKey!.length > 12 ? '${_apiKey!.substring(0, 8)}****' : '****');
 
-    print(
-        'Request headers (no Authorization): ${Map.from(headers)..remove('Authorization')}');
-    print('Authorization: Bearer $maskedKey');
-    print('Request body: ${jsonEncode(bodyMap)}');
+    // print('----------LLM Request -----');
+    // print('Endpoint $_endpoint');
+    // print('Model: $_model');
+    // print(
+    //     'Request headers (no Authorization): ${Map.from(headers)..remove('Authorization')}');
+    // print('Authorization: Bearer $maskedKey');
+    // print('Request body: ${jsonEncode(body)}');
+    // print('----------End LLM Request -----');
+    // Note: When debug needs uncoment this end
 
     final response = await http.post(
       Uri.parse(_endpoint),
       headers: headers,
-      body: jsonEncode(bodyMap),
+      body: jsonEncode(body),
     );
 
+    // Note: When debug needs uncoment this start
+
+    // print('----------LLM Response -----');
+    // print('Status Code ${response.statusCode}');
+    // print('Response Body: ${response.body}');
+    // print('---End LLM Response---');
+    // Note: When debug needs uncoment this end
     if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      return data['choices'][0]['message']['content'].trim();
+      try {
+        final data = jsonDecode(response.body);
+        return data['choices'][0]['message']['content'].trim();
+      } on FormatException catch (e) {
+        throw Exception(
+          'Failed to parse JSON response: $e, \nResponse body: ${response.body}',
+        );
+      }
     } else {
       throw Exception(
         'Failed to get response: ${response.statusCode} ${response.body}',
