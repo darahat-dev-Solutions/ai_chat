@@ -17,7 +17,14 @@ final toolRegistryProvider = Provider<Map<String, ToolFunction>>((ref) {
     print('🔧 DEBUG: _getPopularItems function called!');
 
     /// This function could fetch data from a provider, an API, a database, etc.
-    return ref.read(popularItemsProvider).value ?? [];
+    try {
+      // Await the FutureProvider's future so we get the real list (not null) or throw on error
+      final items = await ref.read(popularItemsProvider.future);
+      return items;
+    } catch (e) {
+      print('🔧 ERROR: Failed to get popular items: $e');
+      return <dynamic>[];
+    }
   }
 
   /// To add a new code-executing tool, simply add its name and function to this map.
