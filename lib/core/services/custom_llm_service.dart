@@ -10,8 +10,7 @@ class CustomLlmService {
   static final _apiKey = dotenv.env['AI_API_KEY'];
   static final _endpoint = dotenv.env['CUSTOM_LLM_ENDPOINT'] ??
       'https://openrouter.ai/api/v1/chat/completions';
-  static final _model =
-      dotenv.env['CUSTOM_LLM_MODEL'] ?? "x-ai/grok-4-fast:free";
+  static final _model = dotenv.env['CUSTOM_LLM_MODEL'] ?? "x-ai/grok-4-fast";
 
   /// CustomLlmService Service constructor
   CustomLlmService() {
