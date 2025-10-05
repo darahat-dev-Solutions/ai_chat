@@ -86,21 +86,24 @@ class CustomLlmService {
       "max_tokens": 800,
     };
 
-    /// Note: When debug needs uncoment this start
-    // Mask API key for safe debugging
-    // final maskedKey = _apiKey == null
-    //     ? 'null'
-    //     : (_apiKey!.length > 12 ? '${_apiKey!.substring(0, 8)}****' : '****');
+    // Lightweight debug logging (masks API key) to help diagnose endpoint/model errors
+    try {
+      final maskedKey = _apiKey == null
+          ? 'null'
+          : (_apiKey!.length > 12
+              ? '${_apiKey!.substring(0, 8)}****${_apiKey!.substring(_apiKey!.length - 4)}'
+              : '****');
 
-    // print('----------LLM Request -----');
-    // print('Endpoint $_endpoint');
-    // print('Model: $_model');
-    // print(
-    //     'Request headers (no Authorization): ${Map.from(headers)..remove('Authorization')}');
-    // print('Authorization: Bearer $maskedKey');
-    // print('Request body: ${jsonEncode(body)}');
-    // print('----------End LLM Request -----');
-    // Note: When debug needs uncoment this end
+      // Print request details (safe for development) without exposing the full API key
+      print('LLM Request -> endpoint: $_endpoint');
+      print('LLM Request -> model: $_model');
+      print(
+          'LLM Request -> headers (without Authorization): ${Map.from(headers)..remove('Authorization')}');
+      print('LLM Request -> Authorization: Bearer $maskedKey');
+      print('LLM Request -> body: ${jsonEncode(body)}');
+    } catch (_) {
+      // ignore debug logging errors
+    }
 
     final response = await http.post(
       Uri.parse(_endpoint),
@@ -108,13 +111,14 @@ class CustomLlmService {
       body: jsonEncode(body),
     );
 
-    // Note: When debug needs uncoment this start
+    // Print response for debugging
+    try {
+      print('LLM Response -> status: ${response.statusCode}');
+      print('LLM Response -> body: ${response.body}');
+    } catch (_) {
+      // ignore debug logging errors
+    }
 
-    // print('----------LLM Response -----');
-    // print('Status Code ${response.statusCode}');
-    // print('Response Body: ${response.body}');
-    // print('---End LLM Response---');
-    // Note: When debug needs uncoment this end
     if (response.statusCode == 200) {
       try {
         final data = jsonDecode(response.body);

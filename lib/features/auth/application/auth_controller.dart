@@ -26,10 +26,24 @@ class AuthController extends StateNotifier<AuthState> {
   /// Check User is Authenticated need to call in main to check
   void checkInitialAuthState() async {
     final getOnlineUser = await _authRepository.getCurrentUser();
-    // final user = getOnlineUser ?? _authBox.get('user');
-    _appLogger.debug(getOnlineUser!.displayName.toString());
+    // Prefer the online Firebase user, otherwise fall back to locally stored user in Hive
+    final localUser = _authBox.get('user');
 
-    state = Authenticated(getOnlineUser);
+    if (getOnlineUser != null) {
+      _appLogger.debug('Online user found: ${getOnlineUser.displayName}');
+      state = Authenticated(getOnlineUser);
+      return;
+    }
+
+    if (localUser != null) {
+      _appLogger.debug(
+          'Using local user from Hive: ${localUser.displayName ?? localUser.uid}');
+      state = Authenticated(localUser);
+      return;
+    }
+
+    _appLogger.debug('No authenticated user found. Staying unauthenticated.');
+    state = const AuthInitial();
   }
 
   /// Maintain Email & Password SignUp
@@ -76,7 +90,7 @@ class AuthController extends StateNotifier<AuthState> {
       if (user != null) {
         state = Authenticated(user);
         _appLogger.error('Check what the state status ${state.uid.toString()}');
-        _appLogger.error('Check the display name ${user.uid!}');
+        _appLogger.error('Check the display name ${user.uid}');
       } else {
         state = const AuthError(
           'Google Sign in failed. Please try again.',
