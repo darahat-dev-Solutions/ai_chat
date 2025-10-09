@@ -14,6 +14,7 @@ class UserModel {
 
   /// User Name Definition
   @HiveField(1)
+  @JsonKey(name: 'name')
   final String? displayName;
 
   /// Email Definition
@@ -35,7 +36,19 @@ class UserModel {
 
   /// User photoURL Definition
   @HiveField(4)
+  @JsonKey(name: 'img_url')
   final String? photoURL;
+
+  /// If any order created the User will be customer
+  ///
+  /// User customer id Definition
+  @HiveField(5)
+  @JsonKey(name: 'customer_id')
+  final int? customerId;
+
+  /// User Phone Definition
+  @HiveField(6)
+  final String? phone;
 
   /// UserModel Constructor
   UserModel({
@@ -43,6 +56,8 @@ class UserModel {
     required this.email,
     this.displayName,
     this.photoURL,
+    this.customerId,
+    this.phone,
     UserRole? role,
   }) : role = role ?? UserRole.guest;
 

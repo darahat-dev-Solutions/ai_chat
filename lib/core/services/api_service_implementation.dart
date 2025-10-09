@@ -53,10 +53,41 @@ class ApiServiceImpl implements ApiService {
       print('🚀 DEBUG: Response status: ${response.statusCode}');
       print('🚀 DEBUG: Response data: ${response.data}');
       if (response.statusCode == 200 && response.data != null) {
-        // If the API returns a list directly
-        final items = (response.data['data'] as List)
-            .map((item) => Item.fromJson(item))
-            .toList();
+        // Normalize incoming JSON to ensure numeric fields have proper types
+        final rawList = response.data['data'] as List;
+        final normalized = rawList.map((rawItem) {
+          // Ensure we have a mutable Map<String, dynamic>
+          final Map<String, dynamic> itemMap =
+              Map<String, dynamic>.from(rawItem as Map);
+
+          // Normalize item_id (could come as String)
+          final idVal = itemMap['item_id'] ?? itemMap['id'];
+          if (idVal != null && idVal is String) {
+            final parsed = int.tryParse(idVal);
+            if (parsed != null) {
+              itemMap['item_id'] = parsed;
+            }
+          }
+
+          // Normalize price (could come as String or int)
+          final priceVal = itemMap['price'];
+          if (priceVal != null) {
+            if (priceVal is String) {
+              // remove common formatting like commas or currency symbols
+              final cleaned = priceVal.replaceAll(RegExp(r"[^0-9.\-]"), '');
+              final parsed = double.tryParse(cleaned);
+              if (parsed != null) {
+                itemMap['price'] = parsed;
+              }
+            } else if (priceVal is int) {
+              itemMap['price'] = priceVal.toDouble();
+            }
+          }
+
+          return itemMap;
+        }).toList();
+
+        final items = normalized.map((item) => Item.fromJson(item)).toList();
         return items;
       } else {
         appLogger
