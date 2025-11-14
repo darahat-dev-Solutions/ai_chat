@@ -6,17 +6,22 @@ import 'package:http/http.dart' as http;
 
 /// CustomLlmService LLM Service implementation
 class CustomLlmService {
-  ///AI_API_KEY you may find in .env
   static final _apiKey = dotenv.env['AI_API_KEY'];
   static final _endpoint = dotenv.env['CUSTOM_LLM_ENDPOINT'] ??
       'https://openrouter.ai/api/v1/chat/completions';
-  static final _model = dotenv.env['CUSTOM_LLM_MODEL'] ?? "x-ai/grok-4-fast";
+  static final _model = dotenv.env['CUSTOM_LLM_MODEL'] ??
+      'nousresearch/hermes-3-llama-3.1-405b:free'; // Remove the hardcoded fallback
 
   /// CustomLlmService Service constructor
+
   CustomLlmService() {
     if (_apiKey == null) {
       throw Exception('AI_API_KEY is not set in the .env file');
-    } else {}
+    }
+
+    // Add debug to verify the model is loaded correctly
+    print('🔧 DEBUG: LLM Model loaded: $_model');
+    print('🔧 DEBUG: LLM Endpoint: $_endpoint');
   }
 
   /// CustomLlmService LLM API calling procedure as like as regular jquery
@@ -66,9 +71,8 @@ class CustomLlmService {
   }
 
   /// Private helper for making the actual HTTP request
-  Future<String> _makeLlmCall(
-    String systemPrompt,
-  ) async {
+  /// Private helper for making the actual HTTP request
+  Future<String> _makeLlmCall(String systemPrompt) async {
     final headers = {
       'Authorization': 'Bearer $_apiKey',
       'Content-Type': 'application/json',
@@ -82,56 +86,39 @@ class CustomLlmService {
         {"role": "system", "content": systemPrompt},
         {"role": "user", "content": "Proceed with the instructions above."},
       ],
-      "temperature": 0.7, // Lower for stricter adherence to systemPrompt
+      "temperature": 0.7,
       "max_tokens": 800,
     };
 
-    // Lightweight debug logging (masks API key) to help diagnose endpoint/model errors
     try {
-      final maskedKey = _apiKey == null
-          ? 'null'
-          : (_apiKey!.length > 12
-              ? '${_apiKey!.substring(0, 8)}****${_apiKey!.substring(_apiKey!.length - 4)}'
-              : '****');
+      final response = await http.post(
+        Uri.parse(_endpoint),
+        headers: headers,
+        body: jsonEncode(body),
+      );
 
-      // Print request details (safe for development) without exposing the full API key
-      print('LLM Request -> endpoint: $_endpoint');
-      print('LLM Request -> model: $_model');
-      print(
-          'LLM Request -> headers (without Authorization): ${Map.from(headers)..remove('Authorization')}');
-      print('LLM Request -> Authorization: Bearer $maskedKey');
-      print('LLM Request -> body: ${jsonEncode(body)}');
-    } catch (_) {
-      // ignore debug logging errors
-    }
-
-    final response = await http.post(
-      Uri.parse(_endpoint),
-      headers: headers,
-      body: jsonEncode(body),
-    );
-
-    // Print response for debugging
-    try {
       print('LLM Response -> status: ${response.statusCode}');
       print('LLM Response -> body: ${response.body}');
-    } catch (_) {
-      // ignore debug logging errors
-    }
 
-    if (response.statusCode == 200) {
-      try {
+      if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         return data['choices'][0]['message']['content'].trim();
-      } on FormatException catch (e) {
-        throw Exception(
-          'Failed to parse JSON response: $e, \nResponse body: ${response.body}',
-        );
+      } else if (response.statusCode == 429) {
+        // Handle rate limit or free model unavailability
+        return "⚠️ The AI service is currently busy or rate-limited. Please wait a moment and try again.\n\n💡 Tip: You can add your own API key in OpenRouter settings to remove this limit:\nhttps://openrouter.ai/settings/integrations";
+      } else if (response.statusCode == 401 || response.statusCode == 403) {
+        // Handle invalid or missing API key
+        return "🔒 Your AI access key seems invalid or missing. Please check your API key configuration in the app or .env file.";
+      } else if (response.statusCode >= 500) {
+        // Server-side errors
+        return "🚧 The AI server is temporarily unavailable. Please try again later.";
+      } else {
+        // Generic fallback
+        return "❗ Unexpected error: ${response.statusCode}. Please try again later.";
       }
-    } else {
-      throw Exception(
-        'Failed to get response: ${response.statusCode} ${response.body}',
-      );
+    } catch (e) {
+      // Network or JSON parsing errors
+      return "⚠️ Unable to reach the AI service. Please check your internet connection or API key configuration.\n\nError: $e";
     }
   }
 }
