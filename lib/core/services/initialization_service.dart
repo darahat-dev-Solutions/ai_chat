@@ -25,7 +25,7 @@ class InitializationService {
     /// Ensure Flutter binding is initialized
 
     /// Register background message handler
-    await dotenv.load(fileName: ".env");
+
     await Firebase.initializeApp();
     await Hive.initFlutter();
     if (dotenv.env['USE_FIREBASE_EMULATOR'] == 'true') {

@@ -4,6 +4,7 @@ import 'package:ai_chat/core/services/initialization_service.dart';
 import 'package:ai_chat/features/auth/provider/auth_providers.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Top Level function to handle background messages
@@ -11,6 +12,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Moved here
   // Moved here
+  await dotenv.load(fileName: ".env");
   final container = ProviderContainer();
 
   try {
@@ -23,6 +25,9 @@ Future<void> main() async {
     );
     return;
   }
+  print(
+      '🔧 DEBUG: AI_API_KEY loaded: ${dotenv.env['AI_API_KEY']?.substring(0, 10)}...');
+  print('🔧 DEBUG: CUSTOM_LLM_MODEL loaded: ${dotenv.env['CUSTOM_LLM_MODEL']}');
 
   container.read(authControllerProvider.notifier).checkInitialAuthState();
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
