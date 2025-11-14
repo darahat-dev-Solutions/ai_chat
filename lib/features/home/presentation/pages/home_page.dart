@@ -381,12 +381,6 @@ class HomePage extends StatelessWidget {
                 title: 'Settings',
                 onTap: () {
                   context.go('/settings');
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Settings page coming soon!'),
-                      backgroundColor: colorScheme.primary,
-                    ),
-                  );
                 },
                 colorScheme: colorScheme,
                 textTheme: textTheme,
