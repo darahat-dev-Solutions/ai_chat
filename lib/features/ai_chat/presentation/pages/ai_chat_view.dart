@@ -55,8 +55,10 @@ class _AiChatViewConsumerState extends ConsumerState<AiChatView> {
       ref.read(aiChatControllerProvider.notifier).addAiChat(text);
       _textController.clear();
 
-      // Unfocus keyboard after sending
-      _focusNode.unfocus();
+      // Unfocus keyboard after sending (safely)
+      if (mounted) {
+        _focusNode.unfocus();
+      }
 
       Future.delayed(const Duration(milliseconds: 500), () {
         if (mounted) {
