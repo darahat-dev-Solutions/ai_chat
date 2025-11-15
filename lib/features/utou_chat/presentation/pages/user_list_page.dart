@@ -43,7 +43,7 @@ class UserListPage extends ConsumerWidget {
               onTap: () {
                 //  context.push('/uToUChat');
                 context.push(
-                  '/uToUChat/${user.uid}?name=${Uri.encodeComponent(displayName)}',
+                  '/uToUChat/${user.uid}?displayName=${Uri.encodeComponent(displayName)}',
                   extra: {'title': displayName},
                 );
               },

@@ -12,13 +12,13 @@ class UToUChatView extends ConsumerStatefulWidget {
   final String receiverId;
 
   /// It will get receiverName
-  final String receiverName;
+  final String displayName;
 
   /// User-to-User Chat View constructor
   const UToUChatView({
     super.key,
     required this.receiverId,
-    required this.receiverName,
+    required this.displayName,
   });
 
   @override
@@ -29,9 +29,11 @@ class _UToUChatViewConsumerState extends ConsumerState<UToUChatView> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _textController = TextEditingController();
   bool _isLoading = false;
+  late FocusNode _focusNode;
 
   @override
   void dispose() {
+    _focusNode.dispose();
     _scrollController.dispose();
     _textController.dispose();
     super.dispose();
@@ -126,37 +128,20 @@ class _UToUChatViewConsumerState extends ConsumerState<UToUChatView> {
         title: Row(
           children: [
             // Receiver Avatar
-            Container(
-              width: 36,
-              height: 36,
-              decoration: BoxDecoration(
-                color: colorScheme.primary.withOpacity(0.1),
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: colorScheme.outline.withOpacity(0.2),
-                  width: 1,
-                ),
-              ),
-              child: Icon(
-                Icons.person_rounded,
-                color: colorScheme.primary,
-                size: 20,
-              ),
-            ),
-            const SizedBox(width: 12),
+
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.receiverName,
+                    widget.displayName,
                     style: textTheme.bodyLarge?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: colorScheme.onBackground,
                     ),
                   ),
                   Text(
-                    'Online', // You can replace this with actual status
+                    'Offline', // You can replace this with actual status
                     style: textTheme.bodySmall?.copyWith(
                       color: colorScheme.onSurface.withOpacity(0.6),
                     ),
@@ -299,7 +284,7 @@ class _UToUChatViewConsumerState extends ConsumerState<UToUChatView> {
               ),
               const SizedBox(height: 12),
               Text(
-                'Send your first message to ${widget.receiverName} and start chatting!',
+                'Send your first message to ${widget.displayName} and start chatting!',
                 style: textTheme.bodyLarge?.copyWith(
                   color: colorScheme.onSurface.withOpacity(0.7),
                   height: 1.5,
