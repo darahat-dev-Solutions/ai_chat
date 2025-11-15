@@ -1,0 +1,34 @@
+import 'package:ai_chat/core/api/api_service.dart';
+import 'package:ai_chat/core/services/api_service_implementation.dart';
+import 'package:ai_chat/features/ai_chat/domain/ai_chat_module.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+void main() {
+  group('ApiService', () {
+    late ApiService apiService;
+    setUpAll(() async {
+      // Load environment variables from .env file
+      await dotenv.load(fileName: ".env");
+      // Create a Dio instance
+      final dio = Dio();
+      // Create an ApiService instance
+      apiService = ApiServiceImpl(dio);
+    });
+
+    test('GetAiChatModules returns a list of modules', () async {
+      try {
+        final modules = await apiService.getAiChatModules();
+        expect(modules, isA<List<AiChatModule>>());
+        expect(modules.isNotEmpty, isTrue);
+        print('Fetched modules:');
+        for (var module in modules) {
+          print(' -  ID: ${module.id}, Name: ${module.name}');
+        }
+      } catch (e) {
+        fail('Failed to get AI chat modules: $e');
+      }
+    });
+  });
+}

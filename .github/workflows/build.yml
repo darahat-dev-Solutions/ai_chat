@@ -1,0 +1,28 @@
+name: Build Flutter App
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Create .env file
+        run: |
+          echo "FIREBASE_CLIENT_ID=${{ secrets.FIREBASE_CLIENT_ID }}" >> .env
+          echo "AI_API_KEY=${{ secrets.OPENROUTER_AI_API_KEY }}" >> .env
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.24.2" #Or your desired version
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build Flutter App
+        run: flutter build apk #Or your desired build command

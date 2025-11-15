@@ -1,0 +1,111 @@
+name: ai_chat
+description: "An AI-Powered Form Builder"
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.4.3 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # State management
+  flutter_riverpod: ^2.5.1
+  equatable: ^2.0.5
+  shared_preferences: ^2.2.2
+
+  # UI
+  cupertino_icons: ^1.0.6
+  google_fonts: ^6.1.0
+  go_router: ^16.2.2
+  country_picker: ^2.0.25
+  pinput: ^5.0.2
+
+  # Local Database
+  sqflite: ^2.3.2
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  path_provider: ^2.1.2
+
+  # Network
+  dio: ^5.4.1
+  retrofit: ^4.1.0
+  json_annotation: ^4.8.1
+  connectivity_plus: ^7.0.0
+
+  # AI Integration
+  http: ^1.2.0
+  flutter_dotenv: ^6.0.0
+  uuid: ^4.3.3
+
+  # Voice Recognition
+  speech_to_text: ^7.3.0
+  permission_handler: ^12.0.1
+  record: ^6.1.1
+
+  # Dependency Injection
+  get_it: ^8.2.0
+  injectable: ^2.3.2
+
+  # Utilities
+  intl: ^0.20.2
+  logger: ^2.2.0
+  freezed_annotation: ^2.4.1
+
+  # Firebase
+  firebase_core: ^4.1.0
+  cloud_firestore: ^6.0.1
+  firebase_auth: ^6.0.2
+  google_sign_in: ^7.2.0
+  firebase_app_check: ^0.4.0+1
+  flutter_web_auth_2: ^4.1.0
+  recaptcha_enterprise_flutter: ^18.8.0
+  firebase_messaging: ^16.0.1
+  flutter_local_notifications: ^19.4.1
+
+  # Others
+  audioplayers: ^6.0.0
+  flutter_localization: ^0.3.3
+  provider: ^6.1.2
+  mocktail: ^1.0.3
+  riverpod_test: ^0.1.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+  # Code Generation
+  build_runner: ^2.3.3
+  injectable_generator: ^2.4.1
+
+  hive_generator: ^2.0.1
+  freezed: ^2.4.7
+  json_serializable: ^6.8.0
+  analyzer: ^6.4.1
+  source_gen: ^1.4.0
+
+flutter:
+  uses-material-design: true
+  generate: true
+  assets:
+    - assets/sounds/notification.mp3
+    - assets/icon/icon.png
+    - assets/icon/google_logo.png
+    - assets/icon/github_logo.png
+    - .env
+
+flutter_gen:
+  l10n:
+    arb-dir: lib/l10n
+    template-arb-file: app_en.arb
+    output-localization-file: app_localizations.dart
+    output-class: AppLocalizations
+    preferred-supported-locales:
+      - en
+      - km
+      - ja
+      - es
