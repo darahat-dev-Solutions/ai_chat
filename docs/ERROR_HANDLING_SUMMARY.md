@@ -116,9 +116,9 @@ Invalid values detected:
 
 Your `.env` file contains:
 
-- ✅ BASE_API_URL = http://54.169.119.235/api/v1
+- ✅ BASE_API_URL =
 - ✅ AI_API_KEY = Valid (not placeholder)
-- ✅ FIREBASE_PROJECT_ID = flutter-starter-kit-3bd18
+- ✅ FIREBASE_PROJECT_ID = ""
 - ✅ FIREBASE_API_KEY = Valid (not placeholder)
 
 ---
