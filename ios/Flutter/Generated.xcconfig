@@ -1,5 +1,9 @@
 // This is a generated file; do not edit or check into version control.
+<<<<<<< HEAD
 FLUTTER_ROOT=C:\Users\darahat42\fvm\versions\stable
+=======
+FLUTTER_ROOT=C:\Users\darahat42\fvm\versions\3.32.1
+>>>>>>> 7d9fef6f29f2a57f4f5db38905d5c8924ec4ab30
 FLUTTER_APPLICATION_PATH=D:\Dream\Flutter App\ai_chat
 COCOAPODS_PARALLEL_CODE_SIGN=true
 FLUTTER_TARGET=lib\main.dart

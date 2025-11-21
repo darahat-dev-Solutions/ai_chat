@@ -1,6 +1,10 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
+<<<<<<< HEAD
 export "FLUTTER_ROOT=C:\Users\darahat42\fvm\versions\stable"
+=======
+export "FLUTTER_ROOT=C:\Users\darahat42\fvm\versions\3.32.1"
+>>>>>>> 7d9fef6f29f2a57f4f5db38905d5c8924ec4ab30
 export "FLUTTER_APPLICATION_PATH=D:\Dream\Flutter App\ai_chat"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_TARGET=lib\main.dart"

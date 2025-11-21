@@ -28,8 +28,14 @@ class UToUChatView extends ConsumerStatefulWidget {
 class _UToUChatViewConsumerState extends ConsumerState<UToUChatView> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _textController = TextEditingController();
-  bool _isLoading = false;
   late FocusNode _focusNode;
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = FocusNode();
+  }
 
   @override
   void dispose() {
